@@ -1,0 +1,54 @@
+Kernfeatures
+- Veranstaltungskalender und Buchung der Tickets
+-- Tickets per mail als pdf
+- Muss für User ohne Anmelung funktionieren
+- Kontrolle und Info wieviele Follower und Leader kommen
+- Homepage für Verantalter
+- Ausdrucken/Export als Pdf und Excel der Teilnehmerliste für das manuelle anhaken. Selbst wenn mit der App kontrolliert werden kann muss das noch möglich sein
+- Workshopplan auf der Startseite
+-- Es sollte ein personalisierter Plan erstellt werden
+
+
+Hauptseite ist eine Timeline auf der Veranstaltungen und andere Beiträge auftauchen. Daneben ist eine kleineBox nit den nächsten Events.
+
+- Es gibt Veranstalter, Artists und User (Markiert mit Badge :) )
+- kleine Box für eigene Events (nur bei Veranstaltern)
+- kleine Box für eigene gebuchte Events -> Muss gut unterscheidbar sein.
+
+- Ich msus als Artist die Möglichkeit haben an einer Veranstaltung teilzunehmen ohne, dass ich eine Karte kaufe
+-- Der Veranstalter läd einen einfach dafür ein
+--- Nachteil wäre, dass der Veranstalter hier immer aktiv sein muss
+--- Vorteil wäre, dass man so auch gleiche die Artistbuchung übder das Portal machen kann -> Monetarisieren
+
+
+Monetarisierung:
+- Ticketverkauf (1€ pro Ticket)
+- Artist buchung (wird vermutlich von den Veranstaltern umgangen werden. Könnte erst später klappen, wenn das Portal eine bestimmte Reichweite hat und man gezwungen ist darüber zu buchen
+- Werbung
+- Präsenz auf der Timeline (als Veranstalter)
+
+
+Sekundäre Features
+- Es sollen auch (freie) Veranstaltungen selbst eingetragen werden können
+-- Wer macht das und wie kann das verifiziert werden?
+- Suchfunktion
+-- Suche in einem bestimmten geo Bereich
+-- Suche in einem bestimmten Zeitraum
+- Anzeige welcher User auf ein Festival geht
+- Freunde 
+- Beiträge von Usern in ihrer eigenen Timeline
+-- Diese Beiträge können dann je nach einstellung auch auf der Timeline von Freunden oder auf der allgemeinen Timeline auftauchen
+- OSX App
+- Android App
+- Ticketkontrolle über App
+- Programmplan
+-- eigener Workshopplan kann erstellt werden
+-- über app mit notifications
+-- buchen von bootcamps etc. mit zugriffsbeschränkung
+- Sammeln, hochladen und abspielen seiner eigenen Videos
+-- Man soll markieren können welche Figuren man schon kann
+-- Man soll einen Trainingsplan bereitstellen können
+- mit account sollen tickets auch direkt in der app / webapp angezeigt werden 
+- Follow funktion für Veranstaltungen, Personen und Artists
+- Kommentarfunktion für Beiträge o.Ä.?
+- Countdown (Overlay) bis zum Start der Veranstaltung
