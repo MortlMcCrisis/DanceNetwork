@@ -1,6 +1,5 @@
 package com.mortl.dancenetwork.controller;
 
-import com.mortl.dancenetwork.model.Client;
 import com.mortl.dancenetwork.model.NewsfeedEntry;
 import com.mortl.dancenetwork.repository.NewsfeedEntryRepository;
 import java.net.URI;

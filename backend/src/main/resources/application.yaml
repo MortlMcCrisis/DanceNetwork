@@ -1,12 +1,21 @@
-#spring:
-#  security:
-#    oauth2:
-#      resourceserver:
-#        jwt:
-#          issuer-uri: http://localhost:443/realms/dance-network
-#          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
-#
-#token:
-#  converter:
-#    principal-attribute: preferred_username
-#    resource-id: dance-network-admin
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: dance-network-admin
+            client-secret: 9HHSf4noTReqijNGnzOh0OhbNoMJL2VN
+            authorization-grant-type: client_credentials
+        provider:
+          keycloak:
+            token-uri: http://localhost:443/realms/dance-network/protocol/openid-connect
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:443/realms/dance-network
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+
+token:
+  converter:
+    principal-attribute: preferred_username
+    resource-id: dance-network-admin

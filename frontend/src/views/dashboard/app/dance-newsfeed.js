@@ -132,14 +132,12 @@ const DanceNewsfeed=()=>{
     useEffect(() => {
         const fetchClients = async () => {
             try {
-
                 const response = await fetch('/newsfeed-entries', {
                     headers: {
                         Authorization: `Bearer ${keycloak.token}`,
                         'Content-Type': 'application/json',
                     },
                 });
-
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
