@@ -15,6 +15,8 @@ import {store} from './store'
 import { IndexRouters } from './router';
 import { SimpleRouter } from './router/simple-router';
 import { ChatRouter } from './router/chat-router';
+import {ReactKeycloakProvider} from "@react-keycloak/web";
+import keycloak from "./keycloak";
 
 const router = createBrowserRouter([
 
@@ -23,14 +25,14 @@ const router = createBrowserRouter([
   ...ChatRouter
 ], { basename: process.env.PUBLIC_URL })
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <StrictMode>
+//  <StrictMode>
     <Provider store={store}>
-    <App>
-      <RouterProvider router={router}>
-      </RouterProvider>
+      <App>
+        <RouterProvider router={router}>
+        </RouterProvider>
       </App>
     </Provider>
-  </StrictMode>
+//  </StrictMode>
 )
 // ReactDOM.render(
 //   <React.StrictMode>

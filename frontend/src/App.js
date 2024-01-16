@@ -11,7 +11,9 @@ import { useDispatch } from 'react-redux';
 
 // import state selectors
 import { setSetting } from './store/setting/actions'
-
+import React from "react";
+import {ReactKeycloakProvider} from "@react-keycloak/web";
+import keycloak from "./keycloak";
 
 function App(props) {
   const dispatch = useDispatch()
@@ -20,8 +22,10 @@ function App(props) {
 
   return (
     <div className="App">
-      {/* <IndexRouters /> */}
-      {props.children}
+      <ReactKeycloakProvider authClient={keycloak}>
+        {/* <IndexRouters /> */}
+        {props.children}
+      </ReactKeycloakProvider>
     </div>
   );
 }

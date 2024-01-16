@@ -6,7 +6,7 @@ import {
   Card,
   Container,
   Image,
-  Modal,
+  Modal, Button,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
@@ -29,17 +29,19 @@ import user15 from "../../../../assets/images/page-img/02.jpg";
 import user16 from "../../../../assets/images/page-img/01.jpg";
 //Componets
 import CustomToggle from "../../../dropdowns";
+import {useKeycloak} from "@react-keycloak/web";
 // import DropdownMenu from "react-bootstrap/esm/DropdownMenu";
 
 const Header = () => {
+  const { keycloak, initialized } = useKeycloak();
   const minisidebar = () => {
     document.getElementsByTagName("ASIDE")[0].classList.toggle("sidebar-mini");
   };
-
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
   return (
     <>
       <div className="iq-top-navbar">
@@ -1316,6 +1318,10 @@ const Header = () => {
                   <span className="mobile-text  ms-3">Message</span>
                 </Link>
               </Nav.Item>
+              {!keycloak.authenticated && (
+                <Button variant="primary" type="button"  className="float-end" onClick={() => keycloak.login()}>Login</Button>
+              )}
+              {keycloak.authenticated && (
               <Dropdown as="li" className="nav-item user-dropdown">
                 <Dropdown.Toggle
                   href="#"
@@ -1387,8 +1393,12 @@ const Header = () => {
                       <div className="d-flex align-items-center iq-sub-card">
                         <span className="material-symbols-outlined">login</span>
                         <div className="ms-3">
-                          <Link to="/auth/sign-in" className="mb-0 h6">
-                            Sign out
+                          <Link
+                              to="/"
+                              className="mb-0 h6"
+                              onClick={() => keycloak.logout()}
+                          >
+                            Logout
                           </Link>
                         </div>
                       </div>
@@ -1423,6 +1433,7 @@ const Header = () => {
                   </Card>
                 </Dropdown.Menu>
               </Dropdown>
+              )}
 
               {/*  <Nav.Item as="li" className="d-lg-none">
               <Link
