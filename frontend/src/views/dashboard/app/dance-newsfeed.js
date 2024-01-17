@@ -45,6 +45,7 @@ import s4 from "../../../assets/images/page-img/s4.jpg";
 import s5 from "../../../assets/images/page-img/s5.jpg";
 import EmailAppDetail from "../../../components/email-app-detail";
 import DanceNewsfeedCard from "../../../components/dance-newsfeed-card";
+import {useKeycloak} from "@react-keycloak/web";
 
 // Fslightbox plugin
 const FsLightbox = ReactFsLightbox.default ? ReactFsLightbox.default : ReactFsLightbox;
@@ -55,6 +56,8 @@ const DanceNewsfeed=()=>{
     const handleShow = () => setShow(true);
 
     const [clients, setClients] = useState([]);
+
+    const { keycloak, initialized } = useKeycloak();
 
     const questionAlert = () => {
         const swalWithBootstrapButtons = Swal.mixin({
@@ -129,7 +132,14 @@ const DanceNewsfeed=()=>{
     useEffect(() => {
         const fetchClients = async () => {
             try {
-                const response = await fetch('/newsfeed-entries');
+
+                const response = await fetch('/newsfeed-entries', {
+                    headers: {
+                        Authorization: `Bearer ${keycloak.token}`,
+                        'Content-Type': 'application/json',
+                    },
+                });
+
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }

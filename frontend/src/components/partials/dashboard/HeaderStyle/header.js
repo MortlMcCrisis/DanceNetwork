@@ -34,6 +34,7 @@ import {useKeycloak} from "@react-keycloak/web";
 
 const Header = () => {
   const { keycloak, initialized } = useKeycloak();
+
   const minisidebar = () => {
     document.getElementsByTagName("ASIDE")[0].classList.toggle("sidebar-mini");
   };
@@ -1318,9 +1319,9 @@ const Header = () => {
                   <span className="mobile-text  ms-3">Message</span>
                 </Link>
               </Nav.Item>
-              {!keycloak.authenticated && (
-                <Button variant="primary" type="button"  className="float-end" onClick={() => keycloak.login()}>Login</Button>
-              )}
+                {!keycloak.authenticated && (
+                  <Button variant="primary" type="button"  className="float-end" onClick={() => keycloak.login()}>Login</Button>
+                )}
               {keycloak.authenticated && (
               <Dropdown as="li" className="nav-item user-dropdown">
                 <Dropdown.Toggle
