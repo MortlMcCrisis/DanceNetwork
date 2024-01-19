@@ -150,7 +150,7 @@ const DanceNewsfeed=()=>{
         };
 
         fetchClients();
-    }, []); // Leeres Array als Abhängigkeit, um sicherzustellen, dass der Effekt nur einmal ausgeführt wird
+    }, [keycloak.authenticated]); // Leeres Array als Abhängigkeit, um sicherzustellen, dass der Effekt nur einmal ausgeführt wird
 
     function formatTimestamp(timestamp) {
         const now = new Date();
