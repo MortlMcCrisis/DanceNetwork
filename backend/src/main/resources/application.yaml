@@ -1,15 +1,8 @@
 spring:
+  jpa:
+    open-in-view: true
   security:
     oauth2:
-      client:
-        registration:
-          keycloak:
-            client-id: dance-network-admin
-            client-secret: 9HHSf4noTReqijNGnzOh0OhbNoMJL2VN
-            authorization-grant-type: client_credentials
-        provider:
-          keycloak:
-            token-uri: http://localhost:443/realms/dance-network/protocol/openid-connect
       resourceserver:
         jwt:
           issuer-uri: http://localhost:443/realms/dance-network

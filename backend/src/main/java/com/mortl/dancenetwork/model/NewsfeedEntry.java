@@ -6,16 +6,22 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "newsfeed-entry")
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class NewsfeedEntry {
 
   @Id
   @GeneratedValue
-  private Long id;
+  private Long id; // TODO to UUID
 
   private String userName;
 
