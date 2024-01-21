@@ -20,35 +20,32 @@ public class NewsfeedEntryService {
 
   public List<NewsfeedEntryDTO> getNewsfeedEntries() {
     return newsfeedEntryRepository.findAll().stream()
-        .map(newsfeedEntry -> NewsfeedEntryDTO.fromModel(newsfeedEntry))
+        .map(newsfeedEntry ->
+          NewsfeedEntryDTO.fromModel(
+              newsfeedEntry,
+              userUtil.fetchUser(newsfeedEntry.getCreator()).name()
+          ))
         .toList();
-  }
-
-  public NewsfeedEntryDTO getNewsfeedEntry(Long id) throws NotFoundException{
-    NewsfeedEntry newsfeedEntry = newsfeedEntryRepository.findById(id)
-        .orElseThrow(NotFoundException::new);
-
-    return NewsfeedEntryDTO.fromModel(newsfeedEntry);
   }
 
   public NewsfeedEntryDTO createNewsfeedEntry(NewsfeedEntryDTO newsfeedEntry) {
     User currentUser = userUtil.getCurrentUser();
     NewsfeedEntry savedNewsfeedEntry = newsfeedEntryRepository.save(
         newsfeedEntry.toModel(
-            currentUser.name(),
             currentUser.uuid()));
-    return NewsfeedEntryDTO.fromModel(savedNewsfeedEntry);
+    return NewsfeedEntryDTO.fromModel(savedNewsfeedEntry, currentUser.name());
   }
 
-  public NewsfeedEntryDTO updateNewsfeedEntry(Long id, NewsfeedEntryDTO newsfeedEntry) throws NotFoundException{
-    NewsfeedEntry currentNewsfeedEntry = newsfeedEntryRepository.findById(id)
+  public NewsfeedEntryDTO updateNewsfeedEntry(NewsfeedEntryDTO newsfeedEntry) throws NotFoundException{
+    //TODO only the owner of a user should be able to update an entry
+    NewsfeedEntry currentNewsfeedEntry = newsfeedEntryRepository.findById(newsfeedEntry.id())
         .orElseThrow(NotFoundException::new);
-    currentNewsfeedEntry.setUserName(newsfeedEntry.userName());
+    currentNewsfeedEntry.setCreator(userUtil.getCurrentUser().uuid());
     currentNewsfeedEntry.setTextField(newsfeedEntry.textField());
     currentNewsfeedEntry.setCreationDate(newsfeedEntry.creationDate());
     currentNewsfeedEntry = newsfeedEntryRepository.save(currentNewsfeedEntry);
 
-    return NewsfeedEntryDTO.fromModel(currentNewsfeedEntry);
+    return NewsfeedEntryDTO.fromModel(currentNewsfeedEntry, userUtil.getCurrentUser().name());
   }
 
   public void deleteNewsfeedEntry(Long id) {

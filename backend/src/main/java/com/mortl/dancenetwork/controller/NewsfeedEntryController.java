@@ -32,11 +32,6 @@ public class NewsfeedEntryController {
     return newsfeedEntryService.getNewsfeedEntries();
   }
 
-  @GetMapping("/{id}")
-  public NewsfeedEntryDTO getNewsfeedEntry(@PathVariable Long id) throws NotFoundException {
-    return newsfeedEntryService.getNewsfeedEntry(id);
-  }
-
   @PostMapping
   public ResponseEntity createNewsfeedEntry(@RequestBody NewsfeedEntryDTO newsfeedEntry) throws URISyntaxException {
     NewsfeedEntryDTO savedNewsfeedEntry = newsfeedEntryService.createNewsfeedEntry(newsfeedEntry);
@@ -48,7 +43,7 @@ public class NewsfeedEntryController {
     if( id != newsfeedEntry.id()){
       throw new IllegalArgumentException("id in path (" + id + ") does not match the id of the object (" + newsfeedEntry.id() + ").");
     }
-    return ResponseEntity.ok(newsfeedEntryService.updateNewsfeedEntry(id, newsfeedEntry));
+    return ResponseEntity.ok(newsfeedEntryService.updateNewsfeedEntry(newsfeedEntry));
   }
 
   @DeleteMapping("/{id}")

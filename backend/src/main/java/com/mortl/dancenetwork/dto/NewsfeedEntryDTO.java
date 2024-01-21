@@ -10,20 +10,19 @@ public record NewsfeedEntryDTO(Long id, String userName, String textField, Date 
   //TODO pass also Date?
   //TODO creation date created in database
   //TODO use mapstruct?
-  public NewsfeedEntry toModel(String userName, UUID creator){
+  public NewsfeedEntry toModel(UUID creator){
     return NewsfeedEntry.builder()
         .id(this.id)
-        .userName(userName)
         .creator(creator)
         .textField(this.textField)
         .creationDate(new Date())
         .build();
   }
 
-  public static NewsfeedEntryDTO fromModel(NewsfeedEntry newsfeedEntry){
+  public static NewsfeedEntryDTO fromModel(NewsfeedEntry newsfeedEntry, String userName){
     return new NewsfeedEntryDTO(
         newsfeedEntry.getId(),
-        newsfeedEntry.getUserName(),
+        userName,
         newsfeedEntry.getTextField(),
         newsfeedEntry.getCreationDate());
   }

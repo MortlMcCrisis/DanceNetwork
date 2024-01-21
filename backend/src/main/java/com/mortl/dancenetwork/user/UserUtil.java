@@ -30,16 +30,18 @@ public class UserUtil {
 
   public List<User> fetchUsers(List<UUID> uuids){
     return uuids.stream()
-        .map(uuid -> {
-          UserRepresentation userRepresentation = keycloak.realm("dance-network")
-            .users()
-            .get(uuid.toString())
-            .toRepresentation();
-          return new User(
-              UUID.fromString(userRepresentation.getId()),
-              userRepresentation.getUsername());
-        })
+        .map(this::fetchUser)
         .toList();
+  }
+
+  public User fetchUser(UUID uuid){
+    UserRepresentation userRepresentation = keycloak.realm("dance-network")
+        .users()
+        .get(uuid.toString())
+        .toRepresentation();
+    return new User(
+        UUID.fromString(userRepresentation.getId()),
+        userRepresentation.getFirstName() + " " + userRepresentation.getLastName());
   }
 
   private Jwt getJwt(){

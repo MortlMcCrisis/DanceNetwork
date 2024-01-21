@@ -26,8 +26,6 @@ public class NewsfeedEntry {
 
   private UUID creator;
 
-  private String userName;
-
   @Column(length = 1000)
   private String textField;
 
