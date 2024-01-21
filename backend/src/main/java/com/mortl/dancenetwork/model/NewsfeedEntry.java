@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.util.Date;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,7 +22,9 @@ public class NewsfeedEntry {
 
   @Id
   @GeneratedValue
-  private Long id; // TODO to UUID
+  private Long id;
+
+  private UUID creator;
 
   private String userName;
 

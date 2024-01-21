@@ -1,6 +1,9 @@
 package com.mortl.dancenetwork.configuration;
 
 import lombok.RequiredArgsConstructor;
+import org.keycloak.OAuth2Constants;
+import org.keycloak.admin.client.Keycloak;
+import org.keycloak.admin.client.KeycloakBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -13,9 +16,21 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
-public class SecurityConfig {
+public class WebSecurityConfig {
 
   private final KeycloakJwtTokenConverter keycloakJwtTokenConverter;
+
+  @Bean
+  Keycloak keycloak() {
+    return KeycloakBuilder.builder()
+        .serverUrl("http://localhost:443")
+        .realm("dance-network")
+        .clientId("dance-network-admin")
+        .grantType(OAuth2Constants.PASSWORD)
+        .username("admin@dance-network.com")
+        .password("admin")
+        .build();
+  }
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
