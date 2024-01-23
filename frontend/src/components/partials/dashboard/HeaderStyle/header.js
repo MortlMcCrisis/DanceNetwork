@@ -11,7 +11,7 @@ import {
 import { Link } from "react-router-dom";
 
 //image
-import user1 from "../../../../assets/images/user/1.jpg";
+import user1 from "../../../../assets/images/user/Admin.png";
 import user2 from "../../../../assets/images/user/02.jpg";
 import user3 from "../../../../assets/images/user/03.jpg";
 import user4 from "../../../../assets/images/user/04.jpg";

@@ -18,3 +18,7 @@ Keycloak
 React
 -----
 https://stackoverflow.com/questions/41495658/use-custom-build-output-folder-when-using-create-react-app
+
+
+
+OWASP (top 10) checker

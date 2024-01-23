@@ -32,7 +32,7 @@ const DanceNewsfeedCard = (props) => {
                                         <div className=" d-flex  justify-content-between">
                                             <div>
                                                 <h5 className="mb-0 d-inline-block">{props.userName}</h5>
-                                                <p className="mb-0 ps-1 d-inline-block">Update her Status</p>
+                                                <p className="mb-0 ps-1 d-inline-block">Updated {props.creatorSex === 'MALE' ? 'his' : 'her'} status</p>
                                                 <p className="mb-0 text-primary">{props.creationDate}</p>
                                             </div>
                                             <div className="card-post-toolbar">

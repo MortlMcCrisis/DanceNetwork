@@ -21,10 +21,14 @@ public class NewsfeedEntryService {
   public List<NewsfeedEntryDTO> getNewsfeedEntries() {
     return newsfeedEntryRepository.findAll().stream()
         .map(newsfeedEntry ->
-          NewsfeedEntryDTO.fromModel(
+        {
+          User user = userUtil.fetchUser(newsfeedEntry.getCreator());
+          return NewsfeedEntryDTO.fromModel(
               newsfeedEntry,
-              userUtil.fetchUser(newsfeedEntry.getCreator()).name()
-          ))
+              user.name(),
+              user.sex()
+          );
+        })
         .toList();
   }
 
@@ -33,19 +37,29 @@ public class NewsfeedEntryService {
     NewsfeedEntry savedNewsfeedEntry = newsfeedEntryRepository.save(
         newsfeedEntry.toModel(
             currentUser.uuid()));
-    return NewsfeedEntryDTO.fromModel(savedNewsfeedEntry, currentUser.name());
+
+    userUtil.addUserAttribute("sex", "MALE");
+
+    return NewsfeedEntryDTO.fromModel(
+        savedNewsfeedEntry,
+        currentUser.name(),
+        currentUser.sex());
   }
 
   public NewsfeedEntryDTO updateNewsfeedEntry(NewsfeedEntryDTO newsfeedEntry) throws NotFoundException{
     //TODO only the owner of a user should be able to update an entry
     NewsfeedEntry currentNewsfeedEntry = newsfeedEntryRepository.findById(newsfeedEntry.id())
         .orElseThrow(NotFoundException::new);
-    currentNewsfeedEntry.setCreator(userUtil.getCurrentUser().uuid());
+    User currentUser = userUtil.getCurrentUser();
+    currentNewsfeedEntry.setCreator(currentUser.uuid());
     currentNewsfeedEntry.setTextField(newsfeedEntry.textField());
     currentNewsfeedEntry.setCreationDate(newsfeedEntry.creationDate());
     currentNewsfeedEntry = newsfeedEntryRepository.save(currentNewsfeedEntry);
 
-    return NewsfeedEntryDTO.fromModel(currentNewsfeedEntry, userUtil.getCurrentUser().name());
+    return NewsfeedEntryDTO.fromModel(
+        currentNewsfeedEntry,
+        currentUser.name(),
+        currentUser.sex());
   }
 
   public void deleteNewsfeedEntry(Long id) {
