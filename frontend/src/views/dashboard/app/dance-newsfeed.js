@@ -645,7 +645,7 @@ const DanceNewsfeed=()=>{
                             {clients.map(client =>
                                 <div key={client.id}>
                                     <Col sm={12}>
-                                        <DanceNewsfeedCard  userName={client.userName} creatorSex={client.creatorSex} textField={client.textField} creationDate={formatTimestamp(client.creationDate)} />
+                                        <DanceNewsfeedCard userName={client.userName} creatorSex={client.creatorSex} textField={client.textField} creationDate={formatTimestamp(client.creationDate)} />
                                     </Col>
                                 </div>
                             )}

@@ -11,7 +11,7 @@ import Notification from "../views/dashboard/app/notification";
 import File from "../views/dashboard/app/file";
 import FriendRequest from "../views/dashboard/app/friend-request";
 import Todo from "../views/dashboard/app/todo";
-import UserAccountSetting from "../views/dashboard/app/user-account-setting";
+import DanceUserAccountSetting from "../views/dashboard/app/dance-user-account-setting";
 import UserProfileEdit from "../views/dashboard/app/user-profile-edit";
 
 // icon
@@ -77,6 +77,7 @@ import PrivacyPolicy from "../views/dashboard/extrapages/privacy-policy";
 import TermsofService from "../views/dashboard/extrapages/terms-of-service";
 import BlankPage from "../views/dashboard/extrapages/blankpage";
 import Admin from "../views/dashboard/app/admin";
+import PrivateRoute from "./private-route";
 
 export const DefaultRouter = [
   {
@@ -120,8 +121,8 @@ export const DefaultRouter = [
     element: <Todo />,
   },
   {
-    path: "dashboard/app/user-account-setting",
-    element: <UserAccountSetting />,
+    path: "dashboard/app/dance-user-account-setting",
+    element: <PrivateRoute><DanceUserAccountSetting /></PrivateRoute>,
   },
   {
     path: "dashboard/app/user-profile-edit",

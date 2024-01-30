@@ -1330,7 +1330,7 @@ const Header = () => {
                   variant="d-flex align-items-center"
                 >
                   <Image
-                    src={user1}
+                    src={`/users/${keycloak.idTokenParsed.photoPath}`}
                     className="img-fluid rounded-circle me-3"
                     alt="user"
                     loading="lazy"
@@ -1373,7 +1373,7 @@ const Header = () => {
                         </span>
                         <div className="ms-3">
                           <Link
-                            to="/dashboard/app/user-account-setting"
+                            to="/dashboard/app/dance-user-account-setting"
                             className="mb-0 h6"
                           >
                             Account settings

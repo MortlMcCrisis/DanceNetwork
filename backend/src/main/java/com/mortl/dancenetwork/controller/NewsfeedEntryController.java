@@ -33,8 +33,8 @@ public class NewsfeedEntryController {
   }
 
   @PostMapping
-  public ResponseEntity createNewsfeedEntry(@RequestBody NewsfeedEntryDTO newsfeedEntry) throws URISyntaxException {
-    NewsfeedEntryDTO savedNewsfeedEntry = newsfeedEntryService.createNewsfeedEntry(newsfeedEntry);
+  public ResponseEntity createNewsfeedEntry(@RequestBody NewsfeedEntryDTO newsfeedEntryDTO) throws URISyntaxException {
+    NewsfeedEntryDTO savedNewsfeedEntry = newsfeedEntryService.createNewsfeedEntry(newsfeedEntryDTO);
     return ResponseEntity.created(new URI("/newsfeedentries/" + savedNewsfeedEntry.id())).body(savedNewsfeedEntry);
   }
 

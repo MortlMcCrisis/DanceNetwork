@@ -4,7 +4,7 @@ import com.mortl.dancenetwork.model.NewsfeedEntry;
 import java.util.Date;
 import java.util.UUID;
 
-public record NewsfeedEntryDTO(Long id, String userName, String creatorSex, String textField, Date creationDate) {
+public record NewsfeedEntryDTO(Long id, String userName, Sex creatorSex, String textField, Date creationDate) {
 
   //TODO fabric class which sets automatically username and time
   //TODO pass also Date?
@@ -19,7 +19,7 @@ public record NewsfeedEntryDTO(Long id, String userName, String creatorSex, Stri
         .build();
   }
 
-  public static NewsfeedEntryDTO fromModel(NewsfeedEntry newsfeedEntry, String userName, String creatorSex){
+  public static NewsfeedEntryDTO fromModel(NewsfeedEntry newsfeedEntry, String userName, Sex creatorSex){
     return new NewsfeedEntryDTO(
         newsfeedEntry.getId(),
         userName,
