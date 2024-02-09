@@ -26,7 +26,7 @@ const DanceNewsfeedCard = (props) => {
                             <div className="user-post-data">
                                 <div className="d-flex justify-content-between">
                                     <div className="me-3">
-                                        <img className="rounded-circle img-fluid" src={user4} alt=""/>
+                                        <img className="rounded-circle img-fluid" src={`/users/${props.photoPath}`} alt="" style={{ width: '65px', height: '55px' }}/>
                                     </div>
                                     <div className="w-100">
                                         <div className=" d-flex  justify-content-between">

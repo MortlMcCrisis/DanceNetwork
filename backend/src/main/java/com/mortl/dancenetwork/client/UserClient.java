@@ -13,6 +13,7 @@ import java.util.function.Consumer;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.UserResource;
+import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -33,10 +34,10 @@ public class UserClient {
     return User.builder()
         .uuid(UUID.fromString(jwt.getClaim("sub")))
         .photoPath(jwt.getClaim("photoPath")) // TODO den namen des attributes gleich ziehen
-        .username(jwt.getClaim("preferred_username")) //TODO username als eigenes attribute (email wieder als keycloak username?)
+        .username(jwt.getClaim("custom_username"))
         .firstName(jwt.getClaim("given_name"))
         .lastName(jwt.getClaim("family_name"))
-        .sex(Sex.valueOf(jwt.getClaim("sex")))
+        .sex(Sex.getIfNotNull(jwt.getClaim("sex")))
         .phone(jwt.getClaim("phone"))
         .build();
   }
@@ -47,20 +48,47 @@ public class UserClient {
         .toList();
   }
 
+  public List<User> fetchUsers(){
+    return getKeycloakUsers()
+        .list()
+        .stream()
+        .map(this::keycloakRepresentationToUser)
+        .toList();
+  }
+
   public User fetchUser(UUID uuid) {
-    UserRepresentation userRepresentation = keycloak.realm("dance-network")
-        .users()
+    UserRepresentation userRepresentation = getKeycloakUsers()
         .get(uuid.toString())
         .toRepresentation();
+    return keycloakRepresentationToUser(userRepresentation);
+  }
+
+  private UsersResource getKeycloakUsers(){
+    return keycloak.realm("dance-network")
+        .users();
+  }
+
+  private User keycloakRepresentationToUser(UserRepresentation userRepresentation){
+    Map<String, List<String>> attributes = Optional.ofNullable(
+            userRepresentation.getAttributes())
+        .orElse(new HashMap<>());
     return User.builder()
         .uuid(UUID.fromString(userRepresentation.getId()))
         .firstName(userRepresentation.getFirstName())
         .lastName(userRepresentation.getLastName())
-        .username(userRepresentation.getAttributes().get("custom_username").get(0))
-        .sex(Sex.valueOf(userRepresentation.getAttributes().get("sex").get(0)))
-        .phone(userRepresentation.getAttributes().get("phone").get(0))
-        .photoPath(userRepresentation.getAttributes().get("photoPath").get(0))
+        .username(getAttribute(attributes, "custom_username"))
+        .sex(Sex.getIfNotNull(getAttribute(attributes, "sex")))
+        .phone(getAttribute(attributes, "phone"))
+        .photoPath(getAttribute(attributes, "photoPath"))
         .build();
+  }
+
+  private String getAttribute(Map<String, List<String>> attributes, String attributeName){
+    List<String> values = attributes.getOrDefault(attributeName, List.of());
+    if(values.size() > 0){
+      return values.get(0);
+    }
+    return null;
   }
 
   public void setUsername(String username){

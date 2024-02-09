@@ -25,8 +25,7 @@ public class NewsfeedEntryService {
           User user = userClient.fetchUser(newsfeedEntry.getCreator());
           return NewsfeedEntryDTO.fromModel(
               newsfeedEntry,
-              user.username(),
-              user.sex()
+              user
           );
         })
         .toList();
@@ -40,8 +39,7 @@ public class NewsfeedEntryService {
 
     return NewsfeedEntryDTO.fromModel(
         savedNewsfeedEntry,
-        currentUser.username(),
-        currentUser.sex());
+        currentUser);
   }
 
   public NewsfeedEntryDTO updateNewsfeedEntry(NewsfeedEntryDTO newsfeedEntry) throws NotFoundException{
@@ -56,8 +54,7 @@ public class NewsfeedEntryService {
 
     return NewsfeedEntryDTO.fromModel(
         currentNewsfeedEntry,
-        currentUser.username(),
-        currentUser.sex());
+        currentUser);
   }
 
   public void deleteNewsfeedEntry(Long id) {

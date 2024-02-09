@@ -26,7 +26,7 @@ public class NewsfeedEntry {
 
   private UUID creator;
 
-  @Column(length = 1000)
+  @Column(length = 10000)
   private String textField;
 
   private Date creationDate;

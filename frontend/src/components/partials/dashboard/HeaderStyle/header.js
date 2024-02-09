@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {
   Dropdown,
   Nav,
@@ -34,6 +34,12 @@ import {useKeycloak} from "@react-keycloak/web";
 
 const Header = () => {
   const { keycloak, initialized } = useKeycloak();
+
+  /*const [photoPath, setPhotoPath] = useState(keycloak.idTokenParsed !== undefined ? keycloak.idTokenParsed.photoPath : "");
+
+  useEffect(() => {
+    setPhotoPath( keycloak.idTokenParsed !== undefined ? keycloak.idTokenParsed.photoPath : "");
+  }, []);*/
 
   const minisidebar = () => {
     document.getElementsByTagName("ASIDE")[0].classList.toggle("sidebar-mini");

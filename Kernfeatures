@@ -7,7 +7,18 @@ Kernfeatures
 - Ausdrucken/Export als Pdf und Excel der Teilnehmerliste für das manuelle anhaken. Selbst wenn mit der App kontrolliert werden kann muss das noch möglich sein
 - Workshopplan auf der Startseite
 -- Es sollte ein personalisierter Plan erstellt werden
-
+Eventseite:
+- verschiedene sprachen mit nem button (flagge) zzm umschalten
+- (auf der Seite) Ticketpreise
+- Ticket kaufen button, der auf der Seite oder unten fix da ist, auch wenn man scrollt
+- facts auf der seite:
+-- datum
+-- ort (mit google maps karte?)
+-- (Veranstalter? mal flo oder so fragen ob das cool wäre)
+- beschreibung
+- workshopplan (in anderem tab)
+- auf der seite ähnliche veranstaltungen (ähnlicher ort, ähnliche zeit)
+- möglichkeit promo video wo hin zu machen.
 
 Hauptseite ist eine Timeline auf der Veranstaltungen und andere Beiträge auftauchen. Daneben ist eine kleineBox nit den nächsten Events.
 
@@ -52,3 +63,4 @@ Sekundäre Features
 - Follow funktion für Veranstaltungen, Personen und Artists
 - Kommentarfunktion für Beiträge o.Ä.?
 - Countdown (Overlay) bis zum Start der Veranstaltung
+- todo liste für veranstalter

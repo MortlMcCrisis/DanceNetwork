@@ -24,6 +24,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security:3.2.1'
 	implementation 'org.keycloak:keycloak-admin-client:21.0.2'
 
+	implementation 'de.sven-jacobs:loremipsum:1.0' // TODO make test implementation? test profile?
+
 	annotationProcessor 'org.projectlombok:lombok:1.18.22'
 
 	runtimeOnly 'com.h2database:h2'

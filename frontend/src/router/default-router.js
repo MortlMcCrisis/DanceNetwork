@@ -78,6 +78,7 @@ import TermsofService from "../views/dashboard/extrapages/terms-of-service";
 import BlankPage from "../views/dashboard/extrapages/blankpage";
 import Admin from "../views/dashboard/app/admin";
 import PrivateRoute from "./private-route";
+import UserAccountSetting from "../views/dashboard/app/user-account-setting";
 
 export const DefaultRouter = [
   {
@@ -123,6 +124,10 @@ export const DefaultRouter = [
   {
     path: "dashboard/app/dance-user-account-setting",
     element: <PrivateRoute><DanceUserAccountSetting /></PrivateRoute>,
+  },
+  {
+    path: "dashboard/app/user-account-setting",
+    element: <UserAccountSetting />,
   },
   {
     path: "dashboard/app/user-profile-edit",

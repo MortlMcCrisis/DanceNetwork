@@ -1,10 +1,11 @@
 package com.mortl.dancenetwork.dto;
 
+import com.mortl.dancenetwork.entity.User;
 import com.mortl.dancenetwork.model.NewsfeedEntry;
 import java.util.Date;
 import java.util.UUID;
 
-public record NewsfeedEntryDTO(Long id, String userName, Sex creatorSex, String textField, Date creationDate) {
+public record NewsfeedEntryDTO(String photoPath, Long id, String userName, Sex creatorSex, String textField, Date creationDate) {
 
   //TODO fabric class which sets automatically username and time
   //TODO pass also Date?
@@ -19,11 +20,12 @@ public record NewsfeedEntryDTO(Long id, String userName, Sex creatorSex, String 
         .build();
   }
 
-  public static NewsfeedEntryDTO fromModel(NewsfeedEntry newsfeedEntry, String userName, Sex creatorSex){
+  public static NewsfeedEntryDTO fromModel(NewsfeedEntry newsfeedEntry, User creator){
     return new NewsfeedEntryDTO(
+        creator.photoPath(),
         newsfeedEntry.getId(),
-        userName,
-        creatorSex,
+        creator.username(),
+        creator.sex(),
         newsfeedEntry.getTextField(),
         newsfeedEntry.getCreationDate());
   }

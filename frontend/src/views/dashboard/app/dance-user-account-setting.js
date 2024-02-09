@@ -11,6 +11,7 @@ import {
 import {useKeycloak} from "@react-keycloak/web";
 import img20 from "../../../assets/images/user/07.jpg";
 import imgpp2 from "../../../assets/images/user/11.png";
+import file from "./file";
 
 const DanceUserAccountSetting =() =>{
 
@@ -30,8 +31,6 @@ const DanceUserAccountSetting =() =>{
         // Berechne den Prozentwert
         const percentage = Math.round((setProperties.length / properties.length) * 100);
 
-        console.log(percentage);
-
         return percentage;
     };
 
@@ -39,6 +38,30 @@ const DanceUserAccountSetting =() =>{
         setPercentage(calculatePercentage());
     }, []);
 
+    const handlePhotoChange = async (event) => {
+        console.log("Uploading " + event.target.files[0].name);
+        const formData = new FormData();
+        formData.append("file", event.target.files[0]);
+        try {
+            const result = await fetch('/api/v1/file/photo-upload', {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${keycloak.token}`,
+                },
+                body: formData,
+            });
+
+            const data = await result;
+
+            console.log(data);
+
+            console.log(keycloak.idTokenParsed.photoPath);
+            keycloak.idTokenParsed.photoPath = event.target.files[0].name;
+            console.log(keycloak.idTokenParsed.photoPath);
+        } catch (error) {
+            console.error(error);
+        }
+    }
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -51,12 +74,12 @@ const DanceUserAccountSetting =() =>{
             phone: event.target.elements.phone.value,
         };
 
-        keycloak.idTokenParsed.photoPath = event.target.elements.photo.files[0] === undefined ? "" : event.target.elements.photo.files[0].name;
+        /*keycloak.idTokenParsed.photoPath = event.target.elements.photo.files[0] === undefined ? "" : event.target.elements.photo.files[0].name;
         keycloak.idTokenParsed.custom_username = event.target.elements.username.value;
         keycloak.idTokenParsed.given_name = event.target.elements.firstName.value;
         keycloak.idTokenParsed.family_name = event.target.elements.lastName.value;
         keycloak.idTokenParsed.sex = event.target.elements.male.checked === true ? "MALE" : "FEMALE";
-        keycloak.idTokenParsed.phone = event.target.elements.phone.value;
+        keycloak.idTokenParsed.phone = event.target.elements.phone.value;*/
 
         try {
             const response = await fetch('/api/v1/user', {
@@ -70,10 +93,12 @@ const DanceUserAccountSetting =() =>{
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            const body = await response.json();
+            /*const body = await response.json();
 
             setShowA1(true);
-            setPercentage(calculatePercentage());
+            setPercentage(calculatePercentage());*/
+
+            window.location.reload();
         } catch (error) {
             console.error('Error saving user:', error);
         }
@@ -107,7 +132,7 @@ const DanceUserAccountSetting =() =>{
                                     </div>
                                     <Form.Group className="form-group">
                                         <Form.Label htmlFor="photo">Upload Your Photo:</Form.Label>
-                                        <Form.Control type="file" name="pic" id="photo" accept="image/*"/>
+                                        <Form.Control type="file" name="pic" id="photo" accept="image/*" onChange={handlePhotoChange}/>
                                     </Form.Group>
                                 </ListGroupItem>
                                 <ListGroupItem>
@@ -139,7 +164,7 @@ const DanceUserAccountSetting =() =>{
                                 </ListGroupItem>
                                 <ListGroupItem>
                             <Form.Group className="form-group">
-                                <Form.Label htmlFor="email" className="form-label">Email Id:</Form.Label>
+                                <Form.Label htmlFor="email" className="form-label">Email:</Form.Label>
                                 <Form.Control type="email" className="form-control" id="email" disabled defaultValue={initialized ? keycloak.idTokenParsed.email : ""}/>
                             </Form.Group>
                             <Form.Group className="form-group">
