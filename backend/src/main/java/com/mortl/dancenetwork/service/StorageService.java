@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -15,12 +16,15 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Component
+@Slf4j
 public class StorageService {
 
   private final Path rootLocation;
 
   public StorageService() {
-    this.rootLocation = Paths.get(Paths.get("").toAbsolutePath().toString() + "/../frontend/public/users");
+    this.rootLocation = Paths.get(
+        Paths.get("").toAbsolutePath() + "/../frontend/public/users")
+        .normalize();
   }
 
   public void store(MultipartFile file) {

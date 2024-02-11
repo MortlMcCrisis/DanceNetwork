@@ -23,8 +23,8 @@ public class FileController {
   private final StorageService storageService;
 
   @PostMapping("/photo-upload")
-  public ResponseEntity uploadPhoto(@RequestParam("file") MultipartFile file) throws URISyntaxException {
-    log.info("Uploaded " + file.getName());
+  public ResponseEntity uploadPhoto(@RequestParam("file") MultipartFile file) {
+    log.info("Uploaded " + file.getOriginalFilename());
     storageService.store(file);
     return ResponseEntity.ok().build();
   }

@@ -21,6 +21,29 @@ const DanceUserAccountSetting =() =>{
 
     const [percentage, setPercentage] = useState(0);
 
+    const [form, setForm] = React.useState({
+        photoPath: keycloak.idTokenParsed.photoPath,
+        username: keycloak.idTokenParsed.custom_username,
+        firstName: keycloak.idTokenParsed.given_name,
+        lastName: keycloak.idTokenParsed.family_name,
+        sex: keycloak.idTokenParsed.sex,
+        phone: keycloak.idTokenParsed.phone,
+    });
+
+    const handleChange = (event) => {
+        setForm({
+            ...form,
+            [event.target.id]: event.target.value,
+        });
+    };
+
+    const handleSexChange = (event) => {
+        setForm({
+            ...form,
+            ['sex']: event.target.id === 'male' ? 'MALE' : 'FEMALE',
+        });
+    };
+
     const calculatePercentage = () => {
         const idTokenParsed = keycloak.idTokenParsed;
         const properties = ['photoPath', 'custom_username', 'given_name', 'family_name', 'sex', 'email', 'phone'];
@@ -39,7 +62,6 @@ const DanceUserAccountSetting =() =>{
     }, []);
 
     const handlePhotoChange = async (event) => {
-        console.log("Uploading " + event.target.files[0].name);
         const formData = new FormData();
         formData.append("file", event.target.files[0]);
         try {
@@ -51,35 +73,19 @@ const DanceUserAccountSetting =() =>{
                 body: formData,
             });
 
-            const data = await result;
-
+            const data= await result;
             console.log(data);
 
-            console.log(keycloak.idTokenParsed.photoPath);
-            keycloak.idTokenParsed.photoPath = event.target.files[0].name;
-            console.log(keycloak.idTokenParsed.photoPath);
+            setForm({
+                ...form,
+                ['photoPath']: event.target.files[0].name,
+            });
         } catch (error) {
             console.error(error);
         }
     }
     const handleSubmit = async (event) => {
         event.preventDefault();
-
-        const requestBody = {
-            photoPath: event.target.elements.photo.files[0] === undefined ? "" : event.target.elements.photo.files[0].name,
-            username: event.target.elements.username.value,
-            firstName: event.target.elements.firstName.value,
-            lastName: event.target.elements.lastName.value,
-            sex: event.target.elements.male.checked === true ? "MALE" : "FEMALE",
-            phone: event.target.elements.phone.value,
-        };
-
-        /*keycloak.idTokenParsed.photoPath = event.target.elements.photo.files[0] === undefined ? "" : event.target.elements.photo.files[0].name;
-        keycloak.idTokenParsed.custom_username = event.target.elements.username.value;
-        keycloak.idTokenParsed.given_name = event.target.elements.firstName.value;
-        keycloak.idTokenParsed.family_name = event.target.elements.lastName.value;
-        keycloak.idTokenParsed.sex = event.target.elements.male.checked === true ? "MALE" : "FEMALE";
-        keycloak.idTokenParsed.phone = event.target.elements.phone.value;*/
 
         try {
             const response = await fetch('/api/v1/user', {
@@ -88,7 +94,7 @@ const DanceUserAccountSetting =() =>{
                     Authorization: `Bearer ${keycloak.token}`,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ ...requestBody }),
+                body: JSON.stringify({ ...form }),
             });
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -127,7 +133,7 @@ const DanceUserAccountSetting =() =>{
                                 <ListGroupItem>
                                     <div className="user-detail text-center mb-3">
                                         <div className="profile-img">
-                                            <img loading="lazy" src={`/users/${keycloak.idTokenParsed.photoPath}`} alt="profile-img" className="avatar-130 img-fluid"/>
+                                            <img loading="lazy" src={`/users/${form.photoPath}`} alt="profile-img" className="avatar-130 img-fluid"/>
                                         </div>
                                     </div>
                                     <Form.Group className="form-group">
@@ -138,25 +144,25 @@ const DanceUserAccountSetting =() =>{
                                 <ListGroupItem>
                             <Form.Group className="form-group">
                                 <Form.Label htmlFor="username" className="form-label">User Name: *</Form.Label>
-                                <Form.Control type="text" className="form-control" id="username" defaultValue={initialized ? keycloak.idTokenParsed.custom_username : ""}/>
+                                <Form.Control type="text" className="form-control" id="username" value={form.username} onChange={handleChange}/>
                             </Form.Group>
                             <Form.Group className="form-group">
                                 <Form.Label htmlFor="firstName" className="form-label">Name:</Form.Label>
-                                <Form.Control type="text" className="form-control" id="firstName"  defaultValue={initialized ? keycloak.idTokenParsed.given_name : ""}/>
+                                <Form.Control type="text" className="form-control" id="firstName" value={form.firstName} onChange={handleChange}/>
                             </Form.Group>
                             <Form.Group className="form-group">
                                 <Form.Label htmlFor="lastName" className="form-label">Last name:</Form.Label>
-                                <Form.Control type="text" className="form-control" id="lastName" defaultValue={initialized ? keycloak.idTokenParsed.family_name : ""}/>
+                                <Form.Control type="text" className="form-control" id="lastName" value={form.lastName} onChange={handleChange}/>
                             </Form.Group>
                             <Form.Group className="form-group">
                                 <Form.Label >Sex: *</Form.Label>
                                 <Form.Check className="form-check">
                                     <Form.Check className="form-check form-check-inline">
                                         <Form.Check.Label> Male</Form.Check.Label>
-                                        <Form.Check.Input type="radio" defaultChecked={initialized ? keycloak.idTokenParsed.sex === 'MALE' : ""} className="form-check-input" name="customRadio" id="male"/>
+                                        <Form.Check.Input type="radio" checked={form.sex === 'MALE'} onChange={handleSexChange} className="form-check-input" name="customRadio" id="male"/>
                                     </Form.Check>
                                     <Form.Check className="form-check form-check-inline">
-                                        <Form.Check.Input type="radio" defaultChecked={initialized ? keycloak.idTokenParsed.sex === 'FEMALE' : ""} className="form-check-input" name="customRadio" id="female"/>
+                                        <Form.Check.Input type="radio" checked={form.sex === 'FEMALE'} onChange={handleSexChange} className="form-check-input" name="customRadio" id="female"/>
                                         <Form.Check.Label> Female</Form.Check.Label>
                                     </Form.Check>
                                 </Form.Check>
@@ -169,7 +175,7 @@ const DanceUserAccountSetting =() =>{
                             </Form.Group>
                             <Form.Group className="form-group">
                                 <Form.Label htmlFor="phone" className="form-label">Phone:</Form.Label>
-                                <Form.Control type="text" className="form-control" id="phone" defaultValue={initialized ? keycloak.idTokenParsed.phone : ""}/>
+                                <Form.Control type="text" className="form-control" id="phone" value={form.phone} onChange={handleChange}/>
                             </Form.Group>
                                     </ListGroupItem>
                             </ListGroup>

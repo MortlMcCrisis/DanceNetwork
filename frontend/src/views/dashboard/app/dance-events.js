@@ -1,5 +1,5 @@
 import React from 'react'
-import {Col, Container, Row} from 'react-bootstrap'
+import {Button, Col, Container, Row} from 'react-bootstrap'
 import Card from '../../../components/Card'
 import {Link} from 'react-router-dom'
 
@@ -23,6 +23,9 @@ import img6 from '../../../assets/images/page-img/profile-bg6.jpg'
 const DanceEvents =() =>{
    return(
       <>
+         <div className="btn dance-btn-fixed-bottom btn-danger btn-icon btn-setting" >
+            <Button variant="warning" className="rounded-pill mb-1">Create Event</Button>{' '}
+         </div>
          <Container>
             <Row className="mt-1">
                <Col lg="12" md="12">

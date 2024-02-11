@@ -33,3 +33,13 @@
 .close-icon{
      cursor: pointer;
 }
+.dance-btn-fixed-bottom {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 95%;
+    transform: translateY(-100%);
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
