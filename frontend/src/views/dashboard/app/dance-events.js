@@ -1,5 +1,13 @@
-import React from 'react'
-import {Button, Col, Container, Row} from 'react-bootstrap'
+import React, {useState} from 'react'
+import {
+   Button,
+   Col,
+   Container, Form,
+   ListGroup,
+   ListGroupItem,
+   Modal,
+   Row
+} from 'react-bootstrap'
 import Card from '../../../components/Card'
 import {Link} from 'react-router-dom'
 
@@ -19,12 +27,96 @@ import img58 from '../../../assets/images/page-img/58.jpg'
 import img57 from '../../../assets/images/page-img/57.jpg'
 import img59 from '../../../assets/images/page-img/59.jpg'
 import img6 from '../../../assets/images/page-img/profile-bg6.jpg'
+import Datepicker from "../../../components/datepicker";
+import {useKeycloak} from "@react-keycloak/web";
 
 const DanceEvents =() =>{
+   const [showCreate, setShowCreate] = useState(false);
+   const handleCloseCreate = () => setShowCreate(false);
+   const handleShowCreate = () => setShowCreate(true);
+
+   const { keycloak, initialized } = useKeycloak();
+
+   const [form, setForm] = React.useState({
+      name: '',
+      date: '',
+   });
+
+   const handleChange = (event) => {
+      setForm({
+         ...form,
+         [event.target.id]: event.target.value,
+      });
+   };
+
+   const handleSubmit = async (event) => {
+      event.preventDefault();
+
+      try {
+         const response = await fetch('/api/v1/event', {
+            method: 'POST',
+            headers: {
+               Authorization: `Bearer ${keycloak.token}`,
+               'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ...form }),
+         });
+
+         console.log(response);
+
+         if (response.status === 201) {
+            const resourceUrl = response.headers.get('Location')
+            const id = resourceUrl.split('/').pop();
+            window.location = `/dashboards/app/dance-event-detail/${id}`;
+         }
+
+         if (!response.ok) {
+            throw new Error('Network response was not ok');
+         }
+
+      } catch (error) {
+         console.error('Error saving event:', error);
+      }
+   };
+
    return(
       <>
          <div className="btn dance-btn-fixed-bottom btn-danger btn-icon btn-setting" >
-            <Button variant="warning" className="rounded-pill mb-1">Create Event</Button>{' '}
+            <Button variant="warning" className="rounded-pill mb-1" onClick={handleShowCreate}>Create Event</Button>
+            <Modal centered show={showCreate} onHide={handleCloseCreate}>
+               <Modal.Header closeButton>
+                  <Modal.Title>Create Event</Modal.Title>
+               </Modal.Header>
+               <Form onSubmit={handleSubmit}>
+                  <Modal.Body>
+                     <ListGroup>
+                        <ListGroupItem>
+                           <Form.Group className="form-group">
+                              <Form.Label htmlFor="name" className="form-label">Name:</Form.Label>
+                              <Form.Control type="text"
+                                            className="form-control"
+                                            placeholder="Name of the event..."
+                                            id="name"
+                                            onChange={handleChange}
+                                            required/> {/* TODO change to custom (english) error message */ }
+                           </Form.Group>
+                           <Form.Group className="form-group">
+                              <Form.Label htmlFor="date" className="form-label">Date:</Form.Label>
+                              <Form.Control type="date" className="form-control" id="date" onChange={handleChange} required/>
+                           </Form.Group>
+                        </ListGroupItem>
+                     </ListGroup>
+                  </Modal.Body>
+                  <Modal.Footer>
+                     <Button variant="secondary" onClick={handleCloseCreate}>
+                        Abort
+                     </Button>
+                     <Button type="submit" variant="primary">
+                        Create
+                     </Button>
+                  </Modal.Footer>
+               </Form>
+            </Modal>
          </div>
          <Container>
             <Row className="mt-1">

@@ -16,6 +16,7 @@
     "@testing-library/user-event": "^12.8.3",
     "apexcharts": "^3.35.3",
     "bootstrap": "^5.2.3",
+    "date-fns": "^3.3.1",
     "fullcalendar-interaction": "^5.3.3",
     "jquery": "^3.6.0",
     "keycloak-js": "^21.0.2",

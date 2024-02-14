@@ -29,6 +29,7 @@ public class UserClient {
 
   private final Keycloak keycloak;
 
+  //TODO methode raus ziehen. Ist keine client methode
   public User getCurrentUser() {
     Jwt jwt = getJwt();
     return User.builder()

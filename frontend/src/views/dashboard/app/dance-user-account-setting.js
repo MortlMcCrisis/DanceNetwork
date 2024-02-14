@@ -11,7 +11,6 @@ import {
 import {useKeycloak} from "@react-keycloak/web";
 import img20 from "../../../assets/images/user/07.jpg";
 import imgpp2 from "../../../assets/images/user/11.png";
-import file from "./file";
 
 const DanceUserAccountSetting =() =>{
 

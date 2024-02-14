@@ -33,7 +33,7 @@ public class NewsfeedEntryService {
 
   public NewsfeedEntryDTO createNewsfeedEntry(NewsfeedEntryDTO newsfeedEntry) {
     User currentUser = userClient.getCurrentUser();
-    NewsfeedEntry savedNewsfeedEntry = newsfeedEntryRepository.save(
+    NewsfeedEntry savedNewsfeedEntry = newsfeedEntryRepository.saveAndFlush(
         newsfeedEntry.toModel(
             currentUser.uuid()));
 

@@ -14,12 +14,12 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 @Entity
-@Table(name = "newsfeed-entry")
+@Table(name = "event")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class NewsfeedEntry {
+public class Event {
 
   @Id
   @GeneratedValue
@@ -29,11 +29,17 @@ public class NewsfeedEntry {
   @Column(nullable = false)
   private UUID creator;
 
-  @Column(length = 10000, nullable = false)
+  @Column(nullable = false)
   @NonNull
-  private String textField;
+  private Date date;
 
   @Column(nullable = false)
   @NonNull
-  private Date creationDate;
+  private String name;
+
+  private String address;
+
+  private String url;
+
+  private String mail;
 }

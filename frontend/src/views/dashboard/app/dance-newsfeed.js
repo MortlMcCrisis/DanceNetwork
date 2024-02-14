@@ -51,10 +51,6 @@ import {useKeycloak} from "@react-keycloak/web";
 const FsLightbox = ReactFsLightbox.default ? ReactFsLightbox.default : ReactFsLightbox;
 
 const DanceNewsfeed=()=>{
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-
     const [clients, setClients] = useState([]);
 
     const { keycloak, initialized } = useKeycloak();
@@ -150,7 +146,7 @@ const DanceNewsfeed=()=>{
         };
 
         fetchClients();
-    }, [keycloak.authenticated]); // Leeres Array als Abhängigkeit, um sicherzustellen, dass der Effekt nur einmal ausgeführt wird
+    }, [keycloak.authenticated]);
 
     function formatTimestamp(timestamp) {
         const now = new Date();

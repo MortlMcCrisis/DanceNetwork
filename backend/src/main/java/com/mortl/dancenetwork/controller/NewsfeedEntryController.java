@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 //@RequestMapping("/api/v1/newsfeed-entries")
-@RequestMapping("/newsfeed-entries")
+@RequestMapping("/newsfeed-entries") // TODO change path (also in create method)
 @Slf4j
 @RequiredArgsConstructor
 public class NewsfeedEntryController {

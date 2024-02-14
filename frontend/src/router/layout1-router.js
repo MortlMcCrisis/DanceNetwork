@@ -27,6 +27,7 @@ import Market2 from "../views/dashboard/market-place/market2";
 import Profile1 from "../views/dashboard/profiles/profile1";
 import Profile2 from "../views/dashboard/profiles/profile2";
 import Profile3 from "../views/dashboard/profiles/profile3";
+import DanceEventDetail from "../views/dashboard/app/dance-event-detail";
 
 export const Layout1Router = [
   {
@@ -64,6 +65,10 @@ export const Layout1Router = [
   {
     path: "dashboards/app/profile-events",
     element: <ProfileEvents />,
+  },
+  {
+    path: "dashboards/app/dance-event-detail/:id",
+    element: <DanceEventDetail />,
   },
   {
     path: "dashboards/app/event-detail",
