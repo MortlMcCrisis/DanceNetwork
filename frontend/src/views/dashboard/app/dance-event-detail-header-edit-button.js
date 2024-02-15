@@ -11,10 +11,31 @@ const DanceEventDetailHeaderEditButton=({data, handleChange})=> {
   const handleCloseEditMainSettings = () => setShowEditMainSettings(false);
   const handleShowEditMainSettings = () => setShowEditMainSettings(true);
 
+  const [isMultipleDays, setIsMultipleDays] = useState(false);
+
+  const INITIAL_STATE = {
+    name: data.name,
+    date: data.date,
+    enddate: data.enddate,
+    address: data.address,
+    url: data.url,
+    mail: data.mail
+  };
+
+  const [form, setForm] = React.useState(INITIAL_STATE);
+
+  const hasAnyDirtyField = (form) =>
+      Object.keys(form).some((key) => form[key] !== INITIAL_STATE[key]);
+
+  const handleCheckboxChange = (event) => {
+    setIsMultipleDays(event.target.checked);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
+      if(hasAnyDirtyField(form)){}
       //TODO submit only when dirty
       const response = await fetch(`/api/v1/event/${data.id}`, {
         method: 'PUT',
@@ -22,16 +43,10 @@ const DanceEventDetailHeaderEditButton=({data, handleChange})=> {
           Authorization: `Bearer ${keycloak.token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...data }),
+        body: JSON.stringify({ ...form }),
       });
 
       console.log(response);
-
-      if (response.status === 201) {
-        const resourceUrl = response.headers.get('Location')
-        const id = resourceUrl.split('/').pop();
-        window.location = `/dashboards/app/dance-event-detail/${id}`;
-      }
 
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -67,15 +82,39 @@ const DanceEventDetailHeaderEditButton=({data, handleChange})=> {
                                   onChange={handleChange}
                                   required/> {/* TODO change to custom (english) error message */ }
                   </Form.Group>
-                  <Form.Group className="form-group">
-                    <Form.Label htmlFor="date" className="form-label">Date:</Form.Label>
-                    <Form.Control type="date"
-                                  className="form-control"
-                                  id="date"
-                                  value={data.date ? format(data.date, 'yyyy-MM-dd') : ''}
-                                  onChange={handleChange}
-                                  required/>
-                  </Form.Group>
+                  <div className="d-flex justify-content-end">
+                    <Form.Group className="form-group d-inline-block me-3">
+                      <Form.Label htmlFor="date"
+                                  className="form-label">{isMultipleDays
+                          ? "Start date" : "Date"}:</Form.Label>
+                      <Form.Control type="date"
+                                    className="form-control"
+                                    id="date"
+                                    value={data.date ? format(data.date, 'yyyy-MM-dd') : ''}
+                                    onChange={handleChange} required/>
+                    </Form.Group>
+                    <Form.Group className="form-group d-inline-block me-3">
+                      <Form.Label htmlFor="enddate"
+                                  className={`form-label ${!isMultipleDays
+                                      ? 'text-muted' : ''}`}>End
+                        date:</Form.Label>
+                      <Form.Control disabled={!isMultipleDays}
+                                    type="date"
+                                    className="form-control"
+                                    id="enddate"
+                                    value={data.enddate ? format(data.enddate, 'yyyy-MM-dd') : ''}
+                                    onChange={handleChange}
+                                    required={!isMultipleDays}/>
+                    </Form.Group>
+                    <Form.Check className="form-check form-switch ms-auto">
+                      {/* TODO save null, when checkbox is not set */}
+                      <Form.Check type="checkbox" className="bg-primary"
+                                  defaultChecked={isMultipleDays}
+                                  onChange={handleCheckboxChange}
+                                  id="isMultipleDays"/>
+                      <Form.Check.Label>Multiple days</Form.Check.Label>
+                    </Form.Check>
+                  </div>
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="address" className="form-label">Location:</Form.Label>
                     <Form.Control type="text"
@@ -83,8 +122,7 @@ const DanceEventDetailHeaderEditButton=({data, handleChange})=> {
                                   className="form-control"
                                   placeholder="Where does it take place..."
                                   value={data.address != null ?  data.address : ''}
-                                  onChange={handleChange}
-                                  required/> {/* TODO change to custom (english) error message */ }
+                                  onChange={handleChange}/>
                   </Form.Group>
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="url" className="form-label">Website:</Form.Label>
@@ -93,8 +131,7 @@ const DanceEventDetailHeaderEditButton=({data, handleChange})=> {
                                   className="form-control"
                                   placeholder="Website of the event..."
                                   value={data.url != null ?  data.url : ''}
-                                  onChange={handleChange}
-                                  required/> {/* TODO change to custom (english) error message */ }
+                                  onChange={handleChange}/>
                   </Form.Group>
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="mail" className="form-label">E-Mail:</Form.Label>
@@ -103,18 +140,17 @@ const DanceEventDetailHeaderEditButton=({data, handleChange})=> {
                                   className="form-control"
                                   placeholder="Contact e-mail..."
                                   value={data.mail != null ?  data.mail : ''}
-                                  onChange={handleChange}
-                                  required/> {/* TODO change to custom (english) error message */ }
+                                  onChange={handleChange}/>
                   </Form.Group>
                 </ListGroupItem>
               </ListGroup>
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleCloseEditMainSettings}>
-                Abort
+                Abort{/* TODO show warning when dirty and reset values*/}
               </Button>
               <Button type="submit" variant="primary">
-                Create
+                Confirm
               </Button>
             </Modal.Footer>
           </Form>

@@ -37,9 +37,16 @@ const DanceEvents =() =>{
 
    const { keycloak, initialized } = useKeycloak();
 
+   const [isMultipleDays, setIsMultipleDays] = useState(false);
+
+   const handleCheckboxChange = (event) => {
+      setIsMultipleDays(event.target.checked);
+   };
+
    const [form, setForm] = React.useState({
       name: '',
       date: '',
+      enddate: ''
    });
 
    const handleChange = (event) => {
@@ -100,10 +107,22 @@ const DanceEvents =() =>{
                                             onChange={handleChange}
                                             required/> {/* TODO change to custom (english) error message */ }
                            </Form.Group>
-                           <Form.Group className="form-group">
-                              <Form.Label htmlFor="date" className="form-label">Date:</Form.Label>
-                              <Form.Control type="date" className="form-control" id="date" onChange={handleChange} required/>
-                           </Form.Group>
+                           <div class="d-flex justify-content-end">
+                              <Form.Group className="form-group d-inline-block me-3">
+                                 <Form.Label htmlFor="date" className="form-label">{isMultipleDays ? "Start date" : "Date"}:</Form.Label>
+                                 <Form.Control type="date" className="form-control" id="date" onChange={handleChange} required/>
+                              </Form.Group>
+                              <Form.Group className="form-group d-inline-block me-3">
+                                 <Form.Label htmlFor="enddate" className={`form-label ${!isMultipleDays ? 'text-muted' : ''}`}>End date:</Form.Label>
+                                 <Form.Control disabled={!isMultipleDays} type="date" className="form-control" id="enddate" onChange={handleChange} required={!isMultipleDays}/>
+                              </Form.Group>
+                              <Form.Check className="form-check form-switch ms-auto">
+                                 {/* TODO align right to prevent the elements jumping around */}
+                                 {/* TODO safe end date */}
+                                 <Form.Check type="checkbox" className="bg-primary" defaultChecked={isMultipleDays} onChange={handleCheckboxChange} id="isMultipleDays" />
+                                 <Form.Check.Label>Multiple days</Form.Check.Label>
+                              </Form.Check>
+                           </div>
                         </ListGroupItem>
                      </ListGroup>
                   </Modal.Body>

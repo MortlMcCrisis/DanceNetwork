@@ -33,6 +33,8 @@ public class Event {
   @NonNull
   private Date date;
 
+  private Date enddate;
+
   @Column(nullable = false)
   @NonNull
   private String name;

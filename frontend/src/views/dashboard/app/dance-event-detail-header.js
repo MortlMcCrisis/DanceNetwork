@@ -10,7 +10,7 @@ import {
 } from "react-bootstrap";
 import imgp1 from "../../../assets/images/user/15.jpg";
 import {format} from "date-fns";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import imgp2 from "../../../assets/images/user/05.jpg";
 import imgp3 from "../../../assets/images/user/06.jpg";
 import imgp4 from "../../../assets/images/user/07.jpg";
@@ -24,14 +24,51 @@ import small5 from "../../../assets/images/small/11.png";
 import small6 from "../../../assets/images/small/12.png";
 import small7 from "../../../assets/images/small/13.png";
 import small8 from "../../../assets/images/small/14.png";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import DanceEventDetailHeaderEditButton
   from "./dance-event-detail-header-edit-button";
+import {useKeycloak} from "@react-keycloak/web";
 
 const DanceEventDetailHeader=()=> {
 
+  const { id } = useParams();
+
+  const { keycloak, initialized } = useKeycloak();
+
+  const [data, setData] = useState([]);
+
   const handleChange = (event) => {
+    setData({
+      ...data,
+      [event.target.id]: event.target.value,
+    });
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        console.log(`Bearer ${keycloak.token}`)
+        const response = await fetch(`/api/v1/event/${id}`, {
+          headers: {
+            Authorization: `Bearer ${keycloak.token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const body = await response.json();
+
+        setData(body);
+
+        console.log(body);
+      } catch (error) {
+        console.error('Error fetching clients:', error);
+      }
+    };
+
+    fetchData();
+  }, [keycloak.authenticated]);
 
   return(
       <Card>
@@ -58,32 +95,31 @@ const DanceEventDetailHeader=()=> {
                 <Col lg="6">
                   <div className="item5 mt-3">
                     <div className="d-flex align-items-center mb-1">
-                                            <span className="material-symbols-outlined md-18">
-                                            date_range
-                                            </span>
+                      <span className="material-symbols-outlined md-18">date_range</span>
                       <span className="ms-2">{data.date ? format(new Date(data.date), "MMMM d, yyyy") : ''}</span>
+                      {data.enddate && (
+                          <span className="ms-2">- {format(new Date(data.enddate), "MMMM d, yyyy")}</span>
+                      )}
                     </div>
-                    {data.address && ( // TODO hier weitermachen
+                    {data.address && (
                         //TODO namen mal gleichziehen (location, address...)
                         <div className="d-flex align-items-center mb-1">
-                                            <span className="material-symbols-outlined md-18">
-                                            location_on
-                                            </span>
-                          <span className="ms-2">Augustinerweg 18, 79098 Freiburg</span>
+                          <span className="material-symbols-outlined md-18">location_on</span>
+                          <span className="ms-2">{data.address}</span>
                         </div>
                     )}
-                    <div className="d-flex align-items-center mb-1">
-                                            <span className="material-symbols-outlined md-18">
-                                            language
-                                            </span>
-                      <Link to="#" className="link-primary h6 ms-2">https://www.bacharoyale.com</Link>
-                    </div>
-                    <div className="d-flex align-items-center mb-1">
-                                            <span className="material-symbols-outlined md-18">
-                                            mail
-                                            </span>
-                      <span className="ms-2">florence.vouriot@gmx.de</span>
-                    </div>
+                    {data.url && (
+                        <div className="d-flex align-items-center mb-1">
+                          <span className="material-symbols-outlined md-18">language</span>
+                          <Link to="#" className="link-primary h6 ms-2">{data.url}</Link>
+                        </div>
+                    )}
+                    {data.mail && (
+                        <div className="d-flex align-items-center mb-1">
+                          <span className="material-symbols-outlined md-18">mail</span>
+                          <span className="ms-2">{data.mail}</span>
+                        </div>
+                    )}
                   </div>
                 </Col>
                 <Col lg="6">

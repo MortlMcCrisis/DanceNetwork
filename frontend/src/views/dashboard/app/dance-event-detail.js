@@ -67,28 +67,16 @@ import {useKeycloak} from "@react-keycloak/web";
 import {format} from "date-fns";
 import DanceEventDetailHeaderEditButton
     from "./dance-event-detail-header-edit-button";
+import DanceEventDetailHeader from "./dance-event-detail-header";
 
 // Fslightbox plugin
 const FsLightbox = ReactFsLightbox.default ? ReactFsLightbox.default : ReactFsLightbox;
 
 const DanceEventDetail=()=>{
 
-    const { id } = useParams();
-
-    const { keycloak, initialized } = useKeycloak();
-
-    const [data, setData] = useState([]);
-
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-
-    const handleChange = (event) => {
-        setData({
-            ...data,
-            [event.target.id]: event.target.value,
-        });
-    };
 
     const [imageController, setImageController] = useState({
         toggler: false,
@@ -101,32 +89,6 @@ const DanceEventDetail=()=>{
             slide: number
         });
     }
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                console.log(`Bearer ${keycloak.token}`)
-                const response = await fetch(`/api/v1/event/${id}`, {
-                    headers: {
-                        Authorization: `Bearer ${keycloak.token}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const body = await response.json();
-
-                setData(body);
-
-                console.log(body);
-            } catch (error) {
-                console.error('Error fetching clients:', error);
-            }
-        };
-
-        fetchData();
-    }, [keycloak.authenticated]);
     return(
         <>
             <FsLightbox
@@ -140,180 +102,7 @@ const DanceEventDetail=()=>{
                     <Container>
                         <Row>
                             <Col lg="12">
-                                <Card>
-                                    <Card.Body>
-                                        <Row>
-                                            <Col lg="2">
-                                                <div className="item1 ms-1">
-                                                    <img loading="lazy" src={imgp1} className="img-fluid rounded profile-image" alt="profile-img"/>
-                                                </div>
-                                            </Col>
-                                            <Col lg="10">
-                                                <div className="d-flex justify-content-between">
-                                                    <div className="item2 ">
-                                                        <h4 className="">{data.name}</h4>
-                                                        <span>60 630 are going</span>
-                                                    </div>
-                                                    <div className="item4 ms-1">
-                                                        <div className="d-flex justify-content-between align-items-center ms-1 flex-wrap">
-                                                            <DanceEventDetailHeaderEditButton data={data} handleChange={handleChange} />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <Row>
-                                                    <Col lg="6">
-                                                        <div className="item5 mt-3">
-                                                            <div className="d-flex align-items-center mb-1">
-                                                                <span className="material-symbols-outlined md-18">date_range</span>
-                                                                <span className="ms-2">{data.date ? format(new Date(data.date), "MMMM d, yyyy") : ''}</span>
-                                                            </div>
-                                                            {data.address && (
-                                                                //TODO namen mal gleichziehen (location, address...)
-                                                                <div className="d-flex align-items-center mb-1">
-                                                                    <span className="material-symbols-outlined md-18">location_on</span>
-                                                                    <span className="ms-2">{data.address}</span>
-                                                                </div>
-                                                            )}
-                                                            {data.url && (
-                                                                <div className="d-flex align-items-center mb-1">
-                                                                    <span className="material-symbols-outlined md-18">language</span>
-                                                                    <Link to="#" className="link-primary h6 ms-2">{data.url}</Link>
-                                                                </div>
-                                                            )}
-                                                            {data.mail && (
-                                                                <div className="d-flex align-items-center mb-1">
-                                                                    <span className="material-symbols-outlined md-18">mail</span>
-                                                                    <span className="ms-2">{data.mail}</span>
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                    </Col>
-                                                    <Col lg="6">
-                                                        <div className="item6 border-light border-start">
-                                                            <div className="ms-2">
-                                                                <h6 className="mb-2">Those people are going</h6>
-                                                            </div>
-                                                            <div className="iq-media-group ms-2">
-                                                                <Link to="#" className="iq-media">
-                                                                    <img loading="lazy" className="img-fluid avatar-40 rounded-circle" src={imgp2} alt=""/>
-                                                                </Link>
-                                                                <Link to="#" className="iq-media">
-                                                                    <img loading="lazy" className="img-fluid avatar-40 rounded-circle" src={imgp3} alt=""/>
-                                                                </Link>
-                                                                <Link to="#" className="iq-media">
-                                                                    <img loading="lazy" className="img-fluid avatar-40 rounded-circle" src={imgp4} alt=""/>
-                                                                </Link>
-                                                                <Link to="#" className="iq-media">
-                                                                    <img loading="lazy" className="img-fluid avatar-40 rounded-circle" src={imgp5} alt=""/>
-                                                                </Link>
-                                                            </div>
-                                                        </div>
-                                                    </Col>
-                                                </Row>
-                                            </Col>
-                                        </Row>
-                                    </Card.Body>
-                                    <Modal show={show} onHide={handleClose} size="lg">
-                                        <Modal.Header className="d-flex justify-content-between">
-                                            <h5 className="modal-title" id="post-modalLabel">Create Post</h5>
-                                            <Link className="lh-1" to="#" onClick={handleClose}><span className="material-symbols-outlined">close</span></Link>
-                                        </Modal.Header>
-                                        <Modal.Body>
-                                            <div className="d-flex align-items-center">
-                                                <div className="user-img">
-                                                    <img loading="lazy" src={user9} alt="userimg" className="avatar-60 rounded-circle img-fluid"/>
-                                                </div>
-                                                <form className="post-text ms-3 w-100 ">
-                                                    <input type="text" className="form-control rounded" placeholder="Write something here..." style={{border:"none"}}/>
-                                                </form>
-                                            </div>
-                                            <hr/>
-                                            <ul className="d-flex flex-wrap align-items-center list-inline m-0 p-0">
-                                                <li className="col-md-6 mb-3">
-                                                    <div className="bg-soft-primary rounded p-2 pointer me-3"><Link to="#"></Link><img loading="lazy" src={small1} alt="icon" className="img-fluid"/> Photo/Video</div>
-                                                </li>
-                                                <li className="col-md-6 mb-3">
-                                                    <div className="bg-soft-primary rounded p-2 pointer me-3"><Link to="#"></Link><img loading="lazy" src={small2} alt="icon" className="img-fluid"/> Tag Friend</div>
-                                                </li>
-                                                <li className="col-md-6 mb-3">
-                                                    <div className="bg-soft-primary rounded p-2 pointer me-3"><Link to="#"></Link><img loading="lazy" src={small3} alt="icon" className="img-fluid"/> Feeling/Activity</div>
-                                                </li>
-                                                <li className="col-md-6 mb-3">
-                                                    <div className="bg-soft-primary rounded p-2 pointer me-3"><Link to="#"></Link><img loading="lazy" src={small4} alt="icon" className="img-fluid"/> Check in</div>
-                                                </li>
-                                                <li className="col-md-6 mb-3">
-                                                    <div className="bg-soft-primary rounded p-2 pointer me-3"><Link to="#"></Link><img loading="lazy" src={small5} alt="icon" className="img-fluid"/> Live Video</div>
-                                                </li>
-                                                <li className="col-md-6 mb-3">
-                                                    <div className="bg-soft-primary rounded p-2 pointer me-3"><Link to="#"></Link><img loading="lazy" src={small6} alt="icon" className="img-fluid"/> Gif</div>
-                                                </li>
-                                                <li className="col-md-6 mb-3">
-                                                    <div className="bg-soft-primary rounded p-2 pointer me-3"><Link to="#"></Link><img loading="lazy" src={small7} alt="icon" className="img-fluid"/> Watch Party</div>
-                                                </li>
-                                                <li className="col-md-6 mb-3">
-                                                    <div className="bg-soft-primary rounded p-2 pointer me-3"><Link to="#"></Link><img loading="lazy" src={small8} alt="icon" className="img-fluid"/> Play with Friends</div>
-                                                </li>
-                                            </ul>
-                                            <hr/>
-                                            <div className="other-option">
-                                                <div className="d-flex align-items-center justify-content-between">
-                                                    <div className="d-flex align-items-center">
-                                                        <div className="user-img me-3">
-                                                            <img loading="lazy" src={user9} alt="userimg" className="avatar-60 rounded-circle img-fluid"/>
-                                                        </div>
-                                                        <h6>Your Story</h6>
-                                                    </div>
-                                                    <div className="card-post-toolbar">
-                                                        <Dropdown>
-                                                            <Dropdown.Toggle className="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                                                                <span className="btn btn-primary">Friend</span>
-                                                            </Dropdown.Toggle>
-                                                            <Dropdown.Menu clemassName="dropdown-menu m-0 p-0">
-                                                                <Dropdown.Item className="dropdown-item p-3" href="#">
-                                                                    <div className="d-flex align-items-top">
-                                                                        <i className="ri-save-line h4"></i>
-                                                                        <div className="data ms-2">
-                                                                            <h6>Public</h6>
-                                                                            <p className="mb-0">Anyone on or off Facebook</p>
-                                                                        </div>
-                                                                    </div>
-                                                                </Dropdown.Item>
-                                                                <Dropdown.Item className="dropdown-item p-3" href="#">
-                                                                    <div className="d-flex align-items-top">
-                                                                        <i className="ri-close-circle-line h4"></i>
-                                                                        <div className="data ms-2">
-                                                                            <h6>Friends</h6>
-                                                                            <p className="mb-0">Your Friend on facebook</p>
-                                                                        </div>
-                                                                    </div>
-                                                                </Dropdown.Item>
-                                                                <Dropdown.Item className="dropdown-item p-3" href="#">
-                                                                    <div className="d-flex align-items-top">
-                                                                        <i className="ri-user-unfollow-line h4"></i>
-                                                                        <div className="data ms-2">
-                                                                            <h6>Friends except</h6>
-                                                                            <p className="mb-0">Don't show to some friends</p>
-                                                                        </div>
-                                                                    </div>
-                                                                </Dropdown.Item>
-                                                                <Dropdown.Item className="dropdown-item p-3" href="#">
-                                                                    <div className="d-flex align-items-top">
-                                                                        <i className="ri-notification-line h4"></i>
-                                                                        <div className="data ms-2">
-                                                                            <h6>Only Me</h6>
-                                                                            <p className="mb-0">Only me</p>
-                                                                        </div>
-                                                                    </div>
-                                                                </Dropdown.Item>
-                                                            </Dropdown.Menu>
-                                                        </Dropdown>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <Button variant="primary" className="d-block w-100 mt-3">Post</Button>
-                                        </Modal.Body>
-                                    </Modal>
-                                </Card>
+                                <DanceEventDetailHeader/>
                                 <Card className="card-header-3">
                                     <Card.Body>
                                         <div className="mb-2 text-center">
