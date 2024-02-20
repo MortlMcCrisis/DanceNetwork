@@ -1,11 +1,6 @@
 import Card from "../../../components/Card";
 import {
-  Button,
-  Col, Dropdown,
-  Form,
-  ListGroup,
-  ListGroupItem,
-  Modal,
+  Col,
   Row
 } from "react-bootstrap";
 import imgp1 from "../../../assets/images/user/15.jpg";
@@ -15,15 +10,6 @@ import imgp2 from "../../../assets/images/user/05.jpg";
 import imgp3 from "../../../assets/images/user/06.jpg";
 import imgp4 from "../../../assets/images/user/07.jpg";
 import imgp5 from "../../../assets/images/user/08.jpg";
-import user9 from "../../../assets/images/user/1.jpg";
-import small1 from "../../../assets/images/small/07.png";
-import small2 from "../../../assets/images/small/08.png";
-import small3 from "../../../assets/images/small/09.png";
-import small4 from "../../../assets/images/small/10.png";
-import small5 from "../../../assets/images/small/11.png";
-import small6 from "../../../assets/images/small/12.png";
-import small7 from "../../../assets/images/small/13.png";
-import small8 from "../../../assets/images/small/14.png";
 import React, {useEffect, useState} from "react";
 import DanceEventDetailHeaderEditButton
   from "./dance-event-detail-header-edit-button";
@@ -45,29 +31,30 @@ const DanceEventDetailHeader=()=> {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        console.log(`Bearer ${keycloak.token}`)
-        const response = await fetch(`/api/v1/event/${id}`, {
-          headers: {
-            Authorization: `Bearer ${keycloak.token}`,
-            'Content-Type': 'application/json',
-          },
-        });
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const body = await response.json();
+      if(keycloak.authenticated) {
+        const fetchData = async () => {
+          try {
+            const response = await fetch(`/api/v1/event/${id}`, {
+              headers: {
+                Authorization: `Bearer ${keycloak.token}`,
+                'Content-Type': 'application/json',
+              },
+            });
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            const body = await response.json();
 
-        setData(body);
+            setData(body);
 
-        console.log(body);
-      } catch (error) {
-        console.error('Error fetching clients:', error);
+            console.log(body);
+          } catch (error) {
+            console.error('Error fetching clients:', error);
+          }
+        };
+
+        fetchData();
       }
-    };
-
-    fetchData();
   }, [keycloak.authenticated]);
 
   return(
@@ -96,28 +83,27 @@ const DanceEventDetailHeader=()=> {
                   <div className="item5 mt-3">
                     <div className="d-flex align-items-center mb-1">
                       <span className="material-symbols-outlined md-18">date_range</span>
-                      <span className="ms-2">{data.date ? format(new Date(data.date), "MMMM d, yyyy") : ''}</span>
-                      {data.enddate && (
-                          <span className="ms-2">- {format(new Date(data.enddate), "MMMM d, yyyy")}</span>
+                      <span className="ms-2">{data.startDate ? format(new Date(data.startDate), "MMMM d, yyyy") : ''}</span>
+                      {data.endDate && (
+                          <span className="ms-2">- {format(new Date(data.endDate), "MMMM d, yyyy")}</span>
                       )}
                     </div>
-                    {data.address && (
-                        //TODO namen mal gleichziehen (location, address...)
+                    {data.location && (
                         <div className="d-flex align-items-center mb-1">
                           <span className="material-symbols-outlined md-18">location_on</span>
-                          <span className="ms-2">{data.address}</span>
+                          <span className="ms-2">{data.location}</span>
                         </div>
                     )}
-                    {data.url && (
+                    {data.website && (
                         <div className="d-flex align-items-center mb-1">
                           <span className="material-symbols-outlined md-18">language</span>
-                          <Link to="#" className="link-primary h6 ms-2">{data.url}</Link>
+                          <Link to="#" className="link-primary h6 ms-2">{data.website}</Link>
                         </div>
                     )}
-                    {data.mail && (
+                    {data.email && (
                         <div className="d-flex align-items-center mb-1">
-                          <span className="material-symbols-outlined md-18">mail</span>
-                          <span className="ms-2">{data.mail}</span>
+                          <span className="material-symbols-outlined md-18">email</span>
+                          <span className="ms-2">{data.email}</span>
                         </div>
                     )}
                   </div>

@@ -34,7 +34,7 @@ public class UserClient {
     Jwt jwt = getJwt();
     return User.builder()
         .uuid(UUID.fromString(jwt.getClaim("sub")))
-        .photoPath(jwt.getClaim("photoPath")) // TODO den namen des attributes gleich ziehen
+        .photoPath(jwt.getClaim("photo_path"))
         .username(jwt.getClaim("custom_username"))
         .firstName(jwt.getClaim("given_name"))
         .lastName(jwt.getClaim("family_name"))
@@ -80,7 +80,7 @@ public class UserClient {
         .username(getAttribute(attributes, "custom_username"))
         .sex(Sex.getIfNotNull(getAttribute(attributes, "sex")))
         .phone(getAttribute(attributes, "phone"))
-        .photoPath(getAttribute(attributes, "photoPath"))
+        .photoPath(getAttribute(attributes, "photo_path"))
         .build();
   }
 
@@ -129,15 +129,14 @@ public class UserClient {
     UserRepresentation userRepresentation = userResource
         .toRepresentation();
 
-    //userRepresentation.setUsername(user.username());
     userRepresentation.setFirstName(user.firstName());
     userRepresentation.setLastName(user.lastName());
 
     Map<String, List<String>> attributes = Optional.ofNullable(
             userRepresentation.getAttributes())
         .orElse(new HashMap<>());
-    attributes.put("custom_username", List.of(user.username())); // TODO namen gleichziehen
-    attributes.put("photoPath", List.of(user.photoPath()));
+    attributes.put("custom_username", List.of(user.username()));
+    attributes.put("photo_path", List.of(user.photoPath()));
     attributes.put("sex", List.of(user.sex().name()));
     attributes.put("phone", List.of(user.phone()));
     userRepresentation.setAttributes(attributes);

@@ -3,6 +3,7 @@ import React, {useEffect, useState} from "react";
 import { format } from 'date-fns';
 import {useKeycloak} from "@react-keycloak/web";
 import _ from "lodash";
+import DanceAbortButton from "./dance-abort-button";
 
 const DanceEventDetailHeaderEditButton=({data, setData})=> {
 
@@ -12,22 +13,9 @@ const DanceEventDetailHeaderEditButton=({data, setData})=> {
   const handleCloseEditMainSettings = () => setShowEditMainSettings(false);
   const handleShowEditMainSettings = () => setShowEditMainSettings(true);
 
-  const [showAbortWarning, setShowAbortWarning] = useState(false);
-  const handleCloseAbortWarning = () => setShowAbortWarning(false);
-
-  const abortAndDiscardChange = () => {
+  const resetStateAndCloseMainDialog = () => {
     setForm(INITIAL_STATE);
-
     setShowEditMainSettings(false);
-    setShowAbortWarning(false);
-  }
-  const handleAbort = () => {
-    if(hasAnyDirtyField(form)){
-      setShowAbortWarning(true);
-    }
-    else {
-      setShowEditMainSettings(false);
-    }
   }
 
   const [isMultipleDays, setIsMultipleDays] = useState(false);
@@ -36,8 +24,9 @@ const DanceEventDetailHeaderEditButton=({data, setData})=> {
 
   const [INITIAL_STATE, setInitialState] = useState([]);
 
-  const hasAnyDirtyField = (form) =>
-      Object.keys(form).some((key) => form[key] !== INITIAL_STATE[key]);
+  const hasAnyDirtyField = () =>
+      Object.keys(form).some((key) => form[key] !== INITIAL_STATE[key])
+  || ((INITIAL_STATE['enddate'] == null && isMultipleDays) || (INITIAL_STATE['enddate'] !== null && !isMultipleDays));
 
   useEffect(() => {
     setForm(_.clone(data));
@@ -59,14 +48,21 @@ const DanceEventDetailHeaderEditButton=({data, setData})=> {
     event.preventDefault();
 
     try {
-      if(hasAnyDirtyField(form)) {
+      if(hasAnyDirtyField()) {
+        //TODO validate startDate < endDate
+        let newEventData = _.clone(form);
+        if(!isMultipleDays)
+        {
+          newEventData['endDate'] = null;
+        }
+
         const response = await fetch(`/api/v1/event/${form.id}`, {
           method: 'PUT',
           headers: {
             Authorization: `Bearer ${keycloak.token}`,
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({...form}),
+          body: JSON.stringify({...newEventData}),
         });
 
         console.log("response:");
@@ -75,11 +71,11 @@ const DanceEventDetailHeaderEditButton=({data, setData})=> {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
+
+        setData(newEventData);
       }
 
-      setData(form);
       setShowEditMainSettings(false);
-
     } catch (error) {
       console.error('Error saving event:', error);
     }
@@ -110,30 +106,30 @@ const DanceEventDetailHeaderEditButton=({data, setData})=> {
                   </Form.Group>
                   <div className="d-flex justify-content-end">
                     <Form.Group className="form-group d-inline-block me-3">
-                      <Form.Label htmlFor="date"
+                      <Form.Label htmlFor="startDate"
                                   className="form-label">{isMultipleDays
                           ? "Start date" : "Date"}:</Form.Label>
                       <Form.Control type="date"
                                     className="form-control"
-                                    id="date"
-                                    value={form.date ? format(form.date, 'yyyy-MM-dd') : ''}
-                                    onChange={handleTemporaryChange} required/>
+                                    id="startDate"
+                                    value={form.startDate ? format(form.startDate, 'yyyy-MM-dd') : ''}
+                                    onChange={handleTemporaryChange}
+                                    required/>
                     </Form.Group>
                     <Form.Group className="form-group d-inline-block me-3">
-                      <Form.Label htmlFor="enddate"
+                      <Form.Label htmlFor="endDate"
                                   className={`form-label ${!isMultipleDays
                                       ? 'text-muted' : ''}`}>End
                         date:</Form.Label>
                       <Form.Control disabled={!isMultipleDays}
                                     type="date"
                                     className="form-control"
-                                    id="enddate"
-                                    value={form.enddate ? format(form.enddate, 'yyyy-MM-dd') : ''}
+                                    id="endDate"
+                                    value={form.endDate ? format(form.endDate, 'yyyy-MM-dd') : ''}
                                     onChange={handleTemporaryChange}
-                                    required={!isMultipleDays}/>
+                                    required={isMultipleDays}/>
                     </Form.Group>
                     <Form.Check className="form-check form-switch ms-auto">
-                      {/* TODO save null, when checkbox is not set */}
                       <Form.Check type="checkbox" className="bg-primary"
                                   defaultChecked={isMultipleDays}
                                   onChange={handleCheckboxChange}
@@ -142,53 +138,37 @@ const DanceEventDetailHeaderEditButton=({data, setData})=> {
                     </Form.Check>
                   </div>
                   <Form.Group className="form-group">
-                    <Form.Label htmlFor="address" className="form-label">Location:</Form.Label>
+                    <Form.Label htmlFor="location" className="form-label">Location:</Form.Label>
                     <Form.Control type="text"
-                                  id="address"
+                                  id="location"
                                   className="form-control"
                                   placeholder="Where does it take place..."
-                                  value={form.address != null ?  form.address : ''}
+                                  value={form.location != null ?  form.location : ''}
                                   onChange={handleTemporaryChange}/>
                   </Form.Group>
                   <Form.Group className="form-group">
-                    <Form.Label htmlFor="url" className="form-label">Website:</Form.Label>
+                    <Form.Label htmlFor="website" className="form-label">Website:</Form.Label>
                     <Form.Control type="text"
-                                  id="url"
+                                  id="website"
                                   className="form-control"
                                   placeholder="Website of the event..."
-                                  value={form.url != null ?  form.url : ''}
+                                  value={form.website != null ?  form.website : ''}
                                   onChange={handleTemporaryChange}/>
                   </Form.Group>
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="mail" className="form-label">E-Mail:</Form.Label>
                     <Form.Control type="email"
-                                  id="mail"
+                                  id="email"
                                   className="form-control"
                                   placeholder="Contact e-mail..."
-                                  value={form.mail != null ?  form.mail : ''}
+                                  value={form.email != null ?  form.email : ''}
                                   onChange={handleTemporaryChange}/>
                   </Form.Group>
                 </ListGroupItem>
               </ListGroup>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={handleAbort}>
-                Abort{/* TODO show warning when dirty and reset values*/}
-              </Button>
-              <Modal size="sm" show={showAbortWarning} onHide={handleCloseAbortWarning}>
-                <Modal.Header closeButton>{/*TODO das hier als separate komponente raus ziehen?*/}
-                  <Modal.Title>Modal heading</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>Changes will not be saved.</Modal.Body>
-                <Modal.Footer>
-                  <Button variant="secondary" onClick={handleCloseAbortWarning}>
-                    Cancel
-                  </Button>
-                  <Button variant="primary" onClick={abortAndDiscardChange}>
-                    Ok
-                  </Button>
-                </Modal.Footer>
-              </Modal>
+              <DanceAbortButton hasAnyDirtyField={hasAnyDirtyField} resetStateAndCloseMainDialog={resetStateAndCloseMainDialog}/>
               <Button type="submit" variant="primary">
                 Confirm
               </Button>

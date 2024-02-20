@@ -31,17 +31,17 @@ public class Event {
 
   @Column(nullable = false)
   @NonNull
-  private Date date;
+  private Date startDate;
 
-  private Date enddate;
+  private Date endDate;
 
   @Column(nullable = false)
   @NonNull
   private String name;
 
-  private String address;
+  private String location;
 
-  private String url;
+  private String website;
 
-  private String mail;
+  private String email;
 }

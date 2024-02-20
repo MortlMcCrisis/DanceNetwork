@@ -2,18 +2,13 @@ package com.mortl.dancenetwork.service;
 
 import com.mortl.dancenetwork.client.UserClient;
 import com.mortl.dancenetwork.dto.EventDTO;
-import com.mortl.dancenetwork.dto.NewsfeedEntryDTO;
-import com.mortl.dancenetwork.dto.UserDTO;
 import com.mortl.dancenetwork.entity.User;
 import com.mortl.dancenetwork.model.Event;
-import com.mortl.dancenetwork.model.NewsfeedEntry;
 import com.mortl.dancenetwork.repository.EventRepository;
-import java.util.List;
 import java.util.Optional;
 import javax.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -47,10 +42,11 @@ public class EventService {
           .orElseThrow(NotFoundException::new);
 
       currentEvent.setName(event.name());
-      currentEvent.setMail(event.mail());
-      currentEvent.setDate(event.date());
-      currentEvent.setAddress(event.address());
-      currentEvent.setUrl(event.url());
+      currentEvent.setEmail(event.email());
+      currentEvent.setStartDate(event.startDate());
+      currentEvent.setEndDate(event.endDate());
+      currentEvent.setLocation(event.location());
+      currentEvent.setWebsite(event.website());
       currentEvent = eventRepository.save(currentEvent);
 
       return EventDTO.fromModel(

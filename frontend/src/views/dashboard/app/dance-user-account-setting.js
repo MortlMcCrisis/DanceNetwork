@@ -21,7 +21,7 @@ const DanceUserAccountSetting =() =>{
     const [percentage, setPercentage] = useState(0);
 
     const [form, setForm] = React.useState({
-        photoPath: keycloak.idTokenParsed.photoPath,
+        photoPath: keycloak.idTokenParsed.photo_path,
         username: keycloak.idTokenParsed.custom_username,
         firstName: keycloak.idTokenParsed.given_name,
         lastName: keycloak.idTokenParsed.family_name,
@@ -45,7 +45,7 @@ const DanceUserAccountSetting =() =>{
 
     const calculatePercentage = () => {
         const idTokenParsed = keycloak.idTokenParsed;
-        const properties = ['photoPath', 'custom_username', 'given_name', 'family_name', 'sex', 'email', 'phone'];
+        const properties = ['photo_path', 'custom_username', 'given_name', 'family_name', 'sex', 'email', 'phone'];
 
         // Filtere die gesetzten Properties
         const setProperties = properties.filter(property => idTokenParsed[property] !== undefined && idTokenParsed[property] !== '');
@@ -132,7 +132,7 @@ const DanceUserAccountSetting =() =>{
                                 <ListGroupItem>
                                     <div className="user-detail text-center mb-3">
                                         <div className="profile-img">
-                                            <img loading="lazy" src={`/users/${form.photoPath}`} alt="profile-img" className="avatar-130 img-fluid"/>
+                                            <img loading="lazy" src={form.photoPath === null || form.photoPath === undefined ? '/users/placeholder.jpg' : `/users/${form.photoPath}`} alt="profile-img" className="avatar-130 img-fluid"/>
                                         </div>
                                     </div>
                                     <Form.Group className="form-group">
