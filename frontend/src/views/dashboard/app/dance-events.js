@@ -59,6 +59,8 @@ const DanceEvents =() =>{
    const handleSubmit = async (event) => {
       event.preventDefault();
 
+      //TODO validate that start date is before end date
+
       try {
          const response = await fetch('/api/v1/event', {
             method: 'POST',

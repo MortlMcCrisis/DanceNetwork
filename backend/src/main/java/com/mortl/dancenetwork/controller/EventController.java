@@ -41,11 +41,10 @@ public class EventController {
 
   @PutMapping("/{id}")
   public ResponseEntity updateNewsfeedEntry(@PathVariable Long id, @RequestBody EventDTO eventDTO) throws NotFoundException {
+    log.info("saving event with id " + id);
     if( id != eventDTO.id()){
       throw new IllegalArgumentException("id in path (" + id + ") does not match the id of the object (" + eventDTO.id() + ").");
     }
-
-    log.info(eventDTO.toString());
 
     return ResponseEntity.ok(eventService.updateEvent(eventDTO));
   }

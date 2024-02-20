@@ -87,7 +87,7 @@ const DanceEventDetailHeader=()=> {
                 </div>
                 <div className="item4 ms-1">
                   <div className="d-flex justify-content-between align-items-center ms-1 flex-wrap">
-                    <DanceEventDetailHeaderEditButton data={data} handleChange={handleChange} />
+                    <DanceEventDetailHeaderEditButton data={data} setData={setData} />
                   </div>
                 </div>
               </div>

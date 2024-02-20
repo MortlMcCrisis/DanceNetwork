@@ -1,9 +1,10 @@
 import {Button, Form, ListGroup, ListGroupItem, Modal} from "react-bootstrap";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { format } from 'date-fns';
 import {useKeycloak} from "@react-keycloak/web";
+import _ from "lodash";
 
-const DanceEventDetailHeaderEditButton=({data, handleChange})=> {
+const DanceEventDetailHeaderEditButton=({data, setData})=> {
 
   const { keycloak, initialized } = useKeycloak();
 
@@ -11,21 +12,44 @@ const DanceEventDetailHeaderEditButton=({data, handleChange})=> {
   const handleCloseEditMainSettings = () => setShowEditMainSettings(false);
   const handleShowEditMainSettings = () => setShowEditMainSettings(true);
 
+  const [showAbortWarning, setShowAbortWarning] = useState(false);
+  const handleCloseAbortWarning = () => setShowAbortWarning(false);
+
+  const abortAndDiscardChange = () => {
+    setForm(INITIAL_STATE);
+
+    setShowEditMainSettings(false);
+    setShowAbortWarning(false);
+  }
+  const handleAbort = () => {
+    if(hasAnyDirtyField(form)){
+      setShowAbortWarning(true);
+    }
+    else {
+      setShowEditMainSettings(false);
+    }
+  }
+
   const [isMultipleDays, setIsMultipleDays] = useState(false);
 
-  const INITIAL_STATE = {
-    name: data.name,
-    date: data.date,
-    enddate: data.enddate,
-    address: data.address,
-    url: data.url,
-    mail: data.mail
-  };
+  const [form, setForm] = useState([]);
 
-  const [form, setForm] = React.useState(INITIAL_STATE);
+  const [INITIAL_STATE, setInitialState] = useState([]);
 
   const hasAnyDirtyField = (form) =>
       Object.keys(form).some((key) => form[key] !== INITIAL_STATE[key]);
+
+  useEffect(() => {
+    setForm(_.clone(data));
+    setInitialState(_.clone(data));
+  }, [data]);
+
+  const handleTemporaryChange = (event) => {
+    setForm({
+      ...form,
+      [event.target.id]: event.target.value,
+    });
+  };
 
   const handleCheckboxChange = (event) => {
     setIsMultipleDays(event.target.checked);
@@ -35,23 +59,25 @@ const DanceEventDetailHeaderEditButton=({data, handleChange})=> {
     event.preventDefault();
 
     try {
-      if(hasAnyDirtyField(form)){}
-      //TODO submit only when dirty
-      const response = await fetch(`/api/v1/event/${data.id}`, {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${keycloak.token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ ...form }),
-      });
+      if(hasAnyDirtyField(form)) {
+        const response = await fetch(`/api/v1/event/${form.id}`, {
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${keycloak.token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({...form}),
+        });
 
-      console.log(response);
+        console.log("response:");
+        console.log(response);
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
       }
 
+      setData(form);
       setShowEditMainSettings(false);
 
     } catch (error) {
@@ -75,11 +101,11 @@ const DanceEventDetailHeaderEditButton=({data, handleChange})=> {
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="name" className="form-label">Name:</Form.Label>
                     <Form.Control type="text"
-                                  className="form-control"
+                                  className="vform-control"
                                   id="name"
                                   placeholder="Name of the event..."
-                                  value={data.name}
-                                  onChange={handleChange}
+                                  value={form.name}
+                                  onChange={handleTemporaryChange}
                                   required/> {/* TODO change to custom (english) error message */ }
                   </Form.Group>
                   <div className="d-flex justify-content-end">
@@ -90,8 +116,8 @@ const DanceEventDetailHeaderEditButton=({data, handleChange})=> {
                       <Form.Control type="date"
                                     className="form-control"
                                     id="date"
-                                    value={data.date ? format(data.date, 'yyyy-MM-dd') : ''}
-                                    onChange={handleChange} required/>
+                                    value={form.date ? format(form.date, 'yyyy-MM-dd') : ''}
+                                    onChange={handleTemporaryChange} required/>
                     </Form.Group>
                     <Form.Group className="form-group d-inline-block me-3">
                       <Form.Label htmlFor="enddate"
@@ -102,8 +128,8 @@ const DanceEventDetailHeaderEditButton=({data, handleChange})=> {
                                     type="date"
                                     className="form-control"
                                     id="enddate"
-                                    value={data.enddate ? format(data.enddate, 'yyyy-MM-dd') : ''}
-                                    onChange={handleChange}
+                                    value={form.enddate ? format(form.enddate, 'yyyy-MM-dd') : ''}
+                                    onChange={handleTemporaryChange}
                                     required={!isMultipleDays}/>
                     </Form.Group>
                     <Form.Check className="form-check form-switch ms-auto">
@@ -121,8 +147,8 @@ const DanceEventDetailHeaderEditButton=({data, handleChange})=> {
                                   id="address"
                                   className="form-control"
                                   placeholder="Where does it take place..."
-                                  value={data.address != null ?  data.address : ''}
-                                  onChange={handleChange}/>
+                                  value={form.address != null ?  form.address : ''}
+                                  onChange={handleTemporaryChange}/>
                   </Form.Group>
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="url" className="form-label">Website:</Form.Label>
@@ -130,8 +156,8 @@ const DanceEventDetailHeaderEditButton=({data, handleChange})=> {
                                   id="url"
                                   className="form-control"
                                   placeholder="Website of the event..."
-                                  value={data.url != null ?  data.url : ''}
-                                  onChange={handleChange}/>
+                                  value={form.url != null ?  form.url : ''}
+                                  onChange={handleTemporaryChange}/>
                   </Form.Group>
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="mail" className="form-label">E-Mail:</Form.Label>
@@ -139,16 +165,30 @@ const DanceEventDetailHeaderEditButton=({data, handleChange})=> {
                                   id="mail"
                                   className="form-control"
                                   placeholder="Contact e-mail..."
-                                  value={data.mail != null ?  data.mail : ''}
-                                  onChange={handleChange}/>
+                                  value={form.mail != null ?  form.mail : ''}
+                                  onChange={handleTemporaryChange}/>
                   </Form.Group>
                 </ListGroupItem>
               </ListGroup>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={handleCloseEditMainSettings}>
+              <Button variant="secondary" onClick={handleAbort}>
                 Abort{/* TODO show warning when dirty and reset values*/}
               </Button>
+              <Modal size="sm" show={showAbortWarning} onHide={handleCloseAbortWarning}>
+                <Modal.Header closeButton>{/*TODO das hier als separate komponente raus ziehen?*/}
+                  <Modal.Title>Modal heading</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Changes will not be saved.</Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={handleCloseAbortWarning}>
+                    Cancel
+                  </Button>
+                  <Button variant="primary" onClick={abortAndDiscardChange}>
+                    Ok
+                  </Button>
+                </Modal.Footer>
+              </Modal>
               <Button type="submit" variant="primary">
                 Confirm
               </Button>
