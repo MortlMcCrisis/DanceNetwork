@@ -4,7 +4,7 @@ import com.mortl.dancenetwork.model.Event;
 import java.util.Date;
 import java.util.UUID;
 
-public record EventDTO(Long id, UUID creator, Date startDate, Date endDate, String name, String location, String website, String email) {
+public record EventDTO(Long id, UUID creator, Date startDate, Date endDate, String name, String location, String website, String email, boolean published) {
 
   public Event toModel(UUID creator){
     return Event.builder()
@@ -16,6 +16,7 @@ public record EventDTO(Long id, UUID creator, Date startDate, Date endDate, Stri
         .location(this.location)
         .website(this.website)
         .email(this.email)
+        .published(this.published)
         .build();
   }
 
@@ -28,6 +29,7 @@ public record EventDTO(Long id, UUID creator, Date startDate, Date endDate, Stri
         event.getName(),
         event.getLocation(),
         event.getWebsite(),
-        event.getEmail());
+        event.getEmail(),
+        event.isPublished());
   }
 }

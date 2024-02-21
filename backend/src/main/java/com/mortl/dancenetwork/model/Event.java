@@ -44,4 +44,6 @@ public class Event {
   private String website;
 
   private String email;
+
+  private boolean published;
 }

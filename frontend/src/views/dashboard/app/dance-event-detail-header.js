@@ -1,5 +1,6 @@
 import Card from "../../../components/Card";
 import {
+  Alert, Button,
   Col,
   Row
 } from "react-bootstrap";
@@ -22,13 +23,6 @@ const DanceEventDetailHeader=()=> {
   const { keycloak, initialized } = useKeycloak();
 
   const [data, setData] = useState([]);
-
-  const handleChange = (event) => {
-    setData({
-      ...data,
-      [event.target.id]: event.target.value,
-    });
-  };
 
   useEffect(() => {
       if(keycloak.authenticated) {
@@ -57,83 +51,121 @@ const DanceEventDetailHeader=()=> {
       }
   }, [keycloak.authenticated]);
 
+  const publishEvent = async () => {
+    try {
+      const response = await fetch(`/api/v1/event/${id}/publish`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${keycloak.token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      //TODO update status (published state)
+      window.location.reload();
+
+    } catch (error) {
+      console.error('Error fetching clients:', error);
+    }
+  };
+
   return(
-      <Card>
-        <Card.Body>
-          <Row>
-            <Col lg="2">
-              <div className="item1 ms-1">
-                <img loading="lazy" src={imgp1} className="img-fluid rounded profile-image" alt="profile-img"/>
-              </div>
-            </Col>
-            <Col lg="10">
-              <div className="d-flex justify-content-between">
-                <div className="item2 ">
-                  <h4 className="">{data.name}</h4>
-                  <span>60 630 are going</span>
+      <>
+        {data.published === false &&
+          <div className="btn dance-btn-fixed-bottom btn-danger btn-icon btn-setting" >
+            <Button variant="info" className="rounded-pill mb-1" onClick={publishEvent}>Publish event</Button>
+          </div>
+        }
+        <Card>
+            {data.published === false &&
+              <Card.Header>
+                <Col lg={12}>
+                  <Alert variant="alert alert-left alert-warning show d-flex align-items-center gap-2 mb-3">
+                    <span><i className="material-symbols-outlined">notifications</i></span>
+                    <span>This Event is not yet published!</span>
+                  </Alert>
+                </Col>
+              </Card.Header>
+            }
+          <Card.Body>
+            <Row>
+              <Col lg="2">
+                <div className="item1 ms-1">
+                  <img loading="lazy" src={imgp1} className="img-fluid rounded profile-image" alt="profile-img"/>
                 </div>
-                <div className="item4 ms-1">
-                  <div className="d-flex justify-content-between align-items-center ms-1 flex-wrap">
-                    <DanceEventDetailHeaderEditButton data={data} setData={setData} />
+              </Col>
+              <Col lg="10">
+                <div className="d-flex justify-content-between">
+                  <div className="item2 ">
+                    <h4 className="">{data.name}</h4>
+                    <span>60 630 are going</span>
+                  </div>
+                  <div className="item4 ms-1">
+                    <div className="d-flex justify-content-between align-items-center ms-1 flex-wrap">
+                      <DanceEventDetailHeaderEditButton data={data} setData={setData} />
+                    </div>
                   </div>
                 </div>
-              </div>
-              <Row>
-                <Col lg="6">
-                  <div className="item5 mt-3">
-                    <div className="d-flex align-items-center mb-1">
-                      <span className="material-symbols-outlined md-18">date_range</span>
-                      <span className="ms-2">{data.startDate ? format(new Date(data.startDate), "MMMM d, yyyy") : ''}</span>
-                      {data.endDate && (
-                          <span className="ms-2">- {format(new Date(data.endDate), "MMMM d, yyyy")}</span>
+                <Row>
+                  <Col lg="6">
+                    <div className="item5 mt-3">
+                      <div className="d-flex align-items-center mb-1">
+                        <span className="material-symbols-outlined md-18">date_range</span>
+                        <span className="ms-2">{data.startDate ? format(new Date(data.startDate), "MMMM d, yyyy") : ''}</span>
+                        {data.endDate && (
+                            <span className="ms-2">- {format(new Date(data.endDate), "MMMM d, yyyy")}</span>
+                        )}
+                      </div>
+                      {data.location && (
+                          <div className="d-flex align-items-center mb-1">
+                            <span className="material-symbols-outlined md-18">location_on</span>
+                            <span className="ms-2">{data.location}</span>
+                          </div>
+                      )}
+                      {data.website && (
+                          <div className="d-flex align-items-center mb-1">
+                            <span className="material-symbols-outlined md-18">language</span>
+                            <Link to="#" className="link-primary h6 ms-2">{data.website}</Link>
+                          </div>
+                      )}
+                      {data.email && (
+                          <div className="d-flex align-items-center mb-1">
+                            <span className="material-symbols-outlined md-18">email</span>
+                            <span className="ms-2">{data.email}</span>
+                          </div>
                       )}
                     </div>
-                    {data.location && (
-                        <div className="d-flex align-items-center mb-1">
-                          <span className="material-symbols-outlined md-18">location_on</span>
-                          <span className="ms-2">{data.location}</span>
-                        </div>
-                    )}
-                    {data.website && (
-                        <div className="d-flex align-items-center mb-1">
-                          <span className="material-symbols-outlined md-18">language</span>
-                          <Link to="#" className="link-primary h6 ms-2">{data.website}</Link>
-                        </div>
-                    )}
-                    {data.email && (
-                        <div className="d-flex align-items-center mb-1">
-                          <span className="material-symbols-outlined md-18">email</span>
-                          <span className="ms-2">{data.email}</span>
-                        </div>
-                    )}
-                  </div>
-                </Col>
-                <Col lg="6">
-                  <div className="item6 border-light border-start">
-                    <div className="ms-2">
-                      <h6 className="mb-2">Those people are going</h6>
+                  </Col>
+                  <Col lg="6">
+                    <div className="item6 border-light border-start">
+                      <div className="ms-2">
+                        <h6 className="mb-2">Those people are going</h6>
+                      </div>
+                      <div className="iq-media-group ms-2">
+                        <Link to="#" className="iq-media">
+                          <img loading="lazy" className="img-fluid avatar-40 rounded-circle" src={imgp2} alt=""/>
+                        </Link>
+                        <Link to="#" className="iq-media">
+                          <img loading="lazy" className="img-fluid avatar-40 rounded-circle" src={imgp3} alt=""/>
+                        </Link>
+                        <Link to="#" className="iq-media">
+                          <img loading="lazy" className="img-fluid avatar-40 rounded-circle" src={imgp4} alt=""/>
+                        </Link>
+                        <Link to="#" className="iq-media">
+                          <img loading="lazy" className="img-fluid avatar-40 rounded-circle" src={imgp5} alt=""/>
+                        </Link>
+                      </div>
                     </div>
-                    <div className="iq-media-group ms-2">
-                      <Link to="#" className="iq-media">
-                        <img loading="lazy" className="img-fluid avatar-40 rounded-circle" src={imgp2} alt=""/>
-                      </Link>
-                      <Link to="#" className="iq-media">
-                        <img loading="lazy" className="img-fluid avatar-40 rounded-circle" src={imgp3} alt=""/>
-                      </Link>
-                      <Link to="#" className="iq-media">
-                        <img loading="lazy" className="img-fluid avatar-40 rounded-circle" src={imgp4} alt=""/>
-                      </Link>
-                      <Link to="#" className="iq-media">
-                        <img loading="lazy" className="img-fluid avatar-40 rounded-circle" src={imgp5} alt=""/>
-                      </Link>
-                    </div>
-                  </div>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-        </Card.Body>
-      </Card>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </Card.Body>
+        </Card>
+      </>
   )
 }
 

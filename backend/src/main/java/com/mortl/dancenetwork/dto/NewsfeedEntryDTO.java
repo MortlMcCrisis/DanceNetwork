@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.UUID;
 
 //TODO move photo path somewhere else. Has nothing to do with the newsfeed entry
+// --> only set creator id and pull user data for every user separately by the newsfeed entry component
 public record NewsfeedEntryDTO(String photoPath, Long id, String userName, Sex creatorSex, String textField, Date creationDate) {
 
   //TODO fabric class which sets automatically username and time

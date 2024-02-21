@@ -16,13 +16,13 @@ public class NewsfeedEntryService {
 
   private final NewsfeedEntryRepository newsfeedEntryRepository;
 
-  private final UserClient userClient;
+  private final UserService userService;
 
   public List<NewsfeedEntryDTO> getNewsfeedEntries() {
-    return newsfeedEntryRepository.findAll().stream()
+    return newsfeedEntryRepository.findAllByOrderByCreationDateDesc().stream()
         .map(newsfeedEntry ->
         {
-          User user = userClient.fetchUser(newsfeedEntry.getCreator());
+          User user = userService.getUser(newsfeedEntry.getCreator());
           return NewsfeedEntryDTO.fromModel(
               newsfeedEntry,
               user
@@ -32,7 +32,7 @@ public class NewsfeedEntryService {
   }
 
   public NewsfeedEntryDTO createNewsfeedEntry(NewsfeedEntryDTO newsfeedEntry) {
-    User currentUser = userClient.getCurrentUser();
+    User currentUser = userService.getCurrentUser();
     NewsfeedEntry savedNewsfeedEntry = newsfeedEntryRepository.saveAndFlush(
         newsfeedEntry.toModel(
             currentUser.uuid()));
@@ -46,7 +46,7 @@ public class NewsfeedEntryService {
     //TODO only the owner of a user should be able to update an entry
     NewsfeedEntry currentNewsfeedEntry = newsfeedEntryRepository.findById(newsfeedEntry.id())
         .orElseThrow(NotFoundException::new);
-    User currentUser = userClient.getCurrentUser();
+    User currentUser = userService.getCurrentUser();
     currentNewsfeedEntry.setCreator(currentUser.uuid());
     currentNewsfeedEntry.setTextField(newsfeedEntry.textField());
     currentNewsfeedEntry.setCreationDate(newsfeedEntry.creationDate());

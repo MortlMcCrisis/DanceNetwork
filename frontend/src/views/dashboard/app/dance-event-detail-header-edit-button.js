@@ -15,6 +15,7 @@ const DanceEventDetailHeaderEditButton=({data, setData})=> {
 
   const resetStateAndCloseMainDialog = () => {
     setForm(INITIAL_STATE);
+    setIsMultipleDays(INITIAL_STATE.endDate !== null && INITIAL_STATE.endDate !== '' )
     setShowEditMainSettings(false);
   }
 
@@ -26,11 +27,12 @@ const DanceEventDetailHeaderEditButton=({data, setData})=> {
 
   const hasAnyDirtyField = () =>
       Object.keys(form).some((key) => form[key] !== INITIAL_STATE[key])
-  || ((INITIAL_STATE['enddate'] == null && isMultipleDays) || (INITIAL_STATE['enddate'] !== null && !isMultipleDays));
+  || ((INITIAL_STATE['endDate'] == null && isMultipleDays) || (INITIAL_STATE['endDate'] !== null && !isMultipleDays));
 
   useEffect(() => {
     setForm(_.clone(data));
     setInitialState(_.clone(data));
+    setIsMultipleDays(data.endDate !== null && data.endDate !== '' )
   }, [data]);
 
   const handleTemporaryChange = (event) => {
@@ -83,9 +85,7 @@ const DanceEventDetailHeaderEditButton=({data, setData})=> {
 
   return(
       <>
-        <button type="button" className="btn btn-primary ms-2 btn-sm d-flex align-items-center" onClick={handleShowEditMainSettings}>
-          <span className="material-symbols-outlined  md-16">edit</span>
-        </button>
+        <Button variant="info" size="sm" className="d-inline-flex mb-1" onClick={handleShowEditMainSettings}><i className="material-symbols-outlined me-0">edit</i></Button>{' '}
         <Modal centered show={showEditMainSettings} onHide={handleCloseEditMainSettings}>
           <Modal.Header closeButton>
             <Modal.Title>Edit Event</Modal.Title>

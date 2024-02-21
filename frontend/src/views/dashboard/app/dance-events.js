@@ -29,115 +29,15 @@ import img59 from '../../../assets/images/page-img/59.jpg'
 import img6 from '../../../assets/images/page-img/profile-bg6.jpg'
 import Datepicker from "../../../components/datepicker";
 import {useKeycloak} from "@react-keycloak/web";
+import DanceEventsCreateButton from "./dance-events-create-button";
 
 const DanceEvents =() =>{
-   const [showCreate, setShowCreate] = useState(false);
-   const handleCloseCreate = () => setShowCreate(false);
-   const handleShowCreate = () => setShowCreate(true);
 
    const { keycloak, initialized } = useKeycloak();
 
-   const [isMultipleDays, setIsMultipleDays] = useState(false);
-
-   const handleCheckboxChange = (event) => {
-      setIsMultipleDays(event.target.checked);
-   };
-
-   const [form, setForm] = React.useState({
-      name: '',
-      startDate: '',
-      endDate: ''
-   });
-
-   const handleChange = (event) => {
-      setForm({
-         ...form,
-         [event.target.id]: event.target.value,
-      });
-   };
-
-   const handleSubmit = async (event) => {
-      event.preventDefault();
-
-      //TODO validate that start date is before end date
-
-      try {
-         const response = await fetch('/api/v1/event', {
-            method: 'POST',
-            headers: {
-               Authorization: `Bearer ${keycloak.token}`,
-               'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ ...form }),
-         });
-
-         console.log(response);
-
-         if (response.status === 201) {
-            const resourceUrl = response.headers.get('Location')
-            const id = resourceUrl.split('/').pop();
-            window.location = `/dashboards/app/dance-event-detail/${id}`;
-         }
-
-         if (!response.ok) {
-            throw new Error('Network response was not ok');
-         }
-
-      } catch (error) {
-         console.error('Error saving event:', error);
-      }
-   };
-
    return(
       <>
-         <div className="btn dance-btn-fixed-bottom btn-danger btn-icon btn-setting" >
-            <Button variant="warning" className="rounded-pill mb-1" onClick={handleShowCreate}>Create Event</Button>
-            <Modal centered show={showCreate} onHide={handleCloseCreate}>
-               <Modal.Header closeButton>
-                  <Modal.Title>Create Event</Modal.Title>
-               </Modal.Header>
-               <Form onSubmit={handleSubmit}>
-                  <Modal.Body>
-                     <ListGroup>
-                        <ListGroupItem>
-                           <Form.Group className="form-group">
-                              <Form.Label htmlFor="name" className="form-label">Name:</Form.Label>
-                              <Form.Control type="text"
-                                            className="form-control"
-                                            placeholder="Name of the event..."
-                                            id="name"
-                                            onChange={handleChange}
-                                            required/> {/* TODO change to custom (english) error message */ }
-                           </Form.Group>
-                           <div className="d-flex justify-content-end">
-                              <Form.Group className="form-group d-inline-block me-3">
-                                 <Form.Label htmlFor="startDate" className="form-label">{isMultipleDays ? "Start date" : "Date"}:</Form.Label>
-                                 <Form.Control type="date" className="form-control" id="startDate" onChange={handleChange} required/>
-                              </Form.Group>
-                              <Form.Group className="form-group d-inline-block me-3">
-                                 <Form.Label htmlFor="endDate" className={`form-label ${!isMultipleDays ? 'text-muted' : ''}`}>End date:</Form.Label>
-                                 <Form.Control disabled={!isMultipleDays} type="date" className="form-control" id="endDate" onChange={handleChange} required={!isMultipleDays}/>
-                              </Form.Group>
-                              <Form.Check className="form-check form-switch ms-auto">
-                                 {/* TODO align right to prevent the elements jumping around */}
-                                 <Form.Check type="checkbox" className="bg-primary" defaultChecked={isMultipleDays} onChange={handleCheckboxChange} id="isMultipleDays" />
-                                 <Form.Check.Label>Multiple days</Form.Check.Label>
-                              </Form.Check>
-                           </div>
-                        </ListGroupItem>
-                     </ListGroup>
-                  </Modal.Body>
-                  <Modal.Footer>
-                     <Button variant="secondary" onClick={handleCloseCreate}>
-                        Abort
-                     </Button>
-                     <Button type="submit" variant="primary">
-                        Create
-                     </Button>
-                  </Modal.Footer>
-               </Form>
-            </Modal>
-         </div>
+         { keycloak.authenticated && <DanceEventsCreateButton /> }
          <Container>
             <Row className="mt-1">
                <Col lg="12" md="12">

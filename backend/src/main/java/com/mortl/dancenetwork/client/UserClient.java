@@ -2,7 +2,6 @@ package com.mortl.dancenetwork.client;
 
 import com.mortl.dancenetwork.dto.Sex;
 import com.mortl.dancenetwork.entity.User;
-import jakarta.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,39 +14,19 @@ import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.UserRepresentation;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Component
 @RequiredArgsConstructor
 public class UserClient {
 
-  private final JwtDecoder decoder;
-
   private final Keycloak keycloak;
 
-  //TODO methode raus ziehen. Ist keine client methode
-  public User getCurrentUser() {
-    Jwt jwt = getJwt();
-    return User.builder()
-        .uuid(UUID.fromString(jwt.getClaim("sub")))
-        .photoPath(jwt.getClaim("photo_path"))
-        .username(jwt.getClaim("custom_username"))
-        .firstName(jwt.getClaim("given_name"))
-        .lastName(jwt.getClaim("family_name"))
-        .sex(Sex.getIfNotNull(jwt.getClaim("sex")))
-        .phone(jwt.getClaim("phone"))
-        .build();
-  }
-
-  public List<User> fetchUsers(List<UUID> uuids) {
-    return uuids.stream()
-        .map(this::fetchUser)
-        .toList();
-  }
+//  public List<User> fetchUsers(List<UUID> uuids) {
+//    return uuids.stream()
+//        .map(this::fetchUser)
+//        .toList();
+//  }
 
   public List<User> fetchUsers(){
     return getKeycloakUsers()
@@ -92,77 +71,71 @@ public class UserClient {
     return null;
   }
 
-  public void setUsername(String username){
-    //setValue(userRepresentation -> userRepresentation.setUsername(username));
-    //TODO set custom username as instead of username
-  }
+//  public void setUsername(String username){
+//    //setValue(userRepresentation -> userRepresentation.setUsername(username));
+//    //TODO set custom username as instead of username
+//  }
+//
+//  public void setFirstName(UUID userUUID,String firstName){
+//    setValue(userUUID, userRepresentation -> userRepresentation.setFirstName(firstName));
+//  }
+//
+//  public void setLastName(UUID userUUID,String lastName){
+//    setValue(userUUID, userRepresentation -> userRepresentation.setLastName(lastName));
+//  }
+//
+//  public void addUserAttribute(UUID userUUID, String key, String value) {
+//    Map<String, String> values = new HashMap<>();
+//    values.put(key, value);
+//    addUserAttributes(userUUID, values);
+//  }
+//
+//  public void addUserAttributes(UUID userUUID, Map<String, String> values) {
+//    setValue(userUUID, userRepresentation -> {
+//      Map<String, List<String>> attributes = Optional.ofNullable(
+//              userRepresentation.getAttributes())
+//          .orElse(new HashMap<>());
+//      for (Entry<String, String> entry : values.entrySet()) {
+//        attributes.put(entry.getKey(), List.of(entry.getValue()));
+//      }
+//      userRepresentation.setAttributes(attributes);
+//      }
+//    );
+//  }
 
-  public void setFirstName(String firstName){
-    setValue(userRepresentation -> userRepresentation.setFirstName(firstName));
-  }
-
-  public void setLastName(String lastName){
-    setValue(userRepresentation -> userRepresentation.setLastName(lastName));
-  }
-
-  public void addUserAttribute(String key, String value) {
-    Map<String, String> values = new HashMap<>();
-    values.put(key, value);
-    addUserAttributes(values);
-  }
-
-  public void addUserAttributes(Map<String, String> values) {
-    setValue(userRepresentation -> {
-      Map<String, List<String>> attributes = Optional.ofNullable(
-              userRepresentation.getAttributes())
-          .orElse(new HashMap<>());
-      for (Entry<String, String> entry : values.entrySet()) {
-        attributes.put(entry.getKey(), List.of(entry.getValue()));
-      }
-      userRepresentation.setAttributes(attributes);
-      }
-    );
-  }
-
-  public void updateUser(User user){
-    UserResource userResource = getUserResource();
-    UserRepresentation userRepresentation = userResource
+  public void updateUser(User updatedUser){
+    UserResource currentUserResource = getUserResource(updatedUser.uuid());
+    UserRepresentation userRepresentation = currentUserResource
         .toRepresentation();
 
-    userRepresentation.setFirstName(user.firstName());
-    userRepresentation.setLastName(user.lastName());
+    userRepresentation.setFirstName(updatedUser.firstName());
+    userRepresentation.setLastName(updatedUser.lastName());
 
     Map<String, List<String>> attributes = Optional.ofNullable(
             userRepresentation.getAttributes())
         .orElse(new HashMap<>());
-    attributes.put("custom_username", List.of(user.username()));
-    attributes.put("photo_path", List.of(user.photoPath()));
-    attributes.put("sex", List.of(user.sex().name()));
-    attributes.put("phone", List.of(user.phone()));
+    attributes.put("custom_username", List.of(updatedUser.username()));
+    attributes.put("photo_path", List.of(updatedUser.photoPath()));
+    attributes.put("sex", List.of(updatedUser.sex().name()));
+    attributes.put("phone", List.of(updatedUser.phone()));
     userRepresentation.setAttributes(attributes);
 
-    userResource.update(userRepresentation);
+    currentUserResource.update(userRepresentation);
   }
 
-  private void setValue(Consumer<UserRepresentation> function){
-    UserResource userResource = getUserResource();
-    UserRepresentation userRepresentation = userResource
-        .toRepresentation();
+//  private void setValue(UUID userUUID, Consumer<UserRepresentation> function){
+//    UserResource userResource = getUserResource(userUUID);
+//    UserRepresentation userRepresentation = userResource
+//        .toRepresentation();
+//
+//    function.accept(userRepresentation);
+//
+//    userResource.update(userRepresentation);
+//  }
 
-    function.accept(userRepresentation);
-
-    userResource.update(userRepresentation);
-  }
-
-  private UserResource getUserResource(){
+  private UserResource getUserResource(UUID userUUID){
     return keycloak.realm("dance-network")
         .users()
-        .get(getCurrentUser().uuid().toString());
-  }
-
-  private Jwt getJwt(){
-    HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-    var authorizationHeader = request.getHeader("Authorization");
-    return decoder.decode(authorizationHeader.split(" ")[1]);
+        .get(userUUID.toString());
   }
 }

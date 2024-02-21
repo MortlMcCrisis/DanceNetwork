@@ -129,7 +129,7 @@ const DanceNewsfeed=()=>{
         if(keycloak.authenticated) {
             const fetchClients = async () => {
                 try {
-                    const response = await fetch('/newsfeed-entries', {
+                    const response = await fetch('/api/v1/newsfeed-entries', {
                         headers: {
                             Authorization: `Bearer ${keycloak.token}`,
                             'Content-Type': 'application/json',

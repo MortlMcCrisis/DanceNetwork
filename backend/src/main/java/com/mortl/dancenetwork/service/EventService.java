@@ -18,11 +18,11 @@ public class EventService {
 
   private final EventRepository eventRepository;
 
-  private final UserClient userClient;
+  private final UserService userService;
 
   public EventDTO createEvent(EventDTO eventDTO)
   {
-    User currentUser = userClient.getCurrentUser();
+    User currentUser = userService.getCurrentUser();
     Event savedEvent = eventRepository.saveAndFlush(eventDTO.toModel(currentUser.uuid()));
 
     return EventDTO.fromModel(savedEvent);
@@ -52,4 +52,13 @@ public class EventService {
       return EventDTO.fromModel(
           currentEvent);
     }
+
+  public void publishEvent(long id) {
+    //TODO only the owner of a user should be able to publish an entry
+    Event event = eventRepository.findById(id)
+        .orElseThrow(NotFoundException::new);
+
+    event.setPublished(true);
+    eventRepository.saveAndFlush(event);
   }
+}
