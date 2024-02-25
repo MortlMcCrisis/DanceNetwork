@@ -1,10 +1,12 @@
 package com.mortl.dancenetwork.dto;
 
 import com.mortl.dancenetwork.model.Event;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
-public record EventDTO(Long id, UUID creator, Date startDate, Date endDate, String name, String location, String website, String email, boolean published) {
+public record EventDTO(Long id, UUID creator, LocalDate startDate, LocalDate endDate, String name, String location, String website, String email, boolean published) {
 
   public Event toModel(UUID creator){
     return Event.builder()

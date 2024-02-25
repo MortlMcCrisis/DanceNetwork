@@ -64,7 +64,6 @@ const DanceEventDetailHeader=()=> {
         throw new Error('Network response was not ok');
       }
 
-      //TODO update status (published state)
       window.location.reload();
 
     } catch (error) {

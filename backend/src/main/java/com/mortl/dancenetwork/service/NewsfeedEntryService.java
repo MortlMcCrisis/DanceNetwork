@@ -4,7 +4,6 @@ import com.mortl.dancenetwork.dto.NewsfeedEntryDTO;
 import com.mortl.dancenetwork.model.NewsfeedEntry;
 import com.mortl.dancenetwork.repository.NewsfeedEntryRepository;
 import com.mortl.dancenetwork.entity.User;
-import com.mortl.dancenetwork.client.UserClient;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class NewsfeedEntryService {
+  //TODO introduce interfaces for all services
 
   private final NewsfeedEntryRepository newsfeedEntryRepository;
 

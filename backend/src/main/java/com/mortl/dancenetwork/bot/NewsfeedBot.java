@@ -1,20 +1,14 @@
 package com.mortl.dancenetwork.bot;
 
-import com.mortl.dancenetwork.dto.NewsfeedEntryDTO;
 import com.mortl.dancenetwork.entity.User;
 import com.mortl.dancenetwork.model.NewsfeedEntry;
 import com.mortl.dancenetwork.repository.NewsfeedEntryRepository;
-import com.mortl.dancenetwork.service.NewsfeedEntryService;
 import com.mortl.dancenetwork.service.UserService;
 import de.svenjacobs.loremipsum.LoremIpsum;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.keycloak.admin.client.Keycloak;
-import org.springframework.boot.web.embedded.netty.NettyWebServer;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -50,7 +44,7 @@ public class NewsfeedBot {
     newsfeedEntryRepository.save(NewsfeedEntry.builder()
         .creator(user.uuid())
         .textField(loremIpsum.getWords(randomValue))
-        .creationDate(new Date())
+        .creationDate(LocalDateTime.now())
         .build());
   }
 }

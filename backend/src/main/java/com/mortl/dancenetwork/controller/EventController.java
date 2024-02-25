@@ -11,6 +11,7 @@ import com.mortl.dancenetwork.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -73,7 +74,7 @@ public class EventController {
         currentUser.username(),
         currentUser.sex(),
         currentUser.username() + " created the event " + event.name() + ".\nIt finds place at " + event.location() + " at " + event.startDate() + ".",
-        new Date()));
+        LocalDateTime.now()));
     return ResponseEntity.ok().build();
   }
 }
