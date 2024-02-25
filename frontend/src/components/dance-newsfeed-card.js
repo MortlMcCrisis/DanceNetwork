@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import Card from '../components/Card'
  import { Dropdown , Table, Tooltip, OverlayTrigger, Button} from 'react-bootstrap'
  import {Link} from 'react-router-dom'
@@ -15,7 +15,64 @@ import icon7 from "../assets/images/icon/07.png";
 import ShareOffcanvas from "./share-offcanvas";
 import user2 from "../assets/images/user/02.jpg";
 import user3 from "../assets/images/user/03.jpg";
-const DanceNewsfeedCard = (props) => {
+import {useKeycloak} from "@react-keycloak/web";
+const DanceNewsfeedCard = ({id}) => {
+
+    const { keycloak, initialized } = useKeycloak();
+
+    const [newsfeedEntry, setNewsfeedEntry] = useState([]);
+
+    useEffect(() => {
+        if(keycloak.authenticated) {
+            const fetchNewsfeedEntry = async () => {
+                try {
+                    const response = await fetch(`/api/v1/newsfeed-entries/${id}`, {
+                        headers: {
+                            Authorization: `Bearer ${keycloak.token}`,
+                            'Content-Type': 'application/json',
+                        },
+                    });
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    const body = await response.json();
+                    console.log(body);
+                    setNewsfeedEntry(body);
+                } catch (error) {
+                    console.error(`Error fetching newsfeed with id ${id}:`, error);
+                }
+            };
+
+            fetchNewsfeedEntry();
+        }
+    }, [keycloak.authenticated]);
+
+    function formatTimestamp(timestamp) {
+        const now = new Date();
+        const pastDate = new Date(timestamp);
+
+        const timeDifference = now - pastDate;
+        const seconds = Math.floor(timeDifference / 1000);
+        const minutes = Math.floor(seconds / 60);
+        const hours = Math.floor(minutes / 60);
+        const days = Math.floor(hours / 24);
+
+        if (seconds < 60) {
+            return "Less than a minute";
+        } else if (minutes < 60) {
+            return `${minutes} ${minutes === 1 ? "minute" : "minutes"} ago`;
+        } else if (hours < 24) {
+            return `${hours} ${hours === 1 ? "hour" : "hours"} ago`;
+        } else if (days < 7) {
+            return `${days} ${days === 1 ? "day" : "days"} ago`;
+        } else {
+            // Wenn es länger als 7 Tage ist, zeige das Datum im Format "yyyy MM dd"
+            const year = pastDate.getFullYear();
+            const month = String(pastDate.getMonth() + 1).padStart(2, "0");
+            const day = String(pastDate.getDate()).padStart(2, "0");
+            return `${year} ${month} ${day}`;
+        }
+    }
    
     return (
         <>
@@ -26,14 +83,14 @@ const DanceNewsfeedCard = (props) => {
                             <div className="user-post-data">
                                 <div className="d-flex justify-content-between">
                                     <div className="me-3">
-                                        <img className="rounded-circle img-fluid" src={props.photoPath === null ? '/users/placeholder.jpg' : `/users/${props.photoPath}`} alt="" style={{ width: '65px', height: '55px' }}/>
+                                        <img className="rounded-circle img-fluid" src={newsfeedEntry.photoPath === null ? '/users/placeholder.jpg' : `/users/${newsfeedEntry.photoPath}`} alt="" style={{ width: '65px', height: '55px' }}/>
                                     </div>
                                     <div className="w-100">
                                         <div className=" d-flex  justify-content-between">
                                             <div>
-                                                <h5 className="mb-0 d-inline-block">{props.userName}</h5>
-                                                <p className="mb-0 ps-1 d-inline-block">Updated {props.creatorSex === 'MALE' ? 'his' : 'her'} status</p>
-                                                <p className="mb-0 text-primary">{props.creationDate}</p>
+                                                <h5 className="mb-0 d-inline-block">{newsfeedEntry.userName}</h5>
+                                                <p className="mb-0 ps-1 d-inline-block">Updated {newsfeedEntry.creatorSex === 'MALE' ? 'his' : 'her'} status</p>
+                                                <p className="mb-0 text-primary">{formatTimestamp(newsfeedEntry.creationDate)}</p>
                                             </div>
                                             <div className="card-post-toolbar">
                                                 <Dropdown>
@@ -89,7 +146,7 @@ const DanceNewsfeedCard = (props) => {
                                 </div>
                             </div>
                             <div className="mt-3">
-                                <p>{props.textField}</p>
+                                <p>{newsfeedEntry.textField}</p>
                             </div>
                             <div className="comment-area mt-3">
                                 <div className="d-flex justify-content-between align-items-center flex-wrap">

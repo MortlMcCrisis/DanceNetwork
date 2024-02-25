@@ -51,7 +51,7 @@ import {useKeycloak} from "@react-keycloak/web";
 const FsLightbox = ReactFsLightbox.default ? ReactFsLightbox.default : ReactFsLightbox;
 
 const DanceNewsfeed=()=>{
-    const [clients, setClients] = useState([]);
+    const [ids, setIds] = useState([]);
 
     const { keycloak, initialized } = useKeycloak();
 
@@ -127,7 +127,7 @@ const DanceNewsfeed=()=>{
 
     useEffect(() => {
         if(keycloak.authenticated) {
-            const fetchClients = async () => {
+            const fetchIds = async () => {
                 try {
                     const response = await fetch('/api/v1/newsfeed-entries', {
                         headers: {
@@ -140,42 +140,15 @@ const DanceNewsfeed=()=>{
                     }
                     const body = await response.json();
                     console.log(body);
-                    setClients(body);
+                    setIds(body);
                 } catch (error) {
-                    console.error('Error fetching clients:', error);
+                    console.error('Error fetching newsfeed ids:', error);
                 }
             };
 
-            fetchClients();
+            fetchIds();
         }
     }, [keycloak.authenticated]);
-
-    function formatTimestamp(timestamp) {
-        const now = new Date();
-        const pastDate = new Date(timestamp);
-
-        const timeDifference = now - pastDate;
-        const seconds = Math.floor(timeDifference / 1000);
-        const minutes = Math.floor(seconds / 60);
-        const hours = Math.floor(minutes / 60);
-        const days = Math.floor(hours / 24);
-
-        if (seconds < 60) {
-            return "Weniger als eine Minute";
-        } else if (minutes < 60) {
-            return `Vor ${minutes} ${minutes === 1 ? "Minute" : "Minuten"}`;
-        } else if (hours < 24) {
-            return `Vor ${hours} ${hours === 1 ? "Stunde" : "Stunden"}`;
-        } else if (days < 7) {
-            return `Vor ${days} ${days === 1 ? "Tag" : "Tagen"}`;
-        } else {
-            // Wenn es länger als 7 Tage ist, zeige das Datum im Format "yyyy MM dd"
-            const year = pastDate.getFullYear();
-            const month = String(pastDate.getMonth() + 1).padStart(2, "0");
-            const day = String(pastDate.getDate()).padStart(2, "0");
-            return `${year} ${month} ${day}`;
-        }
-    }
 
     return(
         <>
@@ -640,10 +613,10 @@ const DanceNewsfeed=()=>{
                                     </Card.Body>
                                 </Card>
                             </Col>
-                            {clients.map(client =>
-                                <div key={client.id}>
+                            {ids.map(id =>
+                                <div key={id}>
                                     <Col sm={12}>
-                                        <DanceNewsfeedCard photoPath={client.photoPath} userName={client.userName} creatorSex={client.creatorSex} textField={client.textField} creationDate={formatTimestamp(client.creationDate)} />
+                                        <DanceNewsfeedCard id={id} />
                                     </Col>
                                 </div>
                             )}

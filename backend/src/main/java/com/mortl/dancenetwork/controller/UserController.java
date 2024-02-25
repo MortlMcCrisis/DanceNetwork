@@ -1,10 +1,13 @@
 package com.mortl.dancenetwork.controller;
 
 import com.mortl.dancenetwork.dto.UserDTO;
-import com.mortl.dancenetwork.service.UserService;
+import com.mortl.dancenetwork.service.IUserService;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,10 +19,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserController {
 
-  private final UserService userService;
+  private final IUserService userService;
+
+  @GetMapping("/{uuuid}")
+  public UserDTO getUser(@PathVariable UUID userUUID){
+    return userService.getUser(userUUID);
+  }
+
 
   @PutMapping
-  public ResponseEntity updateNewsfeedEntry(@RequestBody UserDTO userDTO) {
+  public ResponseEntity updateUser(@RequestBody UserDTO userDTO) {
 
     return ResponseEntity.ok(userService.updateUser(userDTO));
   }

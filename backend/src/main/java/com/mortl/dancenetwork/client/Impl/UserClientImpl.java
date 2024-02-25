@@ -1,14 +1,13 @@
-package com.mortl.dancenetwork.client;
+package com.mortl.dancenetwork.client.Impl;
 
+import com.mortl.dancenetwork.client.IUserClient;
 import com.mortl.dancenetwork.dto.Sex;
 import com.mortl.dancenetwork.entity.User;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Consumer;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.UserResource;
@@ -18,7 +17,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class UserClient {
+public class UserClientImpl implements IUserClient {
 
   private final Keycloak keycloak;
 
@@ -28,19 +27,21 @@ public class UserClient {
 //        .toList();
 //  }
 
+  @Override
+  public User fetchUser(UUID uuid) {
+    UserRepresentation userRepresentation = getKeycloakUsers()
+        .get(uuid.toString())
+        .toRepresentation();
+    return keycloakRepresentationToUser(userRepresentation);
+  }
+
+  @Override
   public List<User> fetchUsers(){
     return getKeycloakUsers()
         .list()
         .stream()
         .map(this::keycloakRepresentationToUser)
         .toList();
-  }
-
-  public User fetchUser(UUID uuid) {
-    UserRepresentation userRepresentation = getKeycloakUsers()
-        .get(uuid.toString())
-        .toRepresentation();
-    return keycloakRepresentationToUser(userRepresentation);
   }
 
   private UsersResource getKeycloakUsers(){
@@ -103,6 +104,7 @@ public class UserClient {
 //    );
 //  }
 
+  @Override
   public void updateUser(User updatedUser){
     UserResource currentUserResource = getUserResource(updatedUser.uuid());
     UserRepresentation userRepresentation = currentUserResource

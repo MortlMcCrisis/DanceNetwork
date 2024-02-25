@@ -1,10 +1,11 @@
 package com.mortl.dancenetwork.controller;
 
 import com.mortl.dancenetwork.dto.NewsfeedEntryDTO;
-import com.mortl.dancenetwork.service.NewsfeedEntryService;
+import com.mortl.dancenetwork.service.INewsfeedEntryService;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -24,11 +26,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class NewsfeedEntryController {
 
-  private final NewsfeedEntryService newsfeedEntryService;
+  private final INewsfeedEntryService newsfeedEntryService;
 
   @GetMapping
-  public List<NewsfeedEntryDTO> getNewsfeedEntries() {
-    return newsfeedEntryService.getNewsfeedEntries();
+  public List<Long> getNewsfeedEntries(
+      @RequestParam(value = "useruuid", required = false) String userUUID){
+    if(userUUID == null){
+      return newsfeedEntryService.getNewsfeedEntries();
+    }
+
+    return newsfeedEntryService.getNewsfeedEntriesForUser(UUID.fromString(userUUID));
+  }
+
+  @GetMapping("/{id}")
+  public NewsfeedEntryDTO getNewsfeedEntry(
+      @PathVariable Long id){
+    return newsfeedEntryService.getNewsfeedEntry(id);
   }
 
   @PostMapping

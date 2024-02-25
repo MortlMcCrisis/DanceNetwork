@@ -16,4 +16,13 @@ public record UserDTO(String photoPath, String username, String firstName, Strin
         .phone(phone())
         .build();
   }
+
+  public static UserDTO fromModel(User user){
+    return new UserDTO(user.photoPath(),
+        user.username(),
+        user.firstName(),
+        user.lastName(),
+        user.sex(),
+        user.phone());
+  }
 }

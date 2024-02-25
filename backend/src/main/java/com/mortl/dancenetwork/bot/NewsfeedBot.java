@@ -3,7 +3,7 @@ package com.mortl.dancenetwork.bot;
 import com.mortl.dancenetwork.entity.User;
 import com.mortl.dancenetwork.model.NewsfeedEntry;
 import com.mortl.dancenetwork.repository.NewsfeedEntryRepository;
-import com.mortl.dancenetwork.service.UserService;
+import com.mortl.dancenetwork.service.impl.UserServiceImpl;
 import de.svenjacobs.loremipsum.LoremIpsum;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,7 +22,7 @@ public class NewsfeedBot {
 
   private List<User> users;
 
-  public NewsfeedBot(UserService userService, NewsfeedEntryRepository newsfeedEntryRepository){
+  public NewsfeedBot(UserServiceImpl userService, NewsfeedEntryRepository newsfeedEntryRepository){
     this.newsfeedEntryRepository = newsfeedEntryRepository;
     loremIpsum = new LoremIpsum();
     users = userService.getAllUsers();

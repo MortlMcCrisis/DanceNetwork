@@ -1,5 +1,6 @@
-package com.mortl.dancenetwork.service;
+package com.mortl.dancenetwork.service.impl;
 
+import com.mortl.dancenetwork.service.IStorageService;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -12,16 +13,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Component
 @Slf4j
-public class StorageService {
+public class StorageServiceImpl implements IStorageService {
 
   private final Path rootLocation;
 
-  public StorageService() {
+  public StorageServiceImpl() {
     this.rootLocation = Paths.get(
         Paths.get("").toAbsolutePath() + "/../frontend/public/users")
         .normalize();
   }
 
+  @Override
   public void store(MultipartFile file) {
     try {
       if (file.isEmpty()) {

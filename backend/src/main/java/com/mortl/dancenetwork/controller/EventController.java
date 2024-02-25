@@ -1,21 +1,16 @@
 package com.mortl.dancenetwork.controller;
 
-import ch.qos.logback.core.encoder.EchoEncoder;
 import com.mortl.dancenetwork.dto.EventDTO;
 import com.mortl.dancenetwork.dto.NewsfeedEntryDTO;
 import com.mortl.dancenetwork.entity.User;
-import com.mortl.dancenetwork.model.Event;
-import com.mortl.dancenetwork.service.EventService;
-import com.mortl.dancenetwork.service.NewsfeedEntryService;
-import com.mortl.dancenetwork.service.UserService;
-import jakarta.servlet.http.HttpServletResponse;
+import com.mortl.dancenetwork.service.IEventService;
+import com.mortl.dancenetwork.service.INewsfeedEntryService;
+import com.mortl.dancenetwork.service.IUserService;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
-import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,11 +26,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class EventController {
 
-  private final EventService eventService;
+  private final IEventService eventService;
 
-  private final NewsfeedEntryService newsfeedEntryService;
+  private final INewsfeedEntryService newsfeedEntryService;
 
-  private final UserService userService;
+  private final IUserService userService;
 
   @PostMapping
   public ResponseEntity createEvent(@RequestBody EventDTO eventDTO) throws URISyntaxException {
