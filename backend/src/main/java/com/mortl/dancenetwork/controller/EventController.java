@@ -64,10 +64,8 @@ public class EventController {
     EventDTO event = eventService.getEvent(id);
 
     newsfeedEntryService.createNewsfeedEntry(new NewsfeedEntryDTO(
-        currentUser.photoPath(),
         null,
-        currentUser.username(),
-        currentUser.sex(),
+        currentUser.uuid(),
         currentUser.username() + " created the event " + event.name() + ".\nIt finds place at " + event.location() + " at " + event.startDate() + ".",
         LocalDateTime.now()));
     return ResponseEntity.ok().build();

@@ -27,13 +27,9 @@ public class NewsfeedEntryServiceImpl implements INewsfeedEntryService {
   }
 
   public NewsfeedEntryDTO getNewsfeedEntry(Long id) throws NotFoundException {
-    NewsfeedEntry newsfeedEntry = newsfeedEntryRepository.findById(id)
-        .orElseThrow(NotFoundException::new);
-    //TODO refactor to be able to get the real user. This here is wrong and totally shit
-    User user = userService.getUser(newsfeedEntry.getCreator()).toEntity(userService.getCurrentUser().uuid());
     return NewsfeedEntryDTO.fromModel(
-        newsfeedEntry,
-        user
+        newsfeedEntryRepository.findById(id)
+            .orElseThrow(NotFoundException::new)
     );
   }
 
@@ -50,9 +46,7 @@ public class NewsfeedEntryServiceImpl implements INewsfeedEntryService {
         newsfeedEntry.toModel(
             currentUser.uuid()));
 
-    return NewsfeedEntryDTO.fromModel(
-        savedNewsfeedEntry,
-        currentUser);
+    return NewsfeedEntryDTO.fromModel(savedNewsfeedEntry);
   }
 
   @Override
@@ -66,9 +60,7 @@ public class NewsfeedEntryServiceImpl implements INewsfeedEntryService {
     currentNewsfeedEntry.setCreationDate(newsfeedEntry.creationDate());
     currentNewsfeedEntry = newsfeedEntryRepository.save(currentNewsfeedEntry);
 
-    return NewsfeedEntryDTO.fromModel(
-        currentNewsfeedEntry,
-        currentUser);
+    return NewsfeedEntryDTO.fromModel(currentNewsfeedEntry);
   }
 
   @Override
