@@ -1342,14 +1342,14 @@ const Header = () => {
                     loading="lazy"
                   />
                   <div className="caption d-none d-lg-block">
-                    <h6 className="mb-0 line-height">Bni Cyst</h6>
+                    <h6 className="mb-0 line-height">{keycloak.idTokenParsed.custom_username}</h6>
                   </div>
                 </Dropdown.Toggle>
                 <Dropdown.Menu className="sub-drop caption-menu">
                   <Card className="shadow-none m-0">
                     <Card.Header>
                       <div className="header-title">
-                        <h5 className="mb-0 ">Hello Bni Cyst</h5>
+                        <h5 className="mb-0 ">Hello {keycloak.idTokenParsed.custom_username}</h5>
                       </div>
                     </Card.Header>
                     <Card.Body className="p-0 ">

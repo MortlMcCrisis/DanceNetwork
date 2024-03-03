@@ -27,6 +27,9 @@ public class NewsfeedEntry {
   private Long id;
 
   @Column(nullable = false)
+  private NewsfeedEntryType type;
+
+  @Column(nullable = false)
   private UUID creator;
 
   @Column(length = 10000, nullable = false)

@@ -55,7 +55,7 @@ const DanceNewsfeedCard = ({id}) => {
                     <Card.Body>
                         <div className="card card-block card-stretch card-height">
                             <div className="card-body">
-                                <DanceNewsfeedCardHeader creatorUUID={newsfeedEntry.creator} creationDate={newsfeedEntry.creationDate} />
+                                <DanceNewsfeedCardHeader type={newsfeedEntry.type} creatorUUID={newsfeedEntry.creator} creationDate={newsfeedEntry.creationDate} />
                                 <div className="mt-3">
                                     <p>{newsfeedEntry.textField}</p>
                                 </div>

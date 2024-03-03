@@ -127,7 +127,7 @@ const DanceEventDetailHeader=()=> {
                       {data.website && (
                           <div className="d-flex align-items-center mb-1">
                             <span className="material-symbols-outlined md-18">language</span>
-                            <Link to="#" className="link-primary h6 ms-2">{data.website}</Link>
+                            <Link to={data.website} className="link-primary h6 ms-2">{data.website}</Link>
                           </div>
                       )}
                       {data.email && (

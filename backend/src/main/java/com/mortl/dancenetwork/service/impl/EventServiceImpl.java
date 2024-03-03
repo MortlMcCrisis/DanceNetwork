@@ -1,11 +1,17 @@
 package com.mortl.dancenetwork.service.impl;
 
 import com.mortl.dancenetwork.dto.EventDTO;
+import com.mortl.dancenetwork.dto.NewsfeedEntryDTO;
 import com.mortl.dancenetwork.entity.User;
 import com.mortl.dancenetwork.model.Event;
+import com.mortl.dancenetwork.model.NewsfeedEntryType;
 import com.mortl.dancenetwork.repository.EventRepository;
 import com.mortl.dancenetwork.service.IEventService;
+import com.mortl.dancenetwork.service.INewsfeedEntryService;
 import com.mortl.dancenetwork.service.IUserService;
+import com.mortl.dancenetwork.util.NewsfeedFactory;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import javax.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +27,10 @@ public class EventServiceImpl implements IEventService {
 
   private final IUserService userService;
 
+  private final INewsfeedEntryService newsfeedEntryService;
+
+  private final NewsfeedFactory newsfeedFactory;
+
   @Override
   public EventDTO createEvent(EventDTO eventDTO)
   {
@@ -31,7 +41,8 @@ public class EventServiceImpl implements IEventService {
   }
 
   @Override
-  public EventDTO getEvent(Long id){
+  public EventDTO getEvent(Long id)
+  {
     Optional<Event> event = eventRepository.findById(id);
     if(!event.isPresent()){
       throw new NotFoundException("Event with id " + id + " not found");
@@ -40,7 +51,13 @@ public class EventServiceImpl implements IEventService {
   }
 
   @Override
-  public EventDTO updateEvent(EventDTO event) throws NotFoundException{
+  public List<Long> getAllPublishedEvents(){
+    return eventRepository.findAllPublishedIds();
+  }
+
+  @Override
+  public EventDTO updateEvent(EventDTO event) throws NotFoundException
+  {
     //TODO only the owner of a user should be able to update an entry
     Event currentEvent = eventRepository.findById(event.id())
         .orElseThrow(NotFoundException::new);
@@ -58,12 +75,18 @@ public class EventServiceImpl implements IEventService {
   }
 
   @Override
-  public void publishEvent(long id) {
+  public void publishEvent(long id)
+  {
     //TODO only the owner of a user should be able to publish an entry
     Event event = eventRepository.findById(id)
         .orElseThrow(NotFoundException::new);
 
     event.setPublished(true);
     eventRepository.saveAndFlush(event);
+
+    User currentUser = userService.getCurrentUser();
+
+    newsfeedEntryService.createNewsfeedEntry(NewsfeedEntryDTO.fromModel(
+        newsfeedFactory.createEventPublishedNewsfeedEntry(currentUser, event)));
   }
 }

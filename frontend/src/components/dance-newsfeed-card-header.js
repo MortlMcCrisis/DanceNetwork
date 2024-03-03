@@ -2,7 +2,8 @@ import React, {useEffect, useState} from 'react'
 import { Dropdown } from 'react-bootstrap'
 import img from '../assets/images/user/user-1.jpg'
 import {useKeycloak} from "@react-keycloak/web";
-const DanceNewsfeedCardHeader = ({creatorUUID, creationDate}) => {
+
+const DanceNewsfeedCardHeader = ({type, creatorUUID, creationDate}) => {
 
     const { keycloak, initialized } = useKeycloak();
 
@@ -72,7 +73,30 @@ const DanceNewsfeedCardHeader = ({creatorUUID, creationDate}) => {
                             <div className=" d-flex  justify-content-between">
                                 <div>
                                     <h5 className="mb-0 d-inline-block">{creator.username}</h5>
-                                    <p className="mb-0 ps-1 d-inline-block">Updated {creator.creatorSex === 'MALE' ? 'his' : 'her'} status</p>
+                                    {
+                                        (() => {
+                                            switch (type) {
+                                                case "POST":
+                                                    return (
+                                                        <p className="mb-0 ps-1 d-inline-block">Created a post</p>);
+                                                    break;
+                                                case "EVENT_CREATION":
+                                                    return (
+                                                        <p className="mb-0 ps-1 d-inline-block">Created an event</p>);
+                                                    break;
+                                                case "STATUS_UPDATE":
+                                                    return (
+                                                        <p className="mb-0 ps-1 d-inline-block">Updated {creator.sex
+                                                        === 'MALE' ? 'his'
+                                                            : 'her'} status</p>);
+                                                    break;
+                                                default:
+                                                    return (
+                                                        <p className="mb-0 ps-1 d-inline-block">Blub</p>);
+                                            }
+                                        }
+                                        )()
+                                    }
                                     <p className="mb-0 text-primary">{formatTimestamp(creationDate)}</p>
                                 </div>
                                 <div className="card-post-toolbar">

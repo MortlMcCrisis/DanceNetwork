@@ -21,12 +21,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+//TODO make singular or all other endpoints plural -> Find rule
 @RequestMapping("/api/v1/newsfeed-entries")
 @Slf4j
 @RequiredArgsConstructor
 public class NewsfeedEntryController {
 
   private final INewsfeedEntryService newsfeedEntryService;
+
+  //TODO write down all architecture rules and conventions
 
   @GetMapping
   public List<Long> getNewsfeedEntries(

@@ -74,6 +74,8 @@ const FsLightbox = ReactFsLightbox.default ? ReactFsLightbox.default : ReactFsLi
 
 const DanceEventDetail=()=>{
 
+    const { id } = useParams();
+
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -91,6 +93,11 @@ const DanceEventDetail=()=>{
     }
     return(
         <>
+            <div className="btn dance-btn-fixed-bottom btn-danger btn-icon btn-setting" >
+                <Link to={`/dashboards/app/dance-event-detail/${id}/dance-buy-ticket`}>
+                    <Button variant="success" className="rounded-pill mb-1">Tickets</Button>{' '}
+                </Link>
+            </div>
             <FsLightbox
                 toggler={imageController.toggler}
                 sources={[g1,g2,g3,g4,g5,g6,g7,g8,g9]}

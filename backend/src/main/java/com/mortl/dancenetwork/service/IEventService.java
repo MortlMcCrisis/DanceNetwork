@@ -1,6 +1,7 @@
 package com.mortl.dancenetwork.service;
 
 import com.mortl.dancenetwork.dto.EventDTO;
+import java.util.List;
 import javax.ws.rs.NotFoundException;
 
 public interface IEventService {
@@ -8,6 +9,8 @@ public interface IEventService {
   EventDTO createEvent(EventDTO eventDTO);
 
   EventDTO getEvent(Long id);
+
+  List<Long> getAllPublishedEvents();
 
   EventDTO updateEvent(EventDTO event) throws NotFoundException;
 

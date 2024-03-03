@@ -51,6 +51,7 @@ import {useKeycloak} from "@react-keycloak/web";
 const FsLightbox = ReactFsLightbox.default ? ReactFsLightbox.default : ReactFsLightbox;
 
 const DanceNewsfeed=()=>{
+
     const [ids, setIds] = useState([]);
 
     const { keycloak, initialized } = useKeycloak();

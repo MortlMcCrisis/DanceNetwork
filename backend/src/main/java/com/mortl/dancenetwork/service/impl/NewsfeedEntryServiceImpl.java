@@ -1,11 +1,13 @@
 package com.mortl.dancenetwork.service.impl;
 
 import com.mortl.dancenetwork.dto.NewsfeedEntryDTO;
-import com.mortl.dancenetwork.dto.UserDTO;
+import com.mortl.dancenetwork.model.Event;
 import com.mortl.dancenetwork.model.NewsfeedEntry;
+import com.mortl.dancenetwork.model.NewsfeedEntryType;
 import com.mortl.dancenetwork.repository.NewsfeedEntryRepository;
 import com.mortl.dancenetwork.entity.User;
 import com.mortl.dancenetwork.service.INewsfeedEntryService;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import javax.ws.rs.NotFoundException;
@@ -22,10 +24,10 @@ public class NewsfeedEntryServiceImpl implements INewsfeedEntryService {
 
   @Override
   public List<Long> getNewsfeedEntries() {
-    //TODO sort by date
-    return newsfeedEntryRepository.findAllIds();
+    return newsfeedEntryRepository.findAllIdsOrderByCreationDateDesc();
   }
 
+  @Override
   public NewsfeedEntryDTO getNewsfeedEntry(Long id) throws NotFoundException {
     return NewsfeedEntryDTO.fromModel(
         newsfeedEntryRepository.findById(id)
@@ -36,7 +38,7 @@ public class NewsfeedEntryServiceImpl implements INewsfeedEntryService {
   @Override
   public List<Long> getNewsfeedEntriesForUser(UUID userUUID){
     //TODO respect uuid
-    return newsfeedEntryRepository.findAllIds();
+    return newsfeedEntryRepository.findAllIdsOrderByCreationDateDesc();
   }
 
   @Override
@@ -56,6 +58,7 @@ public class NewsfeedEntryServiceImpl implements INewsfeedEntryService {
         .orElseThrow(NotFoundException::new);
     User currentUser = userService.getCurrentUser();
     currentNewsfeedEntry.setCreator(currentUser.uuid());
+    currentNewsfeedEntry.setType(newsfeedEntry.type());
     currentNewsfeedEntry.setTextField(newsfeedEntry.textField());
     currentNewsfeedEntry.setCreationDate(newsfeedEntry.creationDate());
     currentNewsfeedEntry = newsfeedEntryRepository.save(currentNewsfeedEntry);

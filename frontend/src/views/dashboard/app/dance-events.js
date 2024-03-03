@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {
    Button,
    Col,
@@ -30,10 +30,40 @@ import img6 from '../../../assets/images/page-img/profile-bg6.jpg'
 import Datepicker from "../../../components/datepicker";
 import {useKeycloak} from "@react-keycloak/web";
 import DanceEventsCreateButton from "./dance-events-create-button";
+import DanceEventCard from "./dance-events-card";
+import DanceNewsfeedCard from "../../../components/dance-newsfeed-card";
 
 const DanceEvents =() =>{
 
+   const [ids, setIds] = useState([]);
+
    const { keycloak, initialized } = useKeycloak();
+
+   //TODO identical to newsfeed id fetching code except of the endpoint path -> make component to remove duplication
+   useEffect(() => {
+      if(keycloak.authenticated) {
+         const fetchIds = async () => {
+            try {
+               const response = await fetch('/api/v1/event', {
+                  headers: {
+                     Authorization: `Bearer ${keycloak.token}`,
+                     'Content-Type': 'application/json',
+                  },
+               });
+               if (!response.ok) {
+                  throw new Error('Network response was not ok');
+               }
+               const body = await response.json();
+               console.log(body);
+               setIds(body);
+            } catch (error) {
+               console.error('Error fetching newsfeed ids:', error);
+            }
+         };
+
+         fetchIds();
+      }
+   }, [keycloak.authenticated]);
 
    return(
       <>
@@ -44,6 +74,13 @@ const DanceEvents =() =>{
                   <div id="content-page" className="content-page">
                      <Container>
                         <div className="d-grid gap-3 d-grid-template-1fr-19">
+                           {ids.map(id =>
+                               <div key={id}>
+                                  <Col sm={12}>
+                                     <DanceEventCard id={id} />
+                                  </Col>
+                               </div>
+                           )}
                            <div>
                               <Card className=" rounded  mb-0">
                                  <div className="event-images">

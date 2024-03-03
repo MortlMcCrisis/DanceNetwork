@@ -28,6 +28,7 @@ import Profile1 from "../views/dashboard/profiles/profile1";
 import Profile2 from "../views/dashboard/profiles/profile2";
 import Profile3 from "../views/dashboard/profiles/profile3";
 import DanceEventDetail from "../views/dashboard/app/dance-event-detail";
+import DanceBuyTickets from "../views/dashboard/app/dance-buy-tickets";
 
 export const Layout1Router = [
   {
@@ -69,6 +70,10 @@ export const Layout1Router = [
   {
     path: "dashboards/app/dance-event-detail/:id",
     element: <DanceEventDetail />,
+  },
+  {
+    path: "dashboards/app/dance-event-detail/:id/dance-buy-ticket",
+    element: <DanceBuyTickets />,
   },
   {
     path: "dashboards/app/event-detail",

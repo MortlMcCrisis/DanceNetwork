@@ -1,14 +1,10 @@
 package com.mortl.dancenetwork.controller;
 
 import com.mortl.dancenetwork.dto.EventDTO;
-import com.mortl.dancenetwork.dto.NewsfeedEntryDTO;
-import com.mortl.dancenetwork.entity.User;
 import com.mortl.dancenetwork.service.IEventService;
-import com.mortl.dancenetwork.service.INewsfeedEntryService;
-import com.mortl.dancenetwork.service.IUserService;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -28,10 +24,6 @@ public class EventController {
 
   private final IEventService eventService;
 
-  private final INewsfeedEntryService newsfeedEntryService;
-
-  private final IUserService userService;
-
   @PostMapping
   public ResponseEntity createEvent(@RequestBody EventDTO eventDTO) throws URISyntaxException {
     EventDTO savedEvent = eventService.createEvent(eventDTO);
@@ -44,8 +36,13 @@ public class EventController {
     return eventService.getEvent(id);
   }
 
+  @GetMapping
+  public List<Long> getAllEvents() {
+    return eventService.getAllPublishedEvents();
+  }
+
   @PutMapping("/{id}")
-  public ResponseEntity updateNewsfeedEntry(@PathVariable Long id, @RequestBody EventDTO eventDTO) {
+  public ResponseEntity updateEvent(@PathVariable Long id, @RequestBody EventDTO eventDTO) {
     log.info("saving event with id " + id);
     if( id != eventDTO.id()){
       throw new IllegalArgumentException("id in path (" + id + ") does not match the id of the object (" + eventDTO.id() + ").");
@@ -55,19 +52,11 @@ public class EventController {
   }
 
   @PutMapping("/{id}/publish")
-  public ResponseEntity updateNewsfeedEntry(@PathVariable Long id) {
+  public ResponseEntity publishEvent(@PathVariable Long id) {
     log.info("Publishing event with id " + id);
 
     eventService.publishEvent(id);
 
-    User currentUser = userService.getCurrentUser();
-    EventDTO event = eventService.getEvent(id);
-
-    newsfeedEntryService.createNewsfeedEntry(new NewsfeedEntryDTO(
-        null,
-        currentUser.uuid(),
-        currentUser.username() + " created the event " + event.name() + ".\nIt finds place at " + event.location() + " at " + event.startDate() + ".",
-        LocalDateTime.now()));
     return ResponseEntity.ok().build();
   }
 }
