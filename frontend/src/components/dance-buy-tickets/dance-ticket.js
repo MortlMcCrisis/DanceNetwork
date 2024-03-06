@@ -1,16 +1,20 @@
 import { Col, OverlayTrigger, Row, Tooltip} from "react-bootstrap";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Card from "../Card";
 
-const DanceTicket = () => {
+const DanceTicket = ({ticketType, setTicketType}) => {
 
-  const [count, setCount] = useState(1);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    setTicketType(ticketType.id, count)
+  }, [count]);
 
   return (
       <Card>
         <Card.Header className=" d-flex justify-content-between iq-border-bottom mb-0">
           <div className="header-title">
-            <h4 className="card-title">Full Pass</h4>
+            <h4 className="card-title">Full Pass {ticketType.name}</h4>
           </div>
         </Card.Header>
         <Card.Body>
@@ -22,6 +26,7 @@ const DanceTicket = () => {
                     <li>All workshops (Master classes not included)</li>
                     <li>All parties</li>
                     <li>All socials</li>
+                    <li>{ticketType.description}</li>
                   </ul>
                 </div>
               </Col>
@@ -37,7 +42,7 @@ const DanceTicket = () => {
                         </div>
                       </Col>
                       <Col sm="3" md="3" className="col-3">
-                        <span className="product-price">$150</span>
+                        <span className="product-price">${ticketType.price}</span>
                       </Col>
                       <Col sm="3" md="3" className="col-3">
                         <OverlayTrigger placement="top" overlay={

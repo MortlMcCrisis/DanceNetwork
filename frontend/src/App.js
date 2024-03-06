@@ -5,7 +5,6 @@
 import "./assets/scss/socialv.scss"
 import "./assets/scss/customizer.scss"
 
-
 // Redux Selector / Action
 import { useDispatch } from 'react-redux';
 
@@ -18,7 +17,6 @@ import keycloak from "./keycloak";
 function App(props) {
   const dispatch = useDispatch()
   dispatch(setSetting())
-
 
   return (
     <div className="App">

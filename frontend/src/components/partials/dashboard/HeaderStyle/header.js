@@ -1325,10 +1325,10 @@ const Header = () => {
                   <span className="mobile-text  ms-3">Message</span>
                 </Link>
               </Nav.Item>
-                {!keycloak.authenticated && (
+                {initialized && !keycloak.authenticated && (
                   <Button variant="primary" type="button"  className="float-end" onClick={() => keycloak.login()}>Login</Button>
                 )}
-              {keycloak.authenticated && (
+              {initialized && keycloak.authenticated && (
               <Dropdown as="li" className="nav-item user-dropdown">
                 <Dropdown.Toggle
                   href="#"

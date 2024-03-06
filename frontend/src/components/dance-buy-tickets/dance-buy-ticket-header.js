@@ -1,17 +1,13 @@
-import React, {useState} from "react";
 import {Link} from "react-router-dom";
 
-const DanceBuyTicketHeader = () => {
+const DanceBuyTicketHeader = (show) => {
 
-  const [show, setShow] = useState('')
   return (
       <ul id="dance-top-tab-list" className="p-0 row list-inline">
-        <li className={` ${show === 'Image' ? 'active done' : ''} ${show
-        === 'Personal' ? 'active done' : ''} ${show === 'Account'
-            ? 'active done' : ''} ${show === 'A' ? 'active '
-            : ''} col-lg-3 col-md-6 text-start mb-2 active`} id="account">
+        <li className={`${show === 'PersonalData' || show === 'Payment' || show === 'Finish' ? 'done ' : ''}
+                        col-lg-3 col-md-6 text-start mb-2 active`} id="account">
           <Link to="#">
-            <i className="material-symbols-outlined">lock_open</i><span>Account</span>
+            <i className="material-symbols-outlined">insert_drive_file</i><span>Tickets</span>
           </Link>
         </li>
         <li id="personal"
@@ -19,7 +15,7 @@ const DanceBuyTicketHeader = () => {
             === 'Personal' ? 'active done' : ''} ${show === 'Account'
                 ? 'active done' : ''} col-lg-3 col-md-6 mb-2 text-start`}>
           <Link to="#">
-            <i className="material-symbols-outlined">person</i><span>Personal</span>
+            <i className="material-symbols-outlined">person</i><span>Personal Data</span>
           </Link>
         </li>
         <li id="payment"
@@ -27,7 +23,7 @@ const DanceBuyTicketHeader = () => {
             === 'Personal' ? 'active done'
                 : ''} col-lg-3 col-md-6 mb-2 text-start`}>
           <Link to="#">
-            <i className="material-symbols-outlined">photo_camera</i><span>Image</span>
+            <i className="material-symbols-outlined">credit_card</i><span>Payment</span>
           </Link>
         </li>
         <li id="confirm" className={` ${show === 'Image' ? 'active done'

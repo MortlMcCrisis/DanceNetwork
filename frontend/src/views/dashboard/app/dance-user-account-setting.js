@@ -153,6 +153,7 @@ const DanceUserAccountSetting =() =>{
                                 <Form.Label htmlFor="lastName" className="form-label">Last name:</Form.Label>
                                 <Form.Control type="text" className="form-control" id="lastName" value={form.lastName} onChange={handleChange}/>
                             </Form.Group>
+                                    {/*TODO change to any kind of gender neutral sex*/}
                             <Form.Group className="form-group">
                                 <Form.Label >Sex: *</Form.Label>
                                 <Form.Check className="form-check">
@@ -169,7 +170,7 @@ const DanceUserAccountSetting =() =>{
                                 </ListGroupItem>
                                 <ListGroupItem>
                             <Form.Group className="form-group">
-                                <Form.Label htmlFor="email" className="form-label">Email:</Form.Label>
+                                <Form.Label htmlFor="email" className="form-label">E-Mail:</Form.Label>
                                 <Form.Control type="email" className="form-control" id="email" disabled defaultValue={initialized ? keycloak.idTokenParsed.email : ""}/>
                             </Form.Group>
                             <Form.Group className="form-group">

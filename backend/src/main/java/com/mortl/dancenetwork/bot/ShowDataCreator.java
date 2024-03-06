@@ -1,15 +1,17 @@
 package com.mortl.dancenetwork.bot;
 
-import com.mortl.dancenetwork.dto.NewsfeedEntryDTO;
 import com.mortl.dancenetwork.entity.User;
 import com.mortl.dancenetwork.model.Event;
 import com.mortl.dancenetwork.model.NewsfeedEntry;
 import com.mortl.dancenetwork.model.NewsfeedEntryType;
+import com.mortl.dancenetwork.model.TicketType;
 import com.mortl.dancenetwork.repository.EventRepository;
 import com.mortl.dancenetwork.repository.NewsfeedEntryRepository;
+import com.mortl.dancenetwork.repository.TicketTypeRepository;
 import com.mortl.dancenetwork.service.IUserService;
 import com.mortl.dancenetwork.util.NewsfeedFactory;
 import de.svenjacobs.loremipsum.LoremIpsum;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,7 +22,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class NewsfeedBot {
+public class ShowDataCreator {
 
   private NewsfeedEntryRepository newsfeedEntryRepository;
 
@@ -28,18 +30,22 @@ public class NewsfeedBot {
 
   private NewsfeedFactory newsfeedFactory;
 
+  private TicketTypeRepository ticketTypeRepository;
+
   private LoremIpsum loremIpsum;
 
   private List<User> users;
 
-  public NewsfeedBot(
+  public ShowDataCreator(
       IUserService userService,
       EventRepository eventRepository,
       NewsfeedEntryRepository newsfeedEntryRepository,
+      TicketTypeRepository ticketTypeRepository,
       NewsfeedFactory newsfeedFactory){
     this.newsfeedEntryRepository = newsfeedEntryRepository;
     this.eventRepository = eventRepository;
     this.newsfeedFactory = newsfeedFactory;
+    this.ticketTypeRepository = ticketTypeRepository;
     loremIpsum = new LoremIpsum();
     users = userService.getAllUsers();
   }
@@ -79,23 +85,36 @@ public class NewsfeedBot {
   }
 
   private void createEvent(Event event, User user){
-    eventRepository.saveAndFlush( event );
+    event = eventRepository.saveAndFlush( event );
     newsfeedEntryRepository.saveAndFlush(newsfeedFactory.createEventPublishedNewsfeedEntry(user, event));
+    createTicketTypesForEvent(event);
+  }
+
+  private void createTicketTypesForEvent(Event event)
+  {
+    int amountOfTickets = new Random().nextInt(2, 10);
+    for(int i=0; i<amountOfTickets; i++) {
+      ticketTypeRepository.saveAndFlush(TicketType.builder()
+          .price(BigDecimal.valueOf(new Random().nextFloat(15, 250))
+              .setScale(2, BigDecimal.ROUND_HALF_DOWN)
+              .floatValue())
+          .description(getRandomLoremIpsum(5, 20))
+          .name(loremIpsum.getWords(new Random().nextInt(1, 10)))
+          .event(event)
+          .build());
+    }
   }
 
   private void createRandomNewsfeed(User user){
-    Random random = new Random();
-
-    // Generieren Sie einen Zufallswert zwischen 20 und 3000
-    int minValue = 20;
-    int maxValue = 200;
-    int randomValue = random.nextInt(maxValue - minValue + 1) + minValue;
-
     newsfeedEntryRepository.saveAndFlush(NewsfeedEntry.builder()
             .type(NewsfeedEntryType.POST)
             .creator(user.uuid())
-            .textField(loremIpsum.getWords(randomValue))
+            .textField(getRandomLoremIpsum(20, 200))
             .creationDate(LocalDateTime.now())
             .build());
+  }
+
+  private String getRandomLoremIpsum(int min, int max){
+    return loremIpsum.getWords(new Random().nextInt(max - min + 1) + min);
   }
 }
