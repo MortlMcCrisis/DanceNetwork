@@ -2,7 +2,7 @@ import { Col, OverlayTrigger, Row, Tooltip} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
 import Card from "../Card";
 
-const DanceTicket = ({ticketType, setTicketType}) => {
+const DanceBuyTicketsTicketType = ({ticketType, setTicketType}) => {
 
   const [count, setCount] = useState(0);
 
@@ -36,7 +36,7 @@ const DanceTicket = ({ticketType, setTicketType}) => {
                     <Row className=" align-items-center ">
                       <Col sm="6" md="6" className="col-6">
                         <div className="quantity buttons_added">
-                          <input type="button" defaultValue="-" className="minus h5" onClick={() => setCount(count - 1)} />
+                          <input type="button" defaultValue="-" className="minus h5" onClick={() => setCount(count > 0 ? count - 1 : 0)} />
                           <input type="button" defaultValue={count} title="Qty" className="input-text qty text ms-1"  />
                           <input type="button" defaultValue="+" className="plus h5" onClick={() => setCount(count + 1)}/>
                         </div>
@@ -64,4 +64,4 @@ const DanceTicket = ({ticketType, setTicketType}) => {
   )
 }
 
-export default DanceTicket
+export default DanceBuyTicketsTicketType

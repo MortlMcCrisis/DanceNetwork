@@ -11,6 +11,8 @@ import {
 import {useKeycloak} from "@react-keycloak/web";
 import img20 from "../../../assets/images/user/07.jpg";
 import imgpp2 from "../../../assets/images/user/11.png";
+import DanceFormInput from "./dance-form-input";
+import DanceFormCheckbox from "./dance-form-checkbox";
 
 const DanceUserAccountSetting =() =>{
 
@@ -127,7 +129,7 @@ const DanceUserAccountSetting =() =>{
                         <div className="progress mb-3">
                             <ProgressBar style={{width: `${percentage}%`}} label={`${percentage}%`} now={percentage}/>
                         </div>
-                        <Form onSubmit={handleSubmit}>
+                        <Form className="form-horizontal" onSubmit={handleSubmit}>
                             <ListGroup className=" list-group-flush">
                                 <ListGroupItem>
                                     <div className="user-detail text-center mb-3">
@@ -141,50 +143,26 @@ const DanceUserAccountSetting =() =>{
                                     </Form.Group>
                                 </ListGroupItem>
                                 <ListGroupItem>
-                            <Form.Group className="form-group">
-                                <Form.Label htmlFor="username" className="form-label">User Name: *</Form.Label>
-                                <Form.Control type="text" className="form-control" id="username" value={form.username} onChange={handleChange}/>
-                            </Form.Group>
-                            <Form.Group className="form-group">
-                                <Form.Label htmlFor="firstName" className="form-label">Name:</Form.Label>
-                                <Form.Control type="text" className="form-control" id="firstName" value={form.firstName} onChange={handleChange}/>
-                            </Form.Group>
-                            <Form.Group className="form-group">
-                                <Form.Label htmlFor="lastName" className="form-label">Last name:</Form.Label>
-                                <Form.Control type="text" className="form-control" id="lastName" value={form.lastName} onChange={handleChange}/>
-                            </Form.Group>
+                                    <DanceFormInput id="username" label="User name: *" placeholder="Enter your user name" type="text" value={form.username} onChange={(event) => handleChange(event)} />
+                                    <DanceFormInput id="firstName" label="First name: *" placeholder="Enter your first name" type="text" value={form.firstName} onChange={(event) => handleChange(event)} />
+                                    <DanceFormInput id="lastName" label="Last name: *" placeholder="Enter your last name" type="text" value={form.lastName} onChange={(event) => handleChange(event)} />
                                     {/*TODO change to any kind of gender neutral sex*/}
-                            <Form.Group className="form-group">
-                                <Form.Label >Sex: *</Form.Label>
-                                <Form.Check className="form-check">
-                                    <Form.Check className="form-check form-check-inline">
-                                        <Form.Check.Label> Male</Form.Check.Label>
-                                        <Form.Check.Input type="radio" checked={form.sex === 'MALE'} onChange={handleSexChange} className="form-check-input" name="customRadio" id="male"/>
-                                    </Form.Check>
-                                    <Form.Check className="form-check form-check-inline">
-                                        <Form.Check.Input type="radio" checked={form.sex === 'FEMALE'} onChange={handleSexChange} className="form-check-input" name="customRadio" id="female"/>
-                                        <Form.Check.Label> Female</Form.Check.Label>
-                                    </Form.Check>
-                                </Form.Check>
-                            </Form.Group>
+                                    <DanceFormCheckbox id="sex" label="Sex: *" values={[
+                                        {label: 'Male', id: 'male', defaultChecked: form.sex === 'MALE'},
+                                        {label: 'Female', id: 'female', defaultChecked: form.sex === 'FEMALE'}]}
+                                                       onChange={(event) => handleSexChange(event)}/>
                                 </ListGroupItem>
                                 <ListGroupItem>
-                            <Form.Group className="form-group">
-                                <Form.Label htmlFor="email" className="form-label">E-Mail:</Form.Label>
-                                <Form.Control type="email" className="form-control" id="email" disabled defaultValue={initialized ? keycloak.idTokenParsed.email : ""}/>
-                            </Form.Group>
-                            <Form.Group className="form-group">
-                                <Form.Label htmlFor="phone" className="form-label">Phone:</Form.Label>
-                                <Form.Control type="text" className="form-control" id="phone" value={form.phone} onChange={handleChange}/>
-                            </Form.Group>
-                                    </ListGroupItem>
-                            </ListGroup>
-                            <div className="user-detail text-center mb-3">
-                                <Button type="submit" className="btn btn-primary me-2">Save</Button>
-                            </div>
-                        </Form>
-                    </div>
-                </Card.Body>
+                                    <DanceFormInput id="email" label="E-Mail: *" type="email" value={initialized ? keycloak.idTokenParsed.email : ""} disabled={"disabled"} />
+                                    <DanceFormInput id="phone" label="Phone:" placeholder="Enter your phone" type="text" value={form.phone} onChange={(event) => handleChange(event)} />
+                                </ListGroupItem>
+                                </ListGroup>
+                                <div className="user-detail text-center mb-3">
+                                    <Button type="submit" className="btn btn-primary me-2">Save</Button>
+                                </div>
+                            </Form>
+                        </div>
+                    </Card.Body>
                 </Card>
             </Col>
             <Col lg="3">

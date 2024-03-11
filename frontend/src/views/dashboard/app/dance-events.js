@@ -32,6 +32,7 @@ import {useKeycloak} from "@react-keycloak/web";
 import DanceEventsCreateButton from "./dance-events-create-button";
 import DanceEventCard from "./dance-events-card";
 import DanceNewsfeedCard from "../../../components/dance-newsfeed-card";
+import {fetchData} from "../../../components/util/network";
 
 const DanceEvents =() =>{
 
@@ -42,26 +43,7 @@ const DanceEvents =() =>{
    //TODO identical to newsfeed id fetching code except of the endpoint path -> make component to remove duplication
    useEffect(() => {
       if(keycloak.authenticated) {
-         const fetchIds = async () => {
-            try {
-               const response = await fetch('/api/v1/event', {
-                  headers: {
-                     Authorization: `Bearer ${keycloak.token}`,
-                     'Content-Type': 'application/json',
-                  },
-               });
-               if (!response.ok) {
-                  throw new Error('Network response was not ok');
-               }
-               const body = await response.json();
-               console.log(body);
-               setIds(body);
-            } catch (error) {
-               console.error('Error fetching newsfeed ids:', error);
-            }
-         };
-
-         fetchIds();
+         fetchData('/api/v1/event', keycloak.token, (data) => setIds(data));
       }
    }, [keycloak.authenticated]);
 

@@ -46,6 +46,7 @@ import s5 from "../../../assets/images/page-img/s5.jpg";
 import EmailAppDetail from "../../../components/email-app-detail";
 import DanceNewsfeedCard from "../../../components/dance-newsfeed-card";
 import {useKeycloak} from "@react-keycloak/web";
+import {fetchData} from "../../../components/util/network";
 
 // Fslightbox plugin
 const FsLightbox = ReactFsLightbox.default ? ReactFsLightbox.default : ReactFsLightbox;
@@ -128,26 +129,7 @@ const DanceNewsfeed=()=>{
 
     useEffect(() => {
         if(keycloak.authenticated) {
-            const fetchIds = async () => {
-                try {
-                    const response = await fetch('/api/v1/newsfeed-entries', {
-                        headers: {
-                            Authorization: `Bearer ${keycloak.token}`,
-                            'Content-Type': 'application/json',
-                        },
-                    });
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    const body = await response.json();
-                    console.log(body);
-                    setIds(body);
-                } catch (error) {
-                    console.error('Error fetching newsfeed ids:', error);
-                }
-            };
-
-            fetchIds();
+            fetchData('/api/v1/newsfeed-entries', keycloak.token, (data) => setIds(data));
         }
     }, [keycloak.authenticated]);
 
