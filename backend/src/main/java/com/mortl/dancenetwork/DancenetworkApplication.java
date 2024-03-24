@@ -6,6 +6,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
+//TODO use openrewrite to enforce naming conventions
 public class DancenetworkApplication {
 
 	public static void main(String[] args) {

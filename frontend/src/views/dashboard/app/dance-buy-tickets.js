@@ -20,6 +20,8 @@ import {fetchData} from "../../../components/util/network";
 import {
     getNameForId
 } from "../../../components/dance-buy-tickets/dance-buy-tickets-util";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const DanceBuyTickets = () => {
 
@@ -28,9 +30,47 @@ const DanceBuyTickets = () => {
     const { id } = useParams();
 
     const [state,setState] = useState(Util.TICKET_STEP);
+
+    const [isValidated, setValidated] = useState(false);
+
+    const validateAndSetState = (newState) => {
+        if((state === Util.TICKET_STEP || state === Util.PERSONAL_DATA_STEP)
+            && formData.length === 0) {
+            toast.error("You need to select at least one ticket!");
+            return;
+        }
+
+        if(state === Util.PERSONAL_DATA_STEP && newState !== Util.TICKET_STEP) {
+            for(let i=0; i<formData.length; i++)
+            {
+                if (formData[i].firstName === '' ||
+                    formData[i].lastName === '' ||
+                    formData[i].address === '' ||
+                    formData[i].country === '' ||
+                    formData[i].email === '' ||
+                    formData[i].emailConfirm === '') {
+
+                    toast.error("Please complete personal data for all of your tickets!");
+                    setValidated(true);
+                    return;
+                }
+
+                if(formData[i].email != formData[i].emailConfirm) {
+                    toast.error("E-mail addresses must match!");
+                    setValidated(true);
+                    return;
+                }
+            }
+        }
+
+        setValidated(false);
+
+        setState(newState);
+    }
+
     const increaseState = () => {
         if(state <= Util.FINISH_STEP) {
-            setState(state + 1)
+            validateAndSetState(state + 1)
         }
     }
     const decreaseState = () => {
@@ -99,8 +139,8 @@ const DanceBuyTickets = () => {
     return (
         <div id="content-page" className="content-page">
             <Container>
-                <DanceBuyTicketsHeader state={state} setState={setState} />
-                <Form id="form-buy-ticket" className="mt-3">
+                <DanceBuyTicketsHeader state={state} setState={validateAndSetState} />
+                <Form id="form-buy-ticket" className="mt-3 needs-validation" validated={isValidated} noValidate>
                     <div id="cart" className={`cart-card-block p-0 col-12 ${state === Util.TICKET_STEP ? 'show' : ''}`}>
                         <Row className="align-item-center">
                             <Col lg="8">

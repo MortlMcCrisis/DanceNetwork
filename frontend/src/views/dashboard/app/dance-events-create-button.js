@@ -1,15 +1,16 @@
 import React, {useState} from 'react'
 import {
-   Button,
+   Button, Col,
    Form,
    ListGroup,
    ListGroupItem,
    Modal,
-   Row
 } from 'react-bootstrap'
 
 import {useKeycloak} from "@react-keycloak/web";
 import DanceAbortButton from "./dance-abort-button";
+import DanceFormInput from "./dance-form-input";
+import {toast} from "react-toastify";
 
 const DanceEventsCreateButton =() =>{
    const [showCreate, setShowCreate] = useState(false);
@@ -20,6 +21,8 @@ const DanceEventsCreateButton =() =>{
 
    const [isMultipleDays, setIsMultipleDays] = useState(false);
 
+   const [isValidated, setValidated] = useState(false);
+
    const hasAnyDirtyField = () =>
        Object.keys(form).some((key) => form[key] !== INITIAL_STATE[key]);
 
@@ -27,6 +30,8 @@ const DanceEventsCreateButton =() =>{
       setIsMultipleDays( false );
       setForm(INITIAL_STATE);
       setShowCreate(false);
+
+      setValidated(false);
    }
 
    const handleCheckboxChange = (event) => {
@@ -51,6 +56,16 @@ const DanceEventsCreateButton =() =>{
 
    const handleSubmit = async (event) => {
       event.preventDefault();
+
+      if (event.currentTarget.checkValidity() === false) {
+         event.stopPropagation();
+         setValidated(true);
+
+         toast.error("Please enter all required information!");
+
+         return;
+      }
+      setValidated(true);
 
       //TODO validate that start date is before end date
 
@@ -88,34 +103,20 @@ const DanceEventsCreateButton =() =>{
             <Modal.Header closeButton>
                <Modal.Title>Create Event</Modal.Title>
             </Modal.Header>
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit} className="needs-validation" noValidate validated={isValidated}>
                <Modal.Body>
                   <ListGroup>
                      <ListGroupItem>
-                        <Form.Group className="form-group">
-                           <Form.Label htmlFor="name" className="form-label">Name:</Form.Label>
-                           <Form.Control type="text"
-                                         className="form-control"
-                                         placeholder="Name of the event..."
-                                         id="name"
-                                         onChange={handleChange}
-                                         required/> {/* TODO change to custom (english) error message */ }
-                        </Form.Group>
+                        <DanceFormInput id="name" label="Name" placeholder="Name of the event..." type="text" value={form.name} onChange={handleChange} required="required"/>
+                        <DanceFormInput id="startDate" label={isMultipleDays ? "Start date" : "Date"} type="date" onChange={handleChange} required="required"/>
                         <div className="d-flex justify-content-end">
-                           <Form.Group className="form-group d-inline-block me-3">
-                              <Form.Label htmlFor="startDate" className="form-label">{isMultipleDays ? "Start date" : "Date"}:</Form.Label>
-                              <Form.Control type="date" className="form-control" id="startDate" onChange={handleChange} required/>
-                           </Form.Group>
-                           <Form.Group className="form-group d-inline-block me-3">
-                              <Form.Label htmlFor="endDate" className={`form-label ${!isMultipleDays ? 'text-muted' : ''}`}>End date:</Form.Label>
-                              <Form.Control disabled={!isMultipleDays} type="date" className="form-control" id="endDate" onChange={handleChange} required={!isMultipleDays}/>
-                           </Form.Group>
-                           <Form.Check className="form-check form-switch ms-auto">
-                              {/* TODO align right to prevent the elements jumping around */}
-                              <Form.Check type="checkbox" className="bg-primary" defaultChecked={isMultipleDays} onChange={handleCheckboxChange} id="isMultipleDays" />
+                           {/*TODO this element should not be validated*/}
+                           <Form.Group className="form-check form-switch ms-auto">
+                              <Form.Check type="checkbox" className="bg-primary" defaultChecked={isMultipleDays} onChange={handleCheckboxChange} id="isMultipleDays"/>
                               <Form.Check.Label>Multiple days</Form.Check.Label>
-                           </Form.Check>
+                           </Form.Group>
                         </div>
+                        <DanceFormInput id="endDate" label="End date" type="date" onChange={handleChange} disabled={!isMultipleDays} required={isMultipleDays}/>
                      </ListGroupItem>
                   </ListGroup>
                </Modal.Body>

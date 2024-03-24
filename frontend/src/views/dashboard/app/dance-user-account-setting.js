@@ -143,18 +143,18 @@ const DanceUserAccountSetting =() =>{
                                     </Form.Group>
                                 </ListGroupItem>
                                 <ListGroupItem>
-                                    <DanceFormInput id="username" label="User name: *" placeholder="Enter your user name" type="text" value={form.username} onChange={(event) => handleChange(event)} />
-                                    <DanceFormInput id="firstName" label="First name: *" placeholder="Enter your first name" type="text" value={form.firstName} onChange={(event) => handleChange(event)} />
-                                    <DanceFormInput id="lastName" label="Last name: *" placeholder="Enter your last name" type="text" value={form.lastName} onChange={(event) => handleChange(event)} />
+                                    <DanceFormInput id="username" label="User name" placeholder="Enter your user name" type="text" value={form.username} onChange={(event) => handleChange(event)} />
+                                    <DanceFormInput id="firstName" label="First name" placeholder="Enter your first name" type="text" value={form.firstName} onChange={(event) => handleChange(event)} />
+                                    <DanceFormInput id="lastName" label="Last name" placeholder="Enter your last name" type="text" value={form.lastName} onChange={(event) => handleChange(event)} />
                                     {/*TODO change to any kind of gender neutral sex*/}
-                                    <DanceFormCheckbox id="sex" label="Sex: *" values={[
+                                    <DanceFormCheckbox id="sex" label="Sex" values={[
                                         {label: 'Male', id: 'male', defaultChecked: form.sex === 'MALE'},
                                         {label: 'Female', id: 'female', defaultChecked: form.sex === 'FEMALE'}]}
                                                        onChange={(event) => handleSexChange(event)}/>
                                 </ListGroupItem>
                                 <ListGroupItem>
-                                    <DanceFormInput id="email" label="E-Mail: *" type="email" value={initialized ? keycloak.idTokenParsed.email : ""} disabled={"disabled"} />
-                                    <DanceFormInput id="phone" label="Phone:" placeholder="Enter your phone" type="text" value={form.phone} onChange={(event) => handleChange(event)} />
+                                    <DanceFormInput id="email" label="E-Mail" type="email" value={initialized ? keycloak.idTokenParsed.email : ""} disabled={"disabled"} required="required"/>
+                                    <DanceFormInput id="phone" label="Phone" placeholder="Enter your phone" type="text" value={form.phone} onChange={(event) => handleChange(event)} />
                                 </ListGroupItem>
                                 </ListGroup>
                                 <div className="user-detail text-center mb-3">
