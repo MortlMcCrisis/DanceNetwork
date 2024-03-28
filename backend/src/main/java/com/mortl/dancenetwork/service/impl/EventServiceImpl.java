@@ -49,8 +49,19 @@ public class EventServiceImpl implements IEventService {
   }
 
   @Override
-  public List<Long> getAllPublishedEvents(){
-    return eventRepository.findAllPublishedIds();
+  public List<EventDTO> getAllPublishedEvents(){
+    return eventRepository.findByPublishedTrueOrderByStartDateAsc().stream()
+        .map(event -> new EventDTO(
+            event.getId(),
+            event.getCreator(),
+            event.getStartDate(),
+            event.getEndDate(),
+            event.getName(),
+            event.getLocation(),
+            event.getWebsite(),
+            event.getEmail(),
+            event.isPublished()))
+        .toList();
   }
 
   @Override

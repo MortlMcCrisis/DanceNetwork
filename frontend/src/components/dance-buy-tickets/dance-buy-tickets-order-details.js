@@ -4,7 +4,7 @@ import React from "react"
 
 import * as Util from "./dance-buy-tickets-util";
 
-const DanceBuyTicketsOrderDetails = ({state, selectedTicketTypes, ticketTypes, increaseState, decreaseState}) => {
+const DanceBuyTicketsOrderDetails = ({state, selectedTickets, ticketTypes, increaseState, decreaseState}) => {
 
   return (
       <Card>
@@ -20,7 +20,7 @@ const DanceBuyTicketsOrderDetails = ({state, selectedTicketTypes, ticketTypes, i
               <b>Price</b>
             </div>
           </div>
-          {Object.entries(selectedTicketTypes).map(
+          {Object.entries(selectedTickets).map(
               ([ticketTypeId, quantity], idx) => (
                   quantity > 0 &&
                   <div key={idx} className="row">
@@ -37,7 +37,7 @@ const DanceBuyTicketsOrderDetails = ({state, selectedTicketTypes, ticketTypes, i
           <div className="d-flex justify-content-between mb-4">
             <span className="text-dark"><strong>Total</strong></span>
             <span
-                className="text-dark"><strong>${Util.calculateTotal(ticketTypes, selectedTicketTypes)}</strong></span>
+                className="text-dark"><strong>${Util.calculateTotal(ticketTypes, selectedTickets)}</strong></span>
           </div>
           <div className="row">
             <div className="col-sm-6">

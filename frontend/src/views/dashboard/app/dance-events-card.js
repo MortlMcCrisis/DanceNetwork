@@ -1,13 +1,4 @@
-import React, {useEffect, useState} from 'react'
-import {
-   Button,
-   Col,
-   Container, Form,
-   ListGroup,
-   ListGroupItem,
-   Modal,
-   Row
-} from 'react-bootstrap'
+import React from 'react'
 import Card from '../../../components/Card'
 import {Link} from 'react-router-dom'
 
@@ -20,37 +11,9 @@ import user09 from '../../../assets/images/user/09.jpg'
 import placeholder from '../../../assets/images/event/placeholder.png'
 import {useKeycloak} from "@react-keycloak/web";
 import {format} from "date-fns";
+import {EVENTS_ENDPOINT} from "../../../components/util/network";
 
-const DanceEventCard =({id}) => {
-
-   const { keycloak, initialized } = useKeycloak();
-
-   const [event, setEvent] = useState([]);
-
-   useEffect(() => {
-      if(keycloak.authenticated) {
-         const fetchNewsfeedEntry = async () => {
-            try {
-               const response = await fetch(`/api/v1/event/${id}`, {
-                  headers: {
-                     Authorization: `Bearer ${keycloak.token}`,
-                     'Content-Type': 'application/json',
-                  },
-               });
-               if (!response.ok) {
-                  throw new Error('Network response was not ok');
-               }
-               const body = await response.json();
-               console.log(body);
-               setEvent(body);
-            } catch (error) {
-               console.error(`Error fetching newsfeed with id ${id}:`, error);
-            }
-         };
-
-         fetchNewsfeedEntry();
-      }
-   }, [keycloak.authenticated]);
+const DanceEventCard =({event}) => {
 
    return(
       <>

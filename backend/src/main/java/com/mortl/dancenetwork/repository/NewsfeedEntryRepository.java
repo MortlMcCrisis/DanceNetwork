@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface NewsfeedEntryRepository extends JpaRepository<NewsfeedEntry, Long> {
 
-  @Query("SELECT newsfeedEntry.id FROM NewsfeedEntry newsfeedEntry ORDER BY newsfeedEntry.creationDate DESC ")
-  List<Long> findAllIdsOrderByCreationDateDesc();
+  @Query("SELECT newsfeedEntry FROM NewsfeedEntry newsfeedEntry ORDER BY newsfeedEntry.creationDate DESC")
+  List<NewsfeedEntry> findAllOrderByCreationDateDesc();
 }

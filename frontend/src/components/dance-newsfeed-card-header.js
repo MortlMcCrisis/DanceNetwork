@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import { Dropdown } from 'react-bootstrap'
 import img from '../assets/images/user/user-1.jpg'
 import {useKeycloak} from "@react-keycloak/web";
+import {USERS_ENDPOINT} from "./util/network";
 
 const DanceNewsfeedCardHeader = ({type, creatorUUID, creationDate}) => {
 
@@ -13,7 +14,7 @@ const DanceNewsfeedCardHeader = ({type, creatorUUID, creationDate}) => {
         if(keycloak.authenticated) {
             const fetchCreator = async () => {
                 try {
-                    const response = await fetch(`/api/v1/user/${creatorUUID}`, {
+                    const response = await fetch(`${USERS_ENDPOINT}/${creatorUUID}`, {
                         headers: {
                             Authorization: `Bearer ${keycloak.token}`,
                             'Content-Type': 'application/json',

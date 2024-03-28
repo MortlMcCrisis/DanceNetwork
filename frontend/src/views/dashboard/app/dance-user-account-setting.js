@@ -13,6 +13,7 @@ import img20 from "../../../assets/images/user/07.jpg";
 import imgpp2 from "../../../assets/images/user/11.png";
 import DanceFormInput from "./dance-form-input";
 import DanceFormCheckbox from "./dance-form-checkbox";
+import {FILES_ENDPOINT, USERS_ENDPOINT} from "../../../components/util/network";
 
 const DanceUserAccountSetting =() =>{
 
@@ -27,7 +28,7 @@ const DanceUserAccountSetting =() =>{
         username: keycloak.idTokenParsed.custom_username,
         firstName: keycloak.idTokenParsed.given_name,
         lastName: keycloak.idTokenParsed.family_name,
-        sex: keycloak.idTokenParsed.sex,
+        gender: keycloak.idTokenParsed.gender,
         phone: keycloak.idTokenParsed.phone,
     });
 
@@ -38,16 +39,30 @@ const DanceUserAccountSetting =() =>{
         });
     };
 
-    const handleSexChange = (event) => {
+    const handleGenderChange = (event) => {
+        switch(event.target.id) {
+            case 'male':
+                event.target.value  = 'MALE';
+                break;
+            case 'female':
+                event.target.value  = 'FEMALE';
+                break;
+            case 'other':
+                event.target.value  = 'OTHER';
+                break;
+            default:
+                event.target.value = '';
+        }
+
         setForm({
             ...form,
-            ['sex']: event.target.id === 'male' ? 'MALE' : 'FEMALE',
+            ['gender']: event.target.value,
         });
     };
 
     const calculatePercentage = () => {
         const idTokenParsed = keycloak.idTokenParsed;
-        const properties = ['photo_path', 'custom_username', 'given_name', 'family_name', 'sex', 'email', 'phone'];
+        const properties = ['photo_path', 'custom_username', 'given_name', 'family_name', 'gender', 'email', 'phone'];
 
         // Filtere die gesetzten Properties
         const setProperties = properties.filter(property => idTokenParsed[property] !== undefined && idTokenParsed[property] !== '');
@@ -66,7 +81,7 @@ const DanceUserAccountSetting =() =>{
         const formData = new FormData();
         formData.append("file", event.target.files[0]);
         try {
-            const result = await fetch('/api/v1/file/photo-upload', {
+            const result = await fetch(`${FILES_ENDPOINT}/photo-upload`, {
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${keycloak.token}`,
@@ -89,7 +104,7 @@ const DanceUserAccountSetting =() =>{
         event.preventDefault();
 
         try {
-            const response = await fetch('/api/v1/user', {
+            const response = await fetch(USERS_ENDPOINT, {
                 method: 'PUT',
                 headers: {
                     Authorization: `Bearer ${keycloak.token}`,
@@ -110,6 +125,9 @@ const DanceUserAccountSetting =() =>{
             console.error('Error saving user:', error);
         }
     };
+
+    //TODO: hier sollte alle daten definiert werden können, die im kaufprozess angegeben werden können.
+    // Diese sollen dann durch das selektieren eines freundes direkt ausgefüllt werden
 
   return(
      <>
@@ -146,11 +164,11 @@ const DanceUserAccountSetting =() =>{
                                     <DanceFormInput id="username" label="User name" placeholder="Enter your user name" type="text" value={form.username} onChange={(event) => handleChange(event)} />
                                     <DanceFormInput id="firstName" label="First name" placeholder="Enter your first name" type="text" value={form.firstName} onChange={(event) => handleChange(event)} />
                                     <DanceFormInput id="lastName" label="Last name" placeholder="Enter your last name" type="text" value={form.lastName} onChange={(event) => handleChange(event)} />
-                                    {/*TODO change to any kind of gender neutral sex*/}
-                                    <DanceFormCheckbox id="sex" label="Sex" values={[
-                                        {label: 'Male', id: 'male', defaultChecked: form.sex === 'MALE'},
-                                        {label: 'Female', id: 'female', defaultChecked: form.sex === 'FEMALE'}]}
-                                                       onChange={(event) => handleSexChange(event)}/>
+                                    <DanceFormCheckbox id="gender" label="Gender" values={[
+                                        {label: 'Male', id: 'male', defaultChecked: form.gender === 'MALE'},
+                                        {label: 'Female', id: 'female', defaultChecked: form.gender === 'FEMALE'},
+                                        {label: 'Other', id: 'other', defaultChecked: form.gender === 'OTHER'}]}
+                                                       onChange={(event) => handleGenderChange(event)}/>
                                 </ListGroupItem>
                                 <ListGroupItem>
                                     <DanceFormInput id="email" label="E-Mail" type="email" value={initialized ? keycloak.idTokenParsed.email : ""} disabled={"disabled"} required="required"/>

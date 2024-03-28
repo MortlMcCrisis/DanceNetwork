@@ -16,13 +16,13 @@ const DanceBuyTicketsPersonalData = ({formData, handleFormDataChange}) => {
   const setGender = (event, idx) => {
     switch(event.target.id) {
       case 'male':
-        event.target.value  = 'Male';
+        event.target.value  = 'MALE';
         break;
       case 'female':
-        event.target.value  = 'Female';
+        event.target.value  = 'FEMALE';
         break;
       case 'other':
-        event.target.value  = 'Other';
+        event.target.value  = 'OTHER';
         break
       default:
         event.target.value = '';
@@ -36,13 +36,13 @@ const DanceBuyTicketsPersonalData = ({formData, handleFormDataChange}) => {
   const setRole = (event, idx) => {
     switch(event.target.id) {
       case 'leader':
-        event.target.value = 'Leader';
+        event.target.value = 'LEADER';
         break;
       case 'follower':
-        event.target.value = 'Follower';
+        event.target.value = 'FOLLOWER';
         break;
       case 'both':
-        event.target.value = 'Both';
+        event.target.value = 'BOTH';
         break
       default:
         event.target.value = '';

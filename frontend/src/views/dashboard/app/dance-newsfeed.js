@@ -46,14 +46,18 @@ import s5 from "../../../assets/images/page-img/s5.jpg";
 import EmailAppDetail from "../../../components/email-app-detail";
 import DanceNewsfeedCard from "../../../components/dance-newsfeed-card";
 import {useKeycloak} from "@react-keycloak/web";
-import {fetchData} from "../../../components/util/network";
+import {
+    fetchData,
+    NEWSFEED_ENTRIES_ENDPOINT
+} from "../../../components/util/network";
 
 // Fslightbox plugin
 const FsLightbox = ReactFsLightbox.default ? ReactFsLightbox.default : ReactFsLightbox;
 
 const DanceNewsfeed=()=>{
 
-    const [ids, setIds] = useState([]);
+    //TODO load not only ids but directly the data
+    const [newsfeedEntries, setNewsfeedEntries] = useState([]);
 
     const { keycloak, initialized } = useKeycloak();
 
@@ -129,7 +133,7 @@ const DanceNewsfeed=()=>{
 
     useEffect(() => {
         if(keycloak.authenticated) {
-            fetchData('/api/v1/newsfeed-entries', keycloak.token, (data) => setIds(data));
+            fetchData(NEWSFEED_ENTRIES_ENDPOINT, keycloak.token, setNewsfeedEntries);
         }
     }, [keycloak.authenticated]);
 
@@ -596,10 +600,10 @@ const DanceNewsfeed=()=>{
                                     </Card.Body>
                                 </Card>
                             </Col>
-                            {ids.map(id =>
-                                <div key={id}>
+                            {newsfeedEntries.map(newsfeedEntry =>
+                                <div key={newsfeedEntry.id}>
                                     <Col sm={12}>
-                                        <DanceNewsfeedCard id={id} />
+                                        <DanceNewsfeedCard newsfeedEntry={newsfeedEntry} />
                                     </Col>
                                 </div>
                             )}

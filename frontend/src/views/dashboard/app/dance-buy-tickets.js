@@ -16,7 +16,11 @@ import DanceBuyTicketsPayment
     from "../../../components/dance-buy-tickets/dance-buy-tickets-payment";
 import DanceBuyTicketsSummary
     from "../../../components/dance-buy-tickets/dance-buy-tickets-summary";
-import {fetchData} from "../../../components/util/network";
+import {
+    fetchData,
+    PAYMENTS_ENDPOINT,
+    postData, TICKET_TYPES_ENDPOINT
+} from "../../../components/util/network";
 import {
     getNameForId
 } from "../../../components/dance-buy-tickets/dance-buy-tickets-util";
@@ -34,7 +38,11 @@ const DanceBuyTickets = () => {
     const [isValidated, setValidated] = useState(false);
 
     const validateAndSetState = (newState) => {
-        if((state === Util.TICKET_STEP || state === Util.PERSONAL_DATA_STEP)
+        if(state === newState){
+            return;
+        }
+
+        if((state === Util.TICKET_STEP)
             && formData.length === 0) {
             toast.error("You need to select at least one ticket!");
             return;
@@ -72,6 +80,10 @@ const DanceBuyTickets = () => {
         if(state <= Util.FINISH_STEP) {
             validateAndSetState(state + 1)
         }
+
+        if(state == Util.PAYMENT_STEP){
+            triggerPayment()
+        }
     }
     const decreaseState = () => {
         if(state >= Util.TICKET_STEP) {
@@ -79,14 +91,44 @@ const DanceBuyTickets = () => {
         }
     }
 
+    const triggerPayment = () => {
+        (async () => {
+            try {
+                let tickets = new Map();
+                formData.forEach(obj => {
+                    const newObj = {};
+                    for (const key in obj) {
+                        if (key !== 'ticketTypeName' && key !== 'ticketTypeId') {
+                            newObj[key] = obj[key];
+                        }
+                    }
+                    tickets.set(obj.ticketTypeId, newObj);
+                });
+
+                let requestData = {
+                    personalData: Object.fromEntries(tickets)
+                }
+
+                const response = await postData(PAYMENTS_ENDPOINT, keycloak.token, requestData)
+                if (response.status === 201) {
+                    const resourceUrl = response.headers.get('Location')
+                    const id = resourceUrl.split('/').pop();
+                    window.location = `/dashboards/app/dance-event-detail/${id}`;
+                }
+            } catch (error) {
+                console.error('Fehler:', error);
+            }
+        })();
+    }
+
     const [ticketTypes, setTicketTypes] = useState([]);
 
     const[formData, setFormData] = React.useState([]);
 
-    const [selectedTicketTypes, setSelectedTicketsTypes] = useState({});
+    const [selectedTickets, setSelectedTickets] = useState({});
 
     const setTicketType = (ticketTypeId, quantity) => {
-        setSelectedTicketsTypes(prevState => ({
+        setSelectedTickets(prevState => ({
             ...prevState,
             [ticketTypeId]: quantity,
         }));
@@ -110,14 +152,14 @@ const DanceBuyTickets = () => {
 
     useEffect(() => {
         if(keycloak.authenticated) {
-            fetchData(`/api/v1/ticketTypes?eventId=${id}`, keycloak.token, setTicketTypes);
+            fetchData(`${TICKET_TYPES_ENDPOINT}?eventId=${id}`, keycloak.token, setTicketTypes);
         }
     }, [keycloak.authenticated]);
 
     useEffect( () => {
         let newFormData = [];
 
-        Object.entries(selectedTicketTypes).map(([ticketTypeId, quantity]) => {
+        Object.entries(selectedTickets).map(([ticketTypeId, quantity]) => {
             Array.from({ length: quantity }, (_) => (
                 newFormData.push({
                     ticketTypeId: ticketTypeId,
@@ -134,7 +176,7 @@ const DanceBuyTickets = () => {
         });
 
         setFormData(newFormData)
-    }, [selectedTicketTypes]);
+    }, [selectedTickets]);
 
     return (
         <div id="content-page" className="content-page">
@@ -155,7 +197,7 @@ const DanceBuyTickets = () => {
                             <Col lg="4">
                                 <DanceBuyTicketsOrderDetails
                                     state={state}
-                                    selectedTicketTypes={selectedTicketTypes}
+                                    selectedTickets={selectedTickets}
                                     ticketTypes={ticketTypes}
                                     increaseState={increaseState}
                                     decreaseState={decreaseState}/>
@@ -174,7 +216,7 @@ const DanceBuyTickets = () => {
                             <Col lg="4">
                                 <DanceBuyTicketsOrderDetails
                                     state={state}
-                                    selectedTicketTypes={selectedTicketTypes}
+                                    selectedTickets={selectedTickets}
                                     ticketTypes={ticketTypes}
                                     increaseState={increaseState}
                                     decreaseState={decreaseState}/>
@@ -189,7 +231,7 @@ const DanceBuyTickets = () => {
                             <Col lg="4">
                                 <DanceBuyTicketsOrderDetails
                                     state={state}
-                                    selectedTicketTypes={selectedTicketTypes}
+                                    selectedTickets={selectedTickets}
                                     ticketTypes={ticketTypes}
                                     increaseState={increaseState}
                                     decreaseState={decreaseState}/>

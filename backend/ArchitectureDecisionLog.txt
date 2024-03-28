@@ -1,0 +1,4 @@
+REST endpoints
+==============
+- plural
+- separated with hyphens

@@ -15,6 +15,7 @@ import React, {useEffect, useState} from "react";
 import DanceEventDetailHeaderEditButton
   from "./dance-event-detail-header-edit-button";
 import {useKeycloak} from "@react-keycloak/web";
+import {EVENTS_ENDPOINT, fetchData} from "../../../components/util/network";
 
 const DanceEventDetailHeader=()=> {
 
@@ -26,34 +27,14 @@ const DanceEventDetailHeader=()=> {
 
   useEffect(() => {
       if(keycloak.authenticated) {
-        const fetchData = async () => {
-          try {
-            const response = await fetch(`/api/v1/event/${id}`, {
-              headers: {
-                Authorization: `Bearer ${keycloak.token}`,
-                'Content-Type': 'application/json',
-              },
-            });
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
-            const body = await response.json();
-
-            setData(body);
-
-            console.log(body);
-          } catch (error) {
-            console.error('Error fetching clients:', error);
-          }
-        };
-
-        fetchData();
+        fetchData(`${EVENTS_ENDPOINT}/${id}`, keycloak.token, setData);
       }
   }, [keycloak.authenticated]);
 
   const publishEvent = async () => {
     try {
-      const response = await fetch(`/api/v1/event/${id}/publish`, {
+
+      const response = await fetch(`${EVENTS_ENDPOINT}/${id}/publish`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${keycloak.token}`,

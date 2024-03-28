@@ -1,9 +1,7 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import Card from '../components/Card'
- import { Dropdown , Table, Tooltip, OverlayTrigger, Button} from 'react-bootstrap'
- import {Link} from 'react-router-dom'
+import { Dropdown , Table, Tooltip, OverlayTrigger, Button} from 'react-bootstrap'
 import img from '../assets/images/user/user-1.jpg'
-import user4 from "../assets/images/user/04.jpg";
 import CustomToggle from "./dropdowns";
 import icon1 from "../assets/images/icon/01.png";
 import icon2 from "../assets/images/icon/02.png";
@@ -13,40 +11,8 @@ import icon5 from "../assets/images/icon/05.png";
 import icon6 from "../assets/images/icon/06.png";
 import icon7 from "../assets/images/icon/07.png";
 import ShareOffcanvas from "./share-offcanvas";
-import user2 from "../assets/images/user/02.jpg";
-import user3 from "../assets/images/user/03.jpg";
-import {useKeycloak} from "@react-keycloak/web";
 import DanceNewsfeedCardHeader from "./dance-newsfeed-card-header";
-const DanceNewsfeedCard = ({id}) => {
-
-    const { keycloak, initialized } = useKeycloak();
-
-    const [newsfeedEntry, setNewsfeedEntry] = useState([]);
-
-    useEffect(() => {
-        if(keycloak.authenticated) {
-            const fetchNewsfeedEntry = async () => {
-                try {
-                    const response = await fetch(`/api/v1/newsfeed-entries/${id}`, {
-                        headers: {
-                            Authorization: `Bearer ${keycloak.token}`,
-                            'Content-Type': 'application/json',
-                        },
-                    });
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    const body = await response.json();
-                    console.log(body);
-                    setNewsfeedEntry(body);
-                } catch (error) {
-                    console.error(`Error fetching newsfeed with id ${id}:`, error);
-                }
-            };
-
-            fetchNewsfeedEntry();
-        }
-    }, [keycloak.authenticated]);
+const DanceNewsfeedCard = ({newsfeedEntry}) => {
    
     return (
         <>

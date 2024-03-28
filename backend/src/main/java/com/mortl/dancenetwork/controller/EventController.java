@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/event")
+@RequestMapping("/api/v1/events")
 @Slf4j
 @RequiredArgsConstructor
 public class EventController {
@@ -27,17 +27,11 @@ public class EventController {
   @PostMapping
   public ResponseEntity createEvent(@RequestBody EventDTO eventDTO) throws URISyntaxException {
     EventDTO savedEvent = eventService.createEvent(eventDTO);
-    return ResponseEntity.created(new URI("/api/v1/event/" + savedEvent.id())).body(savedEvent);
-  }
-
-  @GetMapping("/{id}")
-  public EventDTO getEvent(@PathVariable Long id) {
-    log.info("Fetching event with id '" + id + "'");
-    return eventService.getEvent(id);
+    return ResponseEntity.created(new URI("/api/v1/events/" + savedEvent.id())).body(savedEvent);
   }
 
   @GetMapping
-  public List<Long> getAllEvents() {
+  public List<EventDTO> getAllEvents() {
     return eventService.getAllPublishedEvents();
   }
 

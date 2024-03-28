@@ -1,11 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {
-   Button,
    Col,
-   Container, Form,
-   ListGroup,
-   ListGroupItem,
-   Modal,
+   Container,
    Row
 } from 'react-bootstrap'
 import Card from '../../../components/Card'
@@ -26,24 +22,20 @@ import img56 from '../../../assets/images/page-img/56.jpg'
 import img58 from '../../../assets/images/page-img/58.jpg'
 import img57 from '../../../assets/images/page-img/57.jpg'
 import img59 from '../../../assets/images/page-img/59.jpg'
-import img6 from '../../../assets/images/page-img/profile-bg6.jpg'
-import Datepicker from "../../../components/datepicker";
 import {useKeycloak} from "@react-keycloak/web";
 import DanceEventsCreateButton from "./dance-events-create-button";
 import DanceEventCard from "./dance-events-card";
-import DanceNewsfeedCard from "../../../components/dance-newsfeed-card";
-import {fetchData} from "../../../components/util/network";
+import {EVENTS_ENDPOINT, fetchData} from "../../../components/util/network";
 
 const DanceEvents =() =>{
 
-   const [ids, setIds] = useState([]);
+   const [events, setEvents] = useState([]);
 
    const { keycloak, initialized } = useKeycloak();
 
-   //TODO identical to newsfeed id fetching code except of the endpoint path -> make component to remove duplication
    useEffect(() => {
       if(keycloak.authenticated) {
-         fetchData('/api/v1/event', keycloak.token, (data) => setIds(data));
+         fetchData(EVENTS_ENDPOINT, keycloak.token, (data) => setEvents(data));
       }
    }, [keycloak.authenticated]);
 
@@ -56,10 +48,10 @@ const DanceEvents =() =>{
                   <div id="content-page" className="content-page">
                      <Container>
                         <div className="d-grid gap-3 d-grid-template-1fr-19">
-                           {ids.map(id =>
-                               <div key={id}>
+                           {events.map(event =>
+                               <div key={event.id}>
                                   <Col sm={12}>
-                                     <DanceEventCard id={id} />
+                                     <DanceEventCard event={event} />
                                   </Col>
                                </div>
                            )}

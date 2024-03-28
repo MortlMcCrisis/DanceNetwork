@@ -20,22 +20,10 @@ public class NewsfeedEntryServiceImpl implements INewsfeedEntryService {
   private final UserServiceImpl userService;
 
   @Override
-  public List<Long> getNewsfeedEntries() {
-    return newsfeedEntryRepository.findAllIdsOrderByCreationDateDesc();
-  }
-
-  @Override
-  public NewsfeedEntryDTO getNewsfeedEntry(Long id) throws NotFoundException {
-    return NewsfeedEntryDTO.fromModel(
-        newsfeedEntryRepository.findById(id)
-            .orElseThrow(NotFoundException::new)
-    );
-  }
-
-  @Override
-  public List<Long> getNewsfeedEntriesForUser(UUID userUUID){
-    //TODO respect uuid
-    return newsfeedEntryRepository.findAllIdsOrderByCreationDateDesc();
+  public List<NewsfeedEntryDTO> getNewsfeedEntries() {
+    return newsfeedEntryRepository.findAllOrderByCreationDateDesc().stream()
+        .map(dto -> NewsfeedEntryDTO.fromModel(dto))
+        .toList();
   }
 
   @Override

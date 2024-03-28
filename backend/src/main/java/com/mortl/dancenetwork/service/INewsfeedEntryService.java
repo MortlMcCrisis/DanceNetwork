@@ -9,11 +9,7 @@ import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 
 public interface INewsfeedEntryService {
 
-  List<Long> getNewsfeedEntries();
-
-  NewsfeedEntryDTO getNewsfeedEntry(Long id);
-
-  List<Long> getNewsfeedEntriesForUser(UUID userUUID);
+  List<NewsfeedEntryDTO> getNewsfeedEntries();
 
   NewsfeedEntryDTO createNewsfeedEntry(NewsfeedEntryDTO newsfeedEntry);
 

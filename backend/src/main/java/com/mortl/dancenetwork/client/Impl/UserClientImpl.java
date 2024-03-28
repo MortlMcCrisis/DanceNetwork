@@ -1,7 +1,7 @@
 package com.mortl.dancenetwork.client.Impl;
 
 import com.mortl.dancenetwork.client.IUserClient;
-import com.mortl.dancenetwork.dto.Sex;
+import com.mortl.dancenetwork.dto.Gender;
 import com.mortl.dancenetwork.entity.User;
 import java.util.HashMap;
 import java.util.List;
@@ -58,7 +58,7 @@ public class UserClientImpl implements IUserClient {
         .firstName(userRepresentation.getFirstName())
         .lastName(userRepresentation.getLastName())
         .username(getAttribute(attributes, "custom_username"))
-        .sex(Sex.getIfNotNull(getAttribute(attributes, "sex")))
+        .gender(Gender.getIfNotNull(getAttribute(attributes, "gender")))
         .phone(getAttribute(attributes, "phone"))
         .photoPath(getAttribute(attributes, "photo_path"))
         .build();
@@ -118,7 +118,7 @@ public class UserClientImpl implements IUserClient {
         .orElse(new HashMap<>());
     attributes.put("custom_username", List.of(updatedUser.username()));
     attributes.put("photo_path", List.of(updatedUser.photoPath()));
-    attributes.put("sex", List.of(updatedUser.sex().name()));
+    attributes.put("gender", List.of(updatedUser.gender().name()));
     attributes.put("phone", List.of(updatedUser.phone()));
     userRepresentation.setAttributes(attributes);
 

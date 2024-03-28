@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/users")
 @Slf4j
 @RequiredArgsConstructor
 public class UserController {
@@ -25,7 +25,6 @@ public class UserController {
   public UserDTO getUser(@PathVariable UUID uuuid){
     return userService.getUser(uuuid);
   }
-
 
   @PutMapping
   public ResponseEntity updateUser(@RequestBody UserDTO userDTO) {

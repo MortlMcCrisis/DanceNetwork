@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import {useKeycloak} from "@react-keycloak/web";
 import _ from "lodash";
 import DanceAbortButton from "./dance-abort-button";
+import {EVENTS_ENDPOINT} from "../../../components/util/network";
 
 const DanceEventDetailHeaderEditButton=({data, setData})=> {
 
@@ -58,7 +59,7 @@ const DanceEventDetailHeaderEditButton=({data, setData})=> {
           newEventData['endDate'] = null;
         }
 
-        const response = await fetch(`/api/v1/event/${form.id}`, {
+        const response = await fetch(`${EVENTS_ENDPOINT}/${form.id}`, {
           method: 'PUT',
           headers: {
             Authorization: `Bearer ${keycloak.token}`,

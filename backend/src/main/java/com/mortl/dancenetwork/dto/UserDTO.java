@@ -3,7 +3,7 @@ package com.mortl.dancenetwork.dto;
 import com.mortl.dancenetwork.entity.User;
 import java.util.UUID;
 
-public record UserDTO(String photoPath, String username, String firstName, String lastName, Sex sex, String phone) {
+public record UserDTO(String photoPath, String username, String firstName, String lastName, Gender gender, String phone) {
 
   public User toEntity(UUID uuid){
     return User.builder()
@@ -12,7 +12,7 @@ public record UserDTO(String photoPath, String username, String firstName, Strin
         .username(username())
         .firstName(firstName())
         .lastName(lastName())
-        .sex(sex())
+        .gender(gender())
         .phone(phone())
         .build();
   }
@@ -22,7 +22,7 @@ public record UserDTO(String photoPath, String username, String firstName, Strin
         user.username(),
         user.firstName(),
         user.lastName(),
-        user.sex(),
+        user.gender(),
         user.phone());
   }
 }

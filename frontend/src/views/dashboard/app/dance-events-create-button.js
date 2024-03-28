@@ -11,6 +11,7 @@ import {useKeycloak} from "@react-keycloak/web";
 import DanceAbortButton from "./dance-abort-button";
 import DanceFormInput from "./dance-form-input";
 import {toast} from "react-toastify";
+import {EVENTS_ENDPOINT, postData} from "../../../components/util/network";
 
 const DanceEventsCreateButton =() =>{
    const [showCreate, setShowCreate] = useState(false);
@@ -67,32 +68,20 @@ const DanceEventsCreateButton =() =>{
       }
       setValidated(true);
 
-      //TODO validate that start date is before end date
+      if(new Date(form.startDate) >= new Date(form.endDate)){
+         event.stopPropagation();
+         setValidated(true);
 
-      try {
-         const response = await fetch('/api/v1/event', {
-            method: 'POST',
-            headers: {
-               Authorization: `Bearer ${keycloak.token}`,
-               'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ ...form }),
-         });
+         toast.error("Start date must be before end date!");
 
-         console.log(response);
+         return;
+      }
 
-         if (response.status === 201) {
-            const resourceUrl = response.headers.get('Location')
-            const id = resourceUrl.split('/').pop();
-            window.location = `/dashboards/app/dance-event-detail/${id}`;
-         }
-
-         if (!response.ok) {
-            throw new Error('Network response was not ok');
-         }
-
-      } catch (error) {
-         console.error('Error saving event:', error);
+      const response = await postData(EVENTS_ENDPOINT, keycloak.token, form)
+      if (response.status === 201) {
+         const resourceUrl = response.headers.get('Location')
+         const id = resourceUrl.split('/').pop();
+         window.location = `/dashboards/app/dance-event-detail/${id}`;
       }
    };
 

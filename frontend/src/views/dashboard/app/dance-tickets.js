@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import Card from "../../../components/Card";
 
@@ -9,16 +9,40 @@ import imgm4 from "../../../assets/images/market/3.png";
 import imgm5 from "../../../assets/images/market/5.png";
 import imgm6 from "../../../assets/images/market/9.png";
 import imgm7 from "../../../assets/images/market/7.png";
+import {fetchData, TICKETS_ENDPOINT} from "../../../components/util/network";
+import {useKeycloak} from "@react-keycloak/web";
 const DanceTickets = () => {
+
+  const { keycloak, initialized } = useKeycloak();
+
+  const [tickets, setTickets] = useState([]);
+
+  useEffect(() => {
+    if(keycloak.authenticated) {
+      fetchData(TICKETS_ENDPOINT, keycloak.token, (data) => setTickets(data));
+    }
+
+    console.log(tickets);
+  }, [keycloak.authenticated]);
+
   return (
     <>
       <div id="content-page" className="content-page">
         <Container>
           <Row>
             <div className="mb-2">
-              <h4>Popular apps</h4>
+              <h4>Popular apps </h4>
               <p>Explore the most installed apps in the HubSpot Marketplace</p>
             </div>
+            {tickets.map((ticket, idx) => (
+                <div key={idx}>
+                  <h4>Popular apps </h4>
+                    {ticket.ticketName}
+
+                  {ticket.ticketDescription}
+                  <h4>Popular apps </h4>
+                </div>
+            ))}
             <Col sm="6" md="4">
               <Card className="cardhover">
                 <Card.Body>
