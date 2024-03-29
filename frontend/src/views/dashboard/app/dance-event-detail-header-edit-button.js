@@ -5,6 +5,7 @@ import {useKeycloak} from "@react-keycloak/web";
 import _ from "lodash";
 import DanceAbortButton from "./dance-abort-button";
 import {EVENTS_ENDPOINT} from "../../../components/util/network";
+import {toast} from "react-toastify";
 
 const DanceEventDetailHeaderEditButton=({data, setData})=> {
 
@@ -76,6 +77,7 @@ const DanceEventDetailHeaderEditButton=({data, setData})=> {
         }
 
         setData(newEventData);
+        toast.success("Event successfully updated");
       }
 
       setShowEditMainSettings(false);

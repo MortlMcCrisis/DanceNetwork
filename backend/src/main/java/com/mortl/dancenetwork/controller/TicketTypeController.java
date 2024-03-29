@@ -1,8 +1,6 @@
 package com.mortl.dancenetwork.controller;
 
-import com.mortl.dancenetwork.dto.TicketDTO;
 import com.mortl.dancenetwork.dto.TicketTypeDTO;
-import com.mortl.dancenetwork.service.ITicketService;
 import com.mortl.dancenetwork.service.ITicketTypeService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

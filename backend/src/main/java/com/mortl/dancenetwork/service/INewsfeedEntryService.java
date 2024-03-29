@@ -1,10 +1,7 @@
 package com.mortl.dancenetwork.service;
 
 import com.mortl.dancenetwork.dto.NewsfeedEntryDTO;
-import com.mortl.dancenetwork.entity.User;
-import com.mortl.dancenetwork.model.Event;
 import java.util.List;
-import java.util.UUID;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 
 public interface INewsfeedEntryService {

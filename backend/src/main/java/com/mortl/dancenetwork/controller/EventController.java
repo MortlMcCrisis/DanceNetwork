@@ -35,6 +35,11 @@ public class EventController {
     return eventService.getAllPublishedEvents();
   }
 
+  @GetMapping("/{id}")
+  public EventDTO getAllEvents(@PathVariable Long id) {
+    return eventService.getEvent(id);
+  }
+
   @PutMapping("/{id}")
   public ResponseEntity updateEvent(@PathVariable Long id, @RequestBody EventDTO eventDTO) {
     log.info("saving event with id " + id);

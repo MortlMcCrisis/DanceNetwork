@@ -23,10 +23,13 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server:3.2.1'
 	implementation 'org.springframework.boot:spring-boot-starter-security:3.2.1'
 	implementation 'org.keycloak:keycloak-admin-client:21.0.2'
+	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
 
 	implementation 'de.sven-jacobs:loremipsum:1.0' // TODO make test implementation? test profile?
 
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 	annotationProcessor 'org.projectlombok:lombok:1.18.22'
+	annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
 
 	runtimeOnly 'com.h2database:h2'
 

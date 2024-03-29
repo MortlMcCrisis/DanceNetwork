@@ -1,8 +1,9 @@
 package com.mortl.dancenetwork.service.impl;
 
 import com.mortl.dancenetwork.dto.EventDTO;
-import com.mortl.dancenetwork.dto.NewsfeedEntryDTO;
 import com.mortl.dancenetwork.entity.User;
+import com.mortl.dancenetwork.mapper.EventMapper;
+import com.mortl.dancenetwork.mapper.NewsfeedEntryMapper;
 import com.mortl.dancenetwork.model.Event;
 import com.mortl.dancenetwork.repository.EventRepository;
 import com.mortl.dancenetwork.service.IEventService;
@@ -29,14 +30,17 @@ public class EventServiceImpl implements IEventService {
 
   private final NewsfeedFactory newsfeedFactory;
 
+  private final EventMapper eventMapper;
+
+  private final NewsfeedEntryMapper newsfeedEntryMapper;
+
   @Override
   public EventDTO createEvent(EventDTO eventDTO)
   {
-    User currentUser = userService.getCurrentUser();
-    Event savedEvent = eventRepository.saveAndFlush(eventDTO.toModel(currentUser.uuid()));
-
-    return EventDTO.fromModel(savedEvent);
-  }
+    Event event = eventMapper.toModel(eventDTO);
+    event.setCreator(userService.getCurrentUser().uuid());
+    Event savedEvent = eventRepository.saveAndFlush(event);
+    return eventMapper.toDTO(savedEvent);  }
 
   @Override
   public EventDTO getEvent(Long id)
@@ -45,22 +49,13 @@ public class EventServiceImpl implements IEventService {
     if(!event.isPresent()){
       throw new NotFoundException("Event with id " + id + " not found");
     }
-    return EventDTO.fromModel(event.get());
+    return eventMapper.toDTO(event.get());
   }
 
   @Override
   public List<EventDTO> getAllPublishedEvents(){
     return eventRepository.findByPublishedTrueOrderByStartDateAsc().stream()
-        .map(event -> new EventDTO(
-            event.getId(),
-            event.getCreator(),
-            event.getStartDate(),
-            event.getEndDate(),
-            event.getName(),
-            event.getLocation(),
-            event.getWebsite(),
-            event.getEmail(),
-            event.isPublished()))
+        .map(event -> eventMapper.toDTO(event))
         .toList();
   }
 
@@ -79,8 +74,7 @@ public class EventServiceImpl implements IEventService {
     currentEvent.setWebsite(event.website());
     currentEvent = eventRepository.save(currentEvent);
 
-    return EventDTO.fromModel(
-        currentEvent);
+    return eventMapper.toDTO(currentEvent);
   }
 
   @Override
@@ -95,7 +89,7 @@ public class EventServiceImpl implements IEventService {
 
     User currentUser = userService.getCurrentUser();
 
-    newsfeedEntryService.createNewsfeedEntry(NewsfeedEntryDTO.fromModel(
+    newsfeedEntryService.createNewsfeedEntry(newsfeedEntryMapper.toDTO(
         newsfeedFactory.createEventPublishedNewsfeedEntry(currentUser, event)));
   }
 }

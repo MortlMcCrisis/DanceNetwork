@@ -6,18 +6,12 @@ import {
     Col,
     Modal,
     Button,
-    Dropdown,
-    Form, ListGroup, ListGroupItem
+    Dropdown
 } from 'react-bootstrap'
 import Card from '../../../components/Card'
 import CustomToggle from '../../../components/dropdowns'
 import ReactFsLightbox from 'fslightbox-react';
 
-import imgp1 from '../../../assets/images/user/15.jpg'
-import imgp2 from '../../../assets/images/user/05.jpg'
-import imgp3 from '../../../assets/images/user/06.jpg'
-import imgp4 from '../../../assets/images/user/07.jpg'
-import imgp5 from '../../../assets/images/user/08.jpg'
 import imgp11 from '../../../assets/images/user/15.jpg'
 import imgp12 from '../../../assets/images/user/05.jpg'
 import imgp13 from '../../../assets/images/user/06.jpg'
@@ -63,10 +57,6 @@ import user1 from '../../../assets/images/user/1.jpg'
 import small07 from '../../../assets/images/small/07.png'
 import small08 from '../../../assets/images/small/08.png'
 import small09 from '../../../assets/images/small/09.png'
-import {useKeycloak} from "@react-keycloak/web";
-import {format} from "date-fns";
-import DanceEventDetailHeaderEditButton
-    from "./dance-event-detail-header-edit-button";
 import DanceEventDetailHeader from "./dance-event-detail-header";
 
 // Fslightbox plugin

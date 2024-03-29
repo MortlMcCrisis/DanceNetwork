@@ -1,8 +1,8 @@
 package com.mortl.dancenetwork.service.impl;
 
-import com.mortl.dancenetwork.dto.NewsfeedEntryDTO;
 import com.mortl.dancenetwork.dto.TicketDTO;
 import com.mortl.dancenetwork.dto.PersonalTicketDataDTO;
+import com.mortl.dancenetwork.mapper.NewsfeedEntryMapper;
 import com.mortl.dancenetwork.model.Ticket;
 import com.mortl.dancenetwork.repository.TicketRepository;
 import com.mortl.dancenetwork.repository.TicketTypeRepository;
@@ -32,6 +32,8 @@ public class TicketService implements ITicketService {
 
   private final NewsfeedFactory newsfeedFactory;
 
+  private final NewsfeedEntryMapper newsfeedEntryMapper;
+
   @Override
   public void addTickets(Map<Long, PersonalTicketDataDTO> tickets) {
     log.info("Adding " + tickets.size() + " tickets.");
@@ -55,7 +57,7 @@ public class TicketService implements ITicketService {
     Entry<Long, PersonalTicketDataDTO> aTicket = tickets.entrySet().stream().findAny().get();
     PersonalTicketDataDTO personalTicketDataDTO = aTicket.getValue();
     Long ticketTypeId = aTicket.getKey();
-    newsfeedEntryService.createNewsfeedEntry(NewsfeedEntryDTO.fromModel(
+    newsfeedEntryService.createNewsfeedEntry(newsfeedEntryMapper.toDTO(
       newsfeedFactory.createTicketsBoughtNewsfeedEntry(
           userService.getCurrentUser(),
           List.of(Ticket.builder()
