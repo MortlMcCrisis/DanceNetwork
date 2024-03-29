@@ -9,9 +9,7 @@ import user07 from '../../../assets/images/user/07.jpg'
 import user08 from '../../../assets/images/user/08.jpg'
 import user09 from '../../../assets/images/user/09.jpg'
 import placeholder from '../../../assets/images/event/placeholder.png'
-import {useKeycloak} from "@react-keycloak/web";
 import {format} from "date-fns";
-import {EVENTS_ENDPOINT} from "../../../components/util/network";
 
 const DanceEventCard =({event}) => {
 

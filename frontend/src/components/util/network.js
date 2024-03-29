@@ -31,8 +31,6 @@ export const fetchData = async (url, keycloakToken, setMethod) => {
 };
 //TODO both methods should function in the same way
 export const postData = async (url, keycloakToken, form) => {
-  console.log(form);
-  console.log(JSON.stringify({ ...form }));
   try {
     const response = await fetch(url, {
       method: 'POST',
@@ -43,17 +41,33 @@ export const postData = async (url, keycloakToken, form) => {
       body: JSON.stringify({ ...form }),
     });
 
-    console.log(response);
-
-    if (response.status === 201) {
-      return response;
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
     }
+
+    return response;
+  } catch (error) {
+    console.error('Error posting data:', error);
+  }
+};
+
+export const putData = async (url, keycloakToken, content) => {
+  try {
+    const response = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${keycloakToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({...content}),
+    });
 
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
 
+    return response;
   } catch (error) {
-    console.error('Error saving event:', error);
+    console.error('Error putting data:', error);
   }
-};
+}

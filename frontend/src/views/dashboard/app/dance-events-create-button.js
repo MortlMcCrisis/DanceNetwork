@@ -77,9 +77,9 @@ const DanceEventsCreateButton =() =>{
          return;
       }
 
-      const response = await postData(EVENTS_ENDPOINT, keycloak.token, form)
+      const response = await postData(EVENTS_ENDPOINT, keycloak.token, form);
       if (response.status === 201) {
-         const resourceUrl = response.headers.get('Location')
+         const resourceUrl = response.headers.get('Location');
          const id = resourceUrl.split('/').pop();
          window.location = `/dashboards/app/dance-event-detail/${id}`;
       }

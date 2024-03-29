@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import {useKeycloak} from "@react-keycloak/web";
 import _ from "lodash";
 import DanceAbortButton from "./dance-abort-button";
-import {EVENTS_ENDPOINT} from "../../../components/util/network";
+import {EVENTS_ENDPOINT, putData} from "../../../components/util/network";
 import {toast} from "react-toastify";
 
 const DanceEventDetailHeaderEditButton=({data, setData})=> {
@@ -51,39 +51,24 @@ const DanceEventDetailHeaderEditButton=({data, setData})=> {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    try {
-      if(hasAnyDirtyField()) {
-        //TODO validate startDate < endDate
-        let newEventData = _.clone(form);
-        if(!isMultipleDays)
-        {
-          newEventData['endDate'] = null;
-        }
-
-        const response = await fetch(`${EVENTS_ENDPOINT}/${form.id}`, {
-          method: 'PUT',
-          headers: {
-            Authorization: `Bearer ${keycloak.token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({...newEventData}),
-        });
-
-        console.log("response:");
-        console.log(response);
-
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        setData(newEventData);
-        toast.success("Event successfully updated");
+    //TODO implement new validation schema
+    if(hasAnyDirtyField()) {
+      let newEventData = _.clone(form);
+      if(!isMultipleDays) {
+        newEventData['endDate'] = null;
+      }
+      else if (new Date(newEventData.startDate) >= new Date(newEventData.endDate)){
+        toast.error("Start date must be before end date!");
+        return;
       }
 
-      setShowEditMainSettings(false);
-    } catch (error) {
-      console.error('Error saving event:', error);
+      await putData(`${EVENTS_ENDPOINT}/${form.id}`, keycloak.token, newEventData);
+
+      setData(newEventData);
+      toast.success("Event successfully updated");
     }
+
+    setShowEditMainSettings(false);
   };
 
   return(
