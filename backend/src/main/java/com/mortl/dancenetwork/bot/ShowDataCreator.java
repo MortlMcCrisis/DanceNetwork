@@ -17,11 +17,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
+@Profile("!test")
 public class ShowDataCreator {
 
   private NewsfeedEntryRepository newsfeedEntryRepository;

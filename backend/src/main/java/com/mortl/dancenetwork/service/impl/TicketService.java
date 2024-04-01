@@ -36,6 +36,7 @@ public class TicketService implements ITicketService {
 
   @Override
   public void addTickets(Map<Long, PersonalTicketDataDTO> tickets) {
+    //TODO validate that only tickets for published events can be added and write test for this
     log.info("Adding " + tickets.size() + " tickets.");
     for(Entry<Long, PersonalTicketDataDTO> ticket : tickets.entrySet()){
       PersonalTicketDataDTO personalTicketDataDTO = ticket.getValue();

@@ -17,7 +17,7 @@ public class TicketTypeServiceImpl implements ITicketTypeService {
   private final TicketTypeMapper ticketTypeMapper;
 
   public List<TicketTypeDTO> getTicketTypesForEvent(Long eventId){
-    return ticketTypeRepository.getTicketTypesForEvent(eventId).stream()
+    return ticketTypeRepository.findByEventId(eventId).stream()
         .map(ticket -> ticketTypeMapper.toDTO(ticket))
         .toList();
   }

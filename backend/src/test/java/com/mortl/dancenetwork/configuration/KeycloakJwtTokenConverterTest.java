@@ -8,6 +8,5 @@ public class KeycloakJwtTokenConverterTest {
   @Test
   void testGetPrincipalClaimName_principalNotSet() {
     KeycloakJwtTokenConverter testedInstance = new KeycloakJwtTokenConverter();
-    //testedInstance.
   }
 }

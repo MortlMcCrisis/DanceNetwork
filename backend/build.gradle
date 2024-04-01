@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.2.1'
 	id 'io.spring.dependency-management' version '1.1.4'
+	id 'groovy'
 }
 
 group = 'com.mortl'
@@ -34,8 +35,31 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.codehaus.groovy:groovy-all:3.0.21'
+	testImplementation 'org.spockframework:spock-core:2.4-M4-groovy-3.0'
+	testImplementation 'org.spockframework:spock-spring:2.4-M4-groovy-3.0'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+test {
+	//TODO configure logging correctly with logback.xml:
+	// - spring logs should be shown on INFO level
+	// - in test profile application logs should be shown on DEBUG level
+	// - test results should be shown in logs
+	// - in default profile the application logs should be shown in INFO level
+	systemProperty 'spring.profiles.active', 'test'
+	//systemProperty 'logging.level.org.springframework', 'DEBUG'
+	testLogging.showStandardStreams = true
+}
+
+
+task runSpringBootApp(type: JavaExec, dependsOn: 'bootJar') {
+	group = 'application'
+	description = 'Startet die Spring Boot-Anwendung'
+
+	classpath = sourceSets.main.runtimeClasspath
+	main = 'com.mortl.dancenetwork.DancenatworkApplication' // Ersetzen Sie 'your.package.name.YourSpringBootApplication' durch den Hauptklasse Ihrer Spring Boot-Anwendung
 }
