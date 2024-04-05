@@ -20,6 +20,11 @@ import {
   fetchData,
   putData
 } from "../../../components/util/network";
+import LocationIcon from "../../../components/text_icons/location";
+import Website from "../../../components/text_icons/website";
+import WebsiteIcon from "../../../components/text_icons/website";
+import EmailIcon from "../../../components/text_icons/email";
+import DateIcon from "../../../components/text_icons/date";
 
 const DanceEventDetailHeader=()=> {
 
@@ -80,30 +85,15 @@ const DanceEventDetailHeader=()=> {
                 <Row>
                   <Col lg="6">
                     <div className="item5 mt-3">
-                      <div className="d-flex align-items-center mb-1">
-                        <span className="material-symbols-outlined md-18">date_range</span>
-                        <span className="ms-2">{data.startDate ? format(new Date(data.startDate), "MMMM d, yyyy") : ''}</span>
-                        {data.endDate && (
-                            <span className="ms-2">- {format(new Date(data.endDate), "MMMM d, yyyy")}</span>
-                        )}
-                      </div>
+                      <DateIcon startDate={data.startDate} endDate={data.endDate} />
                       {data.location && (
-                          <div className="d-flex align-items-center mb-1">
-                            <span className="material-symbols-outlined md-18">location_on</span>
-                            <span className="ms-2">{data.location}</span>
-                          </div>
+                          <LocationIcon text={data.location} />
                       )}
                       {data.website && (
-                          <div className="d-flex align-items-center mb-1">
-                            <span className="material-symbols-outlined md-18">language</span>
-                            <Link to={data.website} className="link-primary h6 ms-2">{data.website}</Link>
-                          </div>
+                          <WebsiteIcon text={data.website} />
                       )}
                       {data.email && (
-                          <div className="d-flex align-items-center mb-1">
-                            <span className="material-symbols-outlined md-18">email</span>
-                            <span className="ms-2">{data.email}</span>
-                          </div>
+                          <EmailIcon text={data.email} />
                       )}
                     </div>
                   </Col>

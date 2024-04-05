@@ -29,7 +29,8 @@ export const fetchData = async (url, keycloakToken, setMethod) => {
     console.error('Error fetching clients:', error);
   }
 };
-//TODO both methods should function in the same way
+
+//TODO all methods should function in the same way
 export const postData = async (url, keycloakToken, form) => {
   try {
     const response = await fetch(url, {

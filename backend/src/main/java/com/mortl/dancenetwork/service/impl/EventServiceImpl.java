@@ -12,6 +12,7 @@ import com.mortl.dancenetwork.service.IUserService;
 import com.mortl.dancenetwork.util.NewsfeedFactory;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,7 +55,17 @@ public class EventServiceImpl implements IEventService {
 
   @Override
   public List<EventDTO> getAllPublishedEvents(){
-    return eventRepository.findByPublishedTrueOrderByStartDateAsc().stream()
+    return toDTOs(eventRepository.findByPublishedTrueOrderByStartDateAsc());
+  }
+
+  @Override
+  public List<EventDTO> getEventsForTicketTypes(List<Long> ids){
+    List<Long> distinctIds = ids.stream().distinct().toList();
+    return toDTOs(eventRepository.findEventsByTicketTypeIds(distinctIds));
+  }
+
+  private List<EventDTO> toDTOs(List<Event> events){
+    return events.stream()
         .map(event -> eventMapper.toDTO(event))
         .toList();
   }

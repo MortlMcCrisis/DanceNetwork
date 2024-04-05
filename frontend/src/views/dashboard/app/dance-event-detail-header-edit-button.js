@@ -6,6 +6,7 @@ import _ from "lodash";
 import DanceAbortButton from "./dance-abort-button";
 import {EVENTS_ENDPOINT, putData} from "../../../components/util/network";
 import {toast} from "react-toastify";
+import DanceFormInput from "./dance-form-input";
 
 const DanceEventDetailHeaderEditButton=({data, setData})=> {
 
@@ -72,7 +73,7 @@ const DanceEventDetailHeaderEditButton=({data, setData})=> {
   };
 
   return(
-      <>
+      <>{/* TODO form validation */}
         <Button variant="info" size="sm" className="d-inline-flex mb-1" onClick={handleShowEditMainSettings}><i className="material-symbols-outlined me-0">edit</i></Button>{' '}
         <Modal centered show={showEditMainSettings} onHide={handleCloseEditMainSettings}>
           <Modal.Header closeButton>
@@ -82,76 +83,19 @@ const DanceEventDetailHeaderEditButton=({data, setData})=> {
             <Modal.Body>
               <ListGroup>
                 <ListGroupItem>
-                  <Form.Group className="form-group">
-                    <Form.Label htmlFor="name" className="form-label">Name:</Form.Label>
-                    <Form.Control type="text"
-                                  className="vform-control"
-                                  id="name"
-                                  placeholder="Name of the event..."
-                                  value={form.name}
-                                  onChange={handleTemporaryChange}
-                                  required/> {/* TODO change to custom (english) error message */ }
-                  </Form.Group>
+                  <DanceFormInput id="name" label="Name" placeholder="Name of the event..." type="text" value={form.name} onChange={handleTemporaryChange} required="required"/>
+                  <DanceFormInput id="startDate" label={isMultipleDays ? "Start date" : "Date"} type="date" value={form.startDate} onChange={handleTemporaryChange} required="required"/>
                   <div className="d-flex justify-content-end">
-                    <Form.Group className="form-group d-inline-block me-3">
-                      <Form.Label htmlFor="startDate"
-                                  className="form-label">{isMultipleDays
-                          ? "Start date" : "Date"}:</Form.Label>
-                      <Form.Control type="date"
-                                    className="form-control"
-                                    id="startDate"
-                                    value={form.startDate ? format(form.startDate, 'yyyy-MM-dd') : ''}
-                                    onChange={handleTemporaryChange}
-                                    required/>
-                    </Form.Group>
-                    <Form.Group className="form-group d-inline-block me-3">
-                      <Form.Label htmlFor="endDate"
-                                  className={`form-label ${!isMultipleDays
-                                      ? 'text-muted' : ''}`}>End
-                        date:</Form.Label>
-                      <Form.Control disabled={!isMultipleDays}
-                                    type="date"
-                                    className="form-control"
-                                    id="endDate"
-                                    value={form.endDate ? format(form.endDate, 'yyyy-MM-dd') : ''}
-                                    onChange={handleTemporaryChange}
-                                    required={isMultipleDays}/>
-                    </Form.Group>
-                    <Form.Check className="form-check form-switch ms-auto">
-                      <Form.Check type="checkbox" className="bg-primary"
-                                  defaultChecked={isMultipleDays}
-                                  onChange={handleCheckboxChange}
-                                  id="isMultipleDays"/>
+                    {/*TODO this element should not be validated*/}
+                    <Form.Group className="form-check form-switch ms-auto">
+                      <Form.Check type="checkbox" className="bg-primary" defaultChecked={isMultipleDays} onChange={handleCheckboxChange} id="isMultipleDays"/>
                       <Form.Check.Label>Multiple days</Form.Check.Label>
-                    </Form.Check>
+                    </Form.Group>
                   </div>
-                  <Form.Group className="form-group">
-                    <Form.Label htmlFor="location" className="form-label">Location:</Form.Label>
-                    <Form.Control type="text"
-                                  id="location"
-                                  className="form-control"
-                                  placeholder="Where does it take place..."
-                                  value={form.location != null ?  form.location : ''}
-                                  onChange={handleTemporaryChange}/>
-                  </Form.Group>
-                  <Form.Group className="form-group">
-                    <Form.Label htmlFor="website" className="form-label">Website:</Form.Label>
-                    <Form.Control type="text"
-                                  id="website"
-                                  className="form-control"
-                                  placeholder="Website of the event..."
-                                  value={form.website != null ?  form.website : ''}
-                                  onChange={handleTemporaryChange}/>
-                  </Form.Group>
-                  <Form.Group className="form-group">
-                    <Form.Label htmlFor="mail" className="form-label">E-Mail:</Form.Label>
-                    <Form.Control type="email"
-                                  id="email"
-                                  className="form-control"
-                                  placeholder="Contact e-mail..."
-                                  value={form.email != null ?  form.email : ''}
-                                  onChange={handleTemporaryChange}/>
-                  </Form.Group>
+                  <DanceFormInput id="endDate" label="End date" type="date" value={form.endDate} onChange={handleTemporaryChange} disabled={!isMultipleDays} required={isMultipleDays}/>
+                  <DanceFormInput id="location" label="Location" placeholder="Where does it take place..." type="text" value={form.location} onChange={handleTemporaryChange}/>
+                  <DanceFormInput id="website" label="Website" placeholder="Website of the event..." type="text" value={form.website} onChange={handleTemporaryChange}/>
+                  <DanceFormInput id="email" label="E-Mail" placeholder="Contact e-mail..." type="email" value={form.email} onChange={handleTemporaryChange}/>
                 </ListGroupItem>
               </ListGroup>
             </Modal.Body>

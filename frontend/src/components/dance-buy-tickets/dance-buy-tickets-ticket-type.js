@@ -1,6 +1,7 @@
 import { Col, OverlayTrigger, Row, Tooltip} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
 import Card from "../Card";
+import TicketIcon from "../text_icons/ticket";
 
 const DanceBuyTicketsTicketType = ({ticketType, setTicketType}) => {
 
@@ -14,7 +15,7 @@ const DanceBuyTicketsTicketType = ({ticketType, setTicketType}) => {
       <Card>
         <Card.Header className=" d-flex justify-content-between iq-border-bottom mb-0">
           <div className="header-title">
-            <h4 className="card-title">Full Pass {ticketType.name}</h4>
+            <h4 className="card-title">{ticketType.name}</h4>
           </div>
         </Card.Header>
         <Card.Body>

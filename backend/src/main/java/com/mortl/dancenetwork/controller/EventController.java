@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -31,12 +32,17 @@ public class EventController {
   }
 
   @GetMapping
-  public List<EventDTO> getAllEvents() {
-    return eventService.getAllPublishedEvents();
+  public List<EventDTO> getEvents(@RequestParam(required = false) List<Long> ticketTypeIds) {
+    if(ticketTypeIds == null) {
+      return eventService.getAllPublishedEvents();
+    }
+    else {
+      return eventService.getEventsForTicketTypes(ticketTypeIds);
+    }
   }
 
   @GetMapping("/{id}")
-  public EventDTO getAllEvents(@PathVariable Long id) {
+  public EventDTO getEvents(@PathVariable Long id) {
     return eventService.getEvent(id);
   }
 

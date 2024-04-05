@@ -21,7 +21,7 @@ public class FileController {
   @PostMapping("/photo-upload")
   public ResponseEntity uploadPhoto(@RequestParam("file") MultipartFile file) {
     log.info("Uploaded " + file.getOriginalFilename());
-    storageService.store(file);
+    storageService.storeImage(file);
     return ResponseEntity.ok().build();
   }
 }

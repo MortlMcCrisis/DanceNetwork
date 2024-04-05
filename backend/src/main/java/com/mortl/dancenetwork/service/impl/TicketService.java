@@ -1,12 +1,15 @@
 package com.mortl.dancenetwork.service.impl;
 
+import com.mortl.dancenetwork.dto.EventDTO;
 import com.mortl.dancenetwork.dto.TicketDTO;
 import com.mortl.dancenetwork.dto.PersonalTicketDataDTO;
+import com.mortl.dancenetwork.mapper.EventMapper;
 import com.mortl.dancenetwork.mapper.NewsfeedEntryMapper;
 import com.mortl.dancenetwork.model.Ticket;
 import com.mortl.dancenetwork.repository.TicketRepository;
 import com.mortl.dancenetwork.repository.TicketTypeRepository;
 import com.mortl.dancenetwork.service.INewsfeedEntryService;
+import com.mortl.dancenetwork.service.IQrCodeService;
 import com.mortl.dancenetwork.service.ITicketService;
 import com.mortl.dancenetwork.service.IUserService;
 import com.mortl.dancenetwork.util.NewsfeedFactory;
@@ -28,6 +31,8 @@ public class TicketService implements ITicketService {
 
   private final IUserService userService;
 
+  private final IQrCodeService qrCodeService;
+
   private final INewsfeedEntryService newsfeedEntryService;
 
   private final NewsfeedFactory newsfeedFactory;
@@ -40,7 +45,7 @@ public class TicketService implements ITicketService {
     log.info("Adding " + tickets.size() + " tickets.");
     for(Entry<Long, PersonalTicketDataDTO> ticket : tickets.entrySet()){
       PersonalTicketDataDTO personalTicketDataDTO = ticket.getValue();
-      ticketRepository.save(Ticket.builder()
+      Ticket ticket2 = ticketRepository.save(Ticket.builder()
           .owner(userService.getCurrentUser().uuid())
           .gender(personalTicketDataDTO.gender())
           .ticketType(ticketTypeRepository.getReferenceById(ticket.getKey()))
@@ -53,6 +58,13 @@ public class TicketService implements ITicketService {
           .phone(personalTicketDataDTO.phone())
           .email(personalTicketDataDTO.email())
           .build());
+
+      try {
+        qrCodeService.createQRImage("code"+ticket2.getId()+".png", ticket2.getId().toString());
+      }
+      catch (Exception e){
+        log.error("Da fuq");
+      }
     }
 
     Entry<Long, PersonalTicketDataDTO> aTicket = tickets.entrySet().stream().findAny().get();
@@ -82,6 +94,7 @@ public class TicketService implements ITicketService {
     return ticketRepository.findByOwner(userService.getCurrentUser().uuid()).stream()
         .map(ticket -> new TicketDTO(
             ticket.getId(),
+            ticket.getTicketType().getDescription(),
             ticket.getTicketType().getId(),
             new PersonalTicketDataDTO(
                 ticket.getFirstName(),
@@ -92,7 +105,10 @@ public class TicketService implements ITicketService {
                 ticket.getPhone(),
                 ticket.getRole(),
                 ticket.getGender()
-            )))
+            ),
+            eventMapper.toDTO(ticket.getTicketType().getEvent())
+        ))
         .toList();
   }
+  private final EventMapper eventMapper;
 }
