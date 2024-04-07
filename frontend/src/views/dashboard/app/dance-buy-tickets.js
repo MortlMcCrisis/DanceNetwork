@@ -94,20 +94,22 @@ const DanceBuyTickets = () => {
     const triggerPayment = () => {
         (async () => {
             try {
-                let tickets = new Map();
+                let tickets = [];
                 formData.forEach(obj => {
                     const newObj = {};
                     for (const key in obj) {
-                        if (key !== 'ticketTypeName' && key !== 'ticketTypeId') {
+                        if (key !== 'ticketTypeName' && key !== 'emailConfirm') {
                             newObj[key] = obj[key];
                         }
                     }
-                    tickets.set(obj.ticketTypeId, newObj);
+                    tickets.push(newObj);
                 });
 
+                console.log(tickets)
                 let requestData = {
-                    personalData: Object.fromEntries(tickets)
+                    tickets: tickets
                 }
+                console.log(requestData)
 
                 const response = await postData(PAYMENTS_ENDPOINT, keycloak.token, requestData)
                 if (response.status === 201) {
@@ -146,8 +148,6 @@ const DanceBuyTickets = () => {
                 return item;
             });
         });
-
-        console.log(formData)
     };
 
     useEffect(() => {

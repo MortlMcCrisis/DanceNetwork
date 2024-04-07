@@ -32,13 +32,8 @@ public class EventController {
   }
 
   @GetMapping
-  public List<EventDTO> getEvents(@RequestParam(required = false) List<Long> ticketTypeIds) {
-    if(ticketTypeIds == null) {
+  public List<EventDTO> getEvents() {
       return eventService.getAllPublishedEvents();
-    }
-    else {
-      return eventService.getEventsForTicketTypes(ticketTypeIds);
-    }
   }
 
   @GetMapping("/{id}")

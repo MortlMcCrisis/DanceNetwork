@@ -11,7 +11,4 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
   @Query("SELECT event FROM Event event WHERE event.published=true ORDER BY event.startDate ASC")
   List<Event> findByPublishedTrueOrderByStartDateAsc();
-
-  @Query("SELECT DISTINCT t.event FROM TicketType t WHERE t.id IN :ticketTypeIds")
-  List<Event> findEventsByTicketTypeIds(List<Long> ticketTypeIds);
 }

@@ -4,7 +4,12 @@ import com.mortl.dancenetwork.model.NewsfeedEntryType;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public record NewsfeedEntryDTO(Long id, NewsfeedEntryType type, UUID creator, String textField, LocalDateTime creationDate) {
+public record NewsfeedEntryDTO(
+    Long id,
+    NewsfeedEntryType type,
+    UUID creator,
+    String textField,
+    LocalDateTime creationDate) {
 
   //TODO fabric class which sets automatically username and time
   //TODO pass also Date?

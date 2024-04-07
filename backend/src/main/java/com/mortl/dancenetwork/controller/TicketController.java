@@ -1,6 +1,6 @@
 package com.mortl.dancenetwork.controller;
 
-import com.mortl.dancenetwork.dto.TicketDTO;
+import com.mortl.dancenetwork.dto.TicketInfoDTO;
 import com.mortl.dancenetwork.service.ITicketService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class TicketController {
 
   private final ITicketService ticketService;
-  @GetMapping
-  public List<TicketDTO> getTicketsForUser() {
-    return ticketService.getTicketsForUser();
+  @GetMapping("/infos")
+  public List<TicketInfoDTO> getTicketInfosForUser() {
+    return ticketService.getTicketInfosForUser();
   }
 }

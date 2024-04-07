@@ -5,7 +5,6 @@ import Card from "../../../components/Card";
 import {
   EVENTS_ENDPOINT,
   fetchData,
-  fetchDataWithBody,
   TICKETS_ENDPOINT
 } from "../../../components/util/network";
 import {useKeycloak} from "@react-keycloak/web";
@@ -19,25 +18,15 @@ const DanceTickets = () => {
 
   const { keycloak, initialized } = useKeycloak();
 
-  const [tickets, setTickets] = useState([]);
-
-  const [events, setEvents] = useState([]);
+  const [ticketInfos, setTicketInfos] = useState([]);
 
   useEffect(() => {
     if(keycloak.authenticated) {
-      fetchData(TICKETS_ENDPOINT, keycloak.token, setTickets);
+      fetchData(`${TICKETS_ENDPOINT}/infos`, keycloak.token, setTicketInfos);
     }
 
-    console.log(tickets)
+    console.log(ticketInfos)
   }, [keycloak.authenticated]);
-
-  //TODO remove endpoint
-  /*useEffect(() => {
-    if (keycloak.authenticated && tickets.length > 0) {
-      const ticketTypeIds = tickets.map(ticket => ticket.ticketTypeId);
-      fetchData(`${EVENTS_ENDPOINT}?ticketTypeIds=${ticketTypeIds.join(',')}`, keycloak.token, setEvents);
-    }
-  }, [tickets]);*/
 
   return (
     <>
@@ -47,30 +36,30 @@ const DanceTickets = () => {
             <div className="mb-2">
               <h4>Tickets</h4>
             </div>
-            {tickets.map((ticket, idx) => (
+            {ticketInfos.map((ticketInfo, idx) => (
                 <Col sm="6" md="4" key={idx}>
                   <Card className="cardhover">
                     <Card.Body>
                       <div className="text-center">
                         <img
-                            src={`/qrcodes/code${ticket.ticketId}.png`}
+                            src={`/qrcodes/code${ticketInfo.ticket.id}.png`}
                             alt="mimg"
                             className="avatar job-icon mb-2 d-inline-block"
                             loading="lazy"
                         />
                       </div>
-                      <h3>{ticket.eventData.name}</h3>
-                      <p>{ticket.ticketDescription}</p>
+                      <h3>{ticketInfo.event.name}</h3>
+                      <p>{ticketInfo.ticketType.description}</p>
                       <hr/>
                       <h5>Event</h5>
-                      <DateIcon startDate={ticket.eventData.startDate} endDate={ticket.eventData.endDate} />
-                      <LocationIcon text={ticket.eventData.location} />
+                      <DateIcon startDate={ticketInfo.event.startDate} endDate={ticketInfo.event.endDate} />
+                      <LocationIcon text={ticketInfo.event.location} />
                       <hr/>
                       <h5>Attendee</h5>
-                      <PersonIcon text={`${ticket.ticketData.firstName} ${ticket.ticketData.lastName}`} />
-                      <AddressIcon text={ticket.ticketData.address} />
+                      <PersonIcon text={`${ticketInfo.ticket.firstName} ${ticketInfo.ticket.lastName}`} />
+                      <AddressIcon text={ticketInfo.ticket.address} />
                       <hr/>
-                      <TicketIcon text={ticket.ticketId} />
+                      <TicketIcon text={ticketInfo.ticket.id} />
                     </Card.Body>
                   </Card>
                 </Col>

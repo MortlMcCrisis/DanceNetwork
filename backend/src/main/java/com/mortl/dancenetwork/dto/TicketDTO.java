@@ -1,5 +1,15 @@
 package com.mortl.dancenetwork.dto;
 
-public record TicketDTO(Long ticketId, String ticketDescription, /* TODO qrcode...*/Long ticketTypeId, PersonalTicketDataDTO ticketData, EventDTO eventData) {
+public record TicketDTO(
+    Long id,
+    Long ticketTypeId,
+    String firstName,
+    String lastName,
+    String address,
+    String country,
+    String email,
+    String phone,
+    Role role, // TODO change everywhere to dancingRole or something like that. "role" is very generic and will be difficult, when e.g. administration roles are introduced
+    Gender gender) {
 //TODO create mapper
 }

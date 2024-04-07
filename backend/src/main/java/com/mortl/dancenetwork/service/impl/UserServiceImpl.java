@@ -52,7 +52,7 @@ public class UserServiceImpl implements IUserService {
 
   @Override
   public UserDTO getUser(UUID userUUID) {
-    return UserDTO.fromModel(userClient.fetchUser(userUUID));
+    return UserDTO.fromEntity(userClient.fetchUser(userUUID));
   }
 
   private Jwt getJwt() {

@@ -10,8 +10,6 @@ public interface IEventService {
 
   EventDTO getEvent(Long id);
 
-  List<EventDTO> getEventsForTicketTypes(List<Long> ids);
-
   List<EventDTO> getAllPublishedEvents();
 
   EventDTO updateEvent(EventDTO event) throws NotFoundException;

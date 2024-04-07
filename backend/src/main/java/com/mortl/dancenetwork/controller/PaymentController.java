@@ -1,8 +1,10 @@
 package com.mortl.dancenetwork.controller;
 
 import com.mortl.dancenetwork.dto.PaymentRequestDTO;
+import com.mortl.dancenetwork.dto.TicketDTO;
 import com.mortl.dancenetwork.service.IPaymentService;
 import com.mortl.dancenetwork.service.ITicketService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +24,10 @@ public class PaymentController {
   private final ITicketService ticketService;
 
   @PostMapping
-  public ResponseEntity postPaymentInfo(@RequestBody PaymentRequestDTO paymentRequestDTO) {
-    paymentService.doPayment(paymentRequestDTO);
+  public ResponseEntity newPayment(@RequestBody PaymentRequestDTO tickets) {
+    paymentService.doPayment(tickets);
 
-    ticketService.addTickets(paymentRequestDTO.personalData());
+    ticketService.addTickets(tickets.tickets());
 
     return ResponseEntity.ok().build();
   }

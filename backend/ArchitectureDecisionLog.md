@@ -24,6 +24,15 @@ Symbols
 Business
 ========
 
+Wording
+-------
+Wording is for code and frontend
+- firstName
+- lastName
+- gender: male, female, other
+- role: leader, follower, both
+
+
 Business partners
 -----------------
 - Somebody must always be available and respond to alarms or customer problems.

@@ -30,7 +30,6 @@ public class Ticket {
   private Long id;
 
   @Column(nullable = false)
-  @NonNull
   private UUID owner;
 
   @ManyToOne

@@ -1,6 +1,7 @@
 package com.mortl.dancenetwork.dto;
 
-import java.util.Map;
+import java.util.List;
 
-public record PaymentRequestDTO(Map<Long, PersonalTicketDataDTO> personalData) {
+public record PaymentRequestDTO(
+    List<TicketDTO> tickets) {
 }

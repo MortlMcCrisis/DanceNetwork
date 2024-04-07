@@ -58,12 +58,6 @@ public class EventServiceImpl implements IEventService {
     return toDTOs(eventRepository.findByPublishedTrueOrderByStartDateAsc());
   }
 
-  @Override
-  public List<EventDTO> getEventsForTicketTypes(List<Long> ids){
-    List<Long> distinctIds = ids.stream().distinct().toList();
-    return toDTOs(eventRepository.findEventsByTicketTypeIds(distinctIds));
-  }
-
   private List<EventDTO> toDTOs(List<Event> events){
     return events.stream()
         .map(event -> eventMapper.toDTO(event))
