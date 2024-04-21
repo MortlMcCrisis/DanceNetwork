@@ -25,7 +25,7 @@ import img59 from '../../../assets/images/page-img/59.jpg'
 import {useKeycloak} from "@react-keycloak/web";
 import DanceEventsCreateButton from "./dance-events-create-button";
 import DanceEventCard from "./dance-events-card";
-import {EVENTS_ENDPOINT, fetchData} from "../../../components/util/network";
+import {EVENTS_OPEN_ENDPOINT, fetchData} from "../../../components/util/network";
 
 const DanceEvents =() =>{
 
@@ -34,10 +34,8 @@ const DanceEvents =() =>{
    const { keycloak, initialized } = useKeycloak();
 
    useEffect(() => {
-      if(keycloak.authenticated) {
-         fetchData(EVENTS_ENDPOINT, keycloak.token, (data) => setEvents(data));
-      }
-   }, [keycloak.authenticated]);
+         fetchData(EVENTS_OPEN_ENDPOINT, (data) => setEvents(data));
+   }, []);
 
    return(
       <>

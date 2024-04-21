@@ -12,16 +12,16 @@ import icon6 from "../assets/images/icon/06.png";
 import icon7 from "../assets/images/icon/07.png";
 import ShareOffcanvas from "./share-offcanvas";
 import DanceNewsfeedCardHeader from "./dance-newsfeed-card-header";
-const DanceNewsfeedCard = ({newsfeedEntry}) => {
+const DanceNewsfeedCard = ({newsfeedEntry, creator}) => {
    
     return (
         <>
-            {newsfeedEntry.creator && newsfeedEntry.creationDate && (
+            {creator && newsfeedEntry.creationDate && (
                 <Card className=" card-block card-stretch card-height">
                     <Card.Body>
                         <div className="card card-block card-stretch card-height">
                             <div className="card-body">
-                                <DanceNewsfeedCardHeader type={newsfeedEntry.type} creatorUUID={newsfeedEntry.creator} creationDate={newsfeedEntry.creationDate} />
+                                <DanceNewsfeedCardHeader type={newsfeedEntry.type} creator={creator} creationDate={newsfeedEntry.creationDate} />
                                 <div className="mt-3">
                                     <p>{newsfeedEntry.textField}</p>
                                 </div>

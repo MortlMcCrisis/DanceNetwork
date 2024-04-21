@@ -4,9 +4,11 @@ import com.mortl.dancenetwork.client.IUserClient;
 import com.mortl.dancenetwork.dto.Gender;
 import com.mortl.dancenetwork.dto.UserDTO;
 import com.mortl.dancenetwork.entity.User;
+import com.mortl.dancenetwork.mapper.UserMapper;
 import com.mortl.dancenetwork.service.IUserService;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -23,11 +25,11 @@ public class UserServiceImpl implements IUserService {
 
   private final IUserClient userClient;
 
+  private final UserMapper userMapper;
+
   @Override
   public UserDTO updateUser(UserDTO userDTO) {
-
-    userClient.updateUser(userDTO.toEntity(getCurrentUser().uuid()));
-
+    userClient.updateUser(userMapper.toEntity(userDTO));
     return userDTO;
   }
 
@@ -37,9 +39,13 @@ public class UserServiceImpl implements IUserService {
   }
 
   @Override
-  public User getCurrentUser() {
-    Jwt jwt = getJwt();
-    return User.builder()
+  public Optional<User> getCurrentUser() {
+    Optional<Jwt> jwtOptional = getJwt();
+    if(jwtOptional.isEmpty()){
+      return Optional.empty();
+    }
+    Jwt jwt = jwtOptional.get();
+    return Optional.of(User.builder()
         .uuid(UUID.fromString(jwt.getClaim("sub")))
         .photoPath(jwt.getClaim("photo_path"))
         .username(jwt.getClaim("custom_username"))
@@ -47,17 +53,33 @@ public class UserServiceImpl implements IUserService {
         .lastName(jwt.getClaim("family_name"))
         .gender(Gender.getIfNotNull(jwt.getClaim("gender")))
         .phone(jwt.getClaim("phone"))
-        .build();
+        .build());
   }
 
   @Override
-  public UserDTO getUser(UUID userUUID) {
-    return UserDTO.fromEntity(userClient.fetchUser(userUUID));
+  public User getNonNullCurrentUser() {
+    Optional<User> currentUser = getCurrentUser();
+    if(currentUser.isEmpty()){
+      throw new IllegalStateException("Current user must not be null when creating an event.");
+    }
+    return currentUser.get();
   }
 
-  private Jwt getJwt() {
+  @Override
+  public List<UserDTO> getUsers(List<UUID> userUUIDs) {
+    return userClient.fetchUsers(userUUIDs).stream()
+        .map(user -> userMapper.toDTO(user))
+        .toList();
+  }
+
+  private Optional<Jwt> getJwt() {
     HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-    var authorizationHeader = request.getHeader("Authorization");
-    return decoder.decode(authorizationHeader.split(" ")[1]);
+    try {
+      String authorizationHeader = request.getHeader("Authorization");
+      return Optional.of(decoder.decode(authorizationHeader.split(" ")[1]));
+    }
+    catch(NullPointerException e){
+      return Optional.empty();
+    }
   }
 }

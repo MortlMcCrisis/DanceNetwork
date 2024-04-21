@@ -11,5 +11,4 @@ public record TicketDTO(
     String phone,
     Role role, // TODO change everywhere to dancingRole or something like that. "role" is very generic and will be difficult, when e.g. administration roles are introduced
     Gender gender) {
-//TODO create mapper
 }

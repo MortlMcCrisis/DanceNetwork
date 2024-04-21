@@ -31,7 +31,7 @@ public class NewsfeedEntryServiceImpl implements INewsfeedEntryService {
   @Override
   public NewsfeedEntryDTO createNewsfeedEntry(NewsfeedEntryDTO newsfeedEntryDTO) {
     NewsfeedEntry newsfeedEntry = newsfeedEntryMapper.toModel(newsfeedEntryDTO);
-    newsfeedEntry.setCreator(userService.getCurrentUser().uuid());
+    newsfeedEntry.setCreator(userService.getNonNullCurrentUser().uuid());
     NewsfeedEntry savedNewsfeedEntry = newsfeedEntryRepository.saveAndFlush(
         newsfeedEntry);
 
@@ -43,7 +43,7 @@ public class NewsfeedEntryServiceImpl implements INewsfeedEntryService {
     //TODO only the owner of a user should be able to update an entry
     NewsfeedEntry currentNewsfeedEntry = newsfeedEntryRepository.findById(newsfeedEntry.id())
         .orElseThrow(NotFoundException::new);
-    User currentUser = userService.getCurrentUser();
+    User currentUser = userService.getNonNullCurrentUser();
     currentNewsfeedEntry.setCreator(currentUser.uuid());
     currentNewsfeedEntry.setType(newsfeedEntry.type());
     currentNewsfeedEntry.setTextField(newsfeedEntry.textField());

@@ -1,4 +1,4 @@
-package com.mortl.dancenetwork.controller;
+package com.mortl.dancenetwork.controller.closed;
 
 import com.mortl.dancenetwork.service.IStorageService;
 import lombok.RequiredArgsConstructor;
@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/api/v1/files")
+@RequestMapping("/api/closed/v1/files")
 @Slf4j
 @RequiredArgsConstructor
-public class FileController {
+public class FileClosedController {
 
   private final IStorageService storageService;
 

@@ -1,5 +1,6 @@
 package com.mortl.dancenetwork.configuration;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.OAuth2Constants;
 import org.keycloak.admin.client.Keycloak;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -37,8 +39,12 @@ public class WebSecurityConfig {
     http
         .authorizeHttpRequests(
             requestMatcherRegistry -> requestMatcherRegistry
+                //.requestMatchers("/actuator/**").permitAll()
+                .requestMatchers("/api/open/v1/**").permitAll()
+                .requestMatchers("/api/closed/v1/**").authenticated()
                 .anyRequest()
-                .authenticated());
+                .denyAll())
+                .csrf(csrf -> csrf.disable());
 
     http
         .oauth2ResourceServer(resourceServerConfigurer -> resourceServerConfigurer
@@ -48,7 +54,6 @@ public class WebSecurityConfig {
     http
         .sessionManagement(sessionManagementConfigurer -> sessionManagementConfigurer
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
     return http.build();
   }
 }

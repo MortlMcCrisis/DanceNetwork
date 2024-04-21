@@ -39,7 +39,7 @@ public class EventServiceImpl implements IEventService {
   public EventDTO createEvent(EventDTO eventDTO)
   {
     Event event = eventMapper.toModel(eventDTO);
-    event.setCreator(userService.getCurrentUser().uuid());
+    event.setCreator(userService.getNonNullCurrentUser().uuid());
     Event savedEvent = eventRepository.saveAndFlush(event);
     return eventMapper.toDTO(savedEvent);  }
 
@@ -92,7 +92,7 @@ public class EventServiceImpl implements IEventService {
     event.setPublished(true);
     eventRepository.saveAndFlush(event);
 
-    User currentUser = userService.getCurrentUser();
+    User currentUser = userService.getNonNullCurrentUser();
 
     newsfeedEntryService.createNewsfeedEntry(newsfeedEntryMapper.toDTO(
         newsfeedFactory.createEventPublishedNewsfeedEntry(currentUser, event)));

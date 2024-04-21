@@ -11,7 +11,7 @@ import {useKeycloak} from "@react-keycloak/web";
 import DanceAbortButton from "./dance-abort-button";
 import DanceFormInput from "./dance-form-input";
 import {toast} from "react-toastify";
-import {EVENTS_ENDPOINT, postData} from "../../../components/util/network";
+import {EVENTS_CLOSED_ENDPOINT, postData} from "../../../components/util/network";
 
 const DanceEventsCreateButton =() =>{
    const [showCreate, setShowCreate] = useState(false);
@@ -77,7 +77,7 @@ const DanceEventsCreateButton =() =>{
          return;
       }
 
-      const response = await postData(EVENTS_ENDPOINT, keycloak.token, form);
+      const response = await postData(EVENTS_CLOSED_ENDPOINT, form, keycloak.token);
       if (response.status === 201) {
          const resourceUrl = response.headers.get('Location');
          const id = resourceUrl.split('/').pop();

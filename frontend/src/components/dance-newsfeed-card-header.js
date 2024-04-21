@@ -1,39 +1,7 @@
-import React, {useEffect, useState} from 'react'
 import { Dropdown } from 'react-bootstrap'
 import img from '../assets/images/user/user-1.jpg'
-import {useKeycloak} from "@react-keycloak/web";
-import {USERS_ENDPOINT} from "./util/network";
 
-const DanceNewsfeedCardHeader = ({type, creatorUUID, creationDate}) => {
-
-    const { keycloak, initialized } = useKeycloak();
-
-    const [creator, setCreator] = useState( null );
-
-    useEffect(() => {
-        if(keycloak.authenticated) {
-            const fetchCreator = async () => {
-                try {
-                    const response = await fetch(`${USERS_ENDPOINT}/${creatorUUID}`, {
-                        headers: {
-                            Authorization: `Bearer ${keycloak.token}`,
-                            'Content-Type': 'application/json',
-                        },
-                    });
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    const body = await response.json();
-                    console.log(body);
-                    setCreator(body);
-                } catch (error) {
-                    console.error(`Error fetching creator with id ${creatorUUID}:`, error);
-                }
-            };
-
-            fetchCreator();
-        }
-    }, [keycloak.authenticated]);
+const DanceNewsfeedCardHeader = ({type, creator, creationDate}) => {
 
     function formatTimestamp(timestamp) {
         const now = new Date();

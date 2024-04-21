@@ -1,4 +1,4 @@
-package com.mortl.dancenetwork.controller;
+package com.mortl.dancenetwork.controller.closed;
 
 import com.mortl.dancenetwork.dto.TicketTypeDTO;
 import com.mortl.dancenetwork.service.ITicketTypeService;
@@ -14,19 +14,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/ticket-types")
+@RequestMapping("/api/closed/v1/ticket-types")
 @Slf4j
 @RequiredArgsConstructor
-public class TicketTypeController {
+public class TicketTypeClosedController {
 
   private final ITicketTypeService ticketTypeService;
-
-  @GetMapping
-  public List<TicketTypeDTO> getTicketsForEvent(@RequestParam long eventId) {
-    log.info("Fetching ticket types for event  " + eventId);
-
-    return ticketTypeService.getTicketTypesForEvent(eventId);
-  }
 
   @PostMapping
   public ResponseEntity addTicketType(@RequestBody TicketTypeDTO ticketTypeDTO) {

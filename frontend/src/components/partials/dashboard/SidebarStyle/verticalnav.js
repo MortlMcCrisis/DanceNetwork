@@ -5,6 +5,7 @@ import { Link, useLocation } from 'react-router-dom'
 
 //react-bootstrap
 import { Accordion, useAccordionButton, AccordionContext, Nav,Tooltip,OverlayTrigger} from 'react-bootstrap'
+import {useKeycloak} from "@react-keycloak/web";
 
 
 
@@ -26,6 +27,9 @@ function CustomToggle({ children, eventKey, onClick }) {
 }
 
 const VerticalNav = React.memo(() => {
+
+    const { keycloak, initialized } = useKeycloak();
+
     const [activeMenu, setActiveMenu] = useState(false)
     const [active, setActive]= useState('')
     //location
@@ -62,16 +66,18 @@ const VerticalNav = React.memo(() => {
                         <span className="item-name">Events</span>
                     </Link>
                 </Nav.Item>
-                <Nav.Item as="li">
-                    <Link className={`${location.pathname === '/dashboards/app/dance-tickets' ? 'active' : ''} nav-link `} aria-current="page" to="/dashboards/app/dance-tickets">
-                        <OverlayTrigger placement="right" overlay={<Tooltip>Tickets</Tooltip>}>
-                            <i className="icon material-symbols-outlined">
-                              insert_drive_file
-                            </i>
-                        </OverlayTrigger>
-                        <span className="item-name">Tickets</span>
-                    </Link>
-                </Nav.Item>
+                {keycloak.authenticated &&
+                    <Nav.Item as="li">
+                        <Link className={`${location.pathname === '/dashboards/app/dance-tickets' ? 'active' : ''} nav-link `} aria-current="page" to="/dashboards/app/dance-tickets">
+                            <OverlayTrigger placement="right" overlay={<Tooltip>Tickets</Tooltip>}>
+                                <i className="icon material-symbols-outlined">
+                                  insert_drive_file
+                                </i>
+                            </OverlayTrigger>
+                            <span className="item-name">Tickets</span>
+                        </Link>
+                    </Nav.Item>
+                }
                 <li className="nav-item static-item">
                     <Link className="nav-link static-item disabled" to="#" tabIndex="-1">
                         <span className="default-icon">Social</span>

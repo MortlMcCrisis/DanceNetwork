@@ -8,7 +8,7 @@ public interface IUserClient {
 
   List<User> fetchUsers();
 
-  User fetchUser(UUID uuid);
+  List<User> fetchUsers(List<UUID> userUUIDs);
 
   void updateUser(User updatedUser);
 }

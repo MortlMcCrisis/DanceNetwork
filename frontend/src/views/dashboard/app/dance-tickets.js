@@ -3,9 +3,8 @@ import { Container, Row, Col } from "react-bootstrap";
 import Card from "../../../components/Card";
 
 import {
-  EVENTS_ENDPOINT,
   fetchData,
-  TICKETS_ENDPOINT
+  TICKETS_CLOSED_ENDPOINT
 } from "../../../components/util/network";
 import {useKeycloak} from "@react-keycloak/web";
 import PersonIcon from "../../../components/text_icons/person";
@@ -13,7 +12,6 @@ import AddressIcon from "../../../components/text_icons/address";
 import TicketIcon from "../../../components/text_icons/ticket";
 import LocationIcon from "../../../components/text_icons/location";
 import DateIcon from "../../../components/text_icons/date";
-import {format} from "date-fns";
 const DanceTickets = () => {
 
   const { keycloak, initialized } = useKeycloak();
@@ -22,7 +20,7 @@ const DanceTickets = () => {
 
   useEffect(() => {
     if(keycloak.authenticated) {
-      fetchData(`${TICKETS_ENDPOINT}/infos`, keycloak.token, setTicketInfos);
+      fetchData(`${TICKETS_CLOSED_ENDPOINT}/infos`, setTicketInfos, keycloak.token);
     }
 
     console.log(ticketInfos)

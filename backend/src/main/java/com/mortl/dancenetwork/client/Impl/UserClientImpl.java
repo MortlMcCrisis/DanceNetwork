@@ -21,14 +21,14 @@ public class UserClientImpl implements IUserClient {
 
   private final Keycloak keycloak;
 
-//  public List<User> fetchUsers(List<UUID> uuids) {
-//    return uuids.stream()
-//        .map(this::fetchUser)
-//        .toList();
-//  }
-
   @Override
-  public User fetchUser(UUID uuid) {
+  public List<User> fetchUsers(List<UUID> uuids) {
+    return uuids.stream()
+        .map(this::fetchUser)
+        .toList();
+  }
+
+  private User fetchUser(UUID uuid) {
     UserRepresentation userRepresentation = getKeycloakUsers()
         .get(uuid.toString())
         .toRepresentation();

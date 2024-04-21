@@ -9,11 +9,9 @@ import {
     ProgressBar, ListGroup, ListGroupItem, Alert
 } from 'react-bootstrap'
 import {useKeycloak} from "@react-keycloak/web";
-import img20 from "../../../assets/images/user/07.jpg";
-import imgpp2 from "../../../assets/images/user/11.png";
 import DanceFormInput from "./dance-form-input";
 import DanceFormCheckbox from "./dance-form-checkbox";
-import {FILES_ENDPOINT, USERS_ENDPOINT} from "../../../components/util/network";
+import {FILES_CLOSED_ENDPOINT, USERS_CLOSED_ENDPOINT} from "../../../components/util/network";
 
 const DanceUserAccountSetting =() =>{
 
@@ -81,7 +79,7 @@ const DanceUserAccountSetting =() =>{
         const formData = new FormData();
         formData.append("file", event.target.files[0]);
         try {
-            const result = await fetch(`${FILES_ENDPOINT}/photo-upload`, {
+            const result = await fetch(`${FILES_CLOSED_ENDPOINT}/photo-upload`, {
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${keycloak.token}`,
@@ -104,7 +102,7 @@ const DanceUserAccountSetting =() =>{
         event.preventDefault();
 
         try {
-            const response = await fetch(USERS_ENDPOINT, {
+            const response = await fetch(USERS_CLOSED_ENDPOINT, {
                 method: 'PUT',
                 headers: {
                     Authorization: `Bearer ${keycloak.token}`,

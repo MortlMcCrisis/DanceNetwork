@@ -2,6 +2,7 @@ package com.mortl.dancenetwork.service.impl;
 
 import com.mortl.dancenetwork.dto.TicketDTO;
 import com.mortl.dancenetwork.dto.TicketInfoDTO;
+import com.mortl.dancenetwork.entity.User;
 import com.mortl.dancenetwork.mapper.EventMapper;
 import com.mortl.dancenetwork.mapper.NewsfeedEntryMapper;
 import com.mortl.dancenetwork.mapper.TicketMapper;
@@ -15,6 +16,8 @@ import com.mortl.dancenetwork.service.IUserService;
 import com.mortl.dancenetwork.util.NewsfeedFactory;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -45,10 +48,17 @@ public class TicketService implements ITicketService {
   @Override
   public void addTickets(List<TicketDTO> tickets) {
     tickets.forEach(ticket -> log.info("new tickets: {}", ticket.ticketTypeId()));
+    Optional<User> currentUser = userService.getCurrentUser();
+    UUID userUUid;
+    if(currentUser.isPresent()){
+      userUUid = currentUser.get().uuid();
+    } else {
+      userUUid = null;
+    }
     List<Ticket> savedTickets = ticketRepository.saveAllAndFlush(
         tickets.stream()
             .map(ticketMapper::toModel)
-            .peek(ticket -> ticket.setOwner(userService.getCurrentUser().uuid()))
+            .peek(ticket -> ticket.setOwner(userUUid))
             .toList());
 
     for(Ticket ticket : savedTickets) {
@@ -59,19 +69,21 @@ public class TicketService implements ITicketService {
       }
     }
 
-    newsfeedEntryService.createNewsfeedEntry(newsfeedEntryMapper.toDTO(
-        newsfeedFactory.createTicketsBoughtNewsfeedEntry(
-            userService.getCurrentUser(),
-            savedTickets
-        )
-      )
-    );
+    if(currentUser.isPresent()) {
+      newsfeedEntryService.createNewsfeedEntry(newsfeedEntryMapper.toDTO(
+              newsfeedFactory.createTicketsBoughtNewsfeedEntry(
+                  currentUser.get(),
+                  savedTickets
+              )
+          )
+      );
+    }
   }
 
   @Override
   public List<TicketInfoDTO> getTicketInfosForUser(){
     //TODO order by event start date in repository
-    return ticketRepository.findByOwner(userService.getCurrentUser().uuid()).stream()
+    return ticketRepository.findByOwner(userService.getNonNullCurrentUser().uuid()).stream()
         .map(this::createTicketInfoDTO)
         .toList();
   }

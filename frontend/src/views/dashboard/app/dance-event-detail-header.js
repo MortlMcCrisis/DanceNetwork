@@ -5,7 +5,6 @@ import {
   Row
 } from "react-bootstrap";
 import imgp1 from "../../../assets/images/user/15.jpg";
-import {format} from "date-fns";
 import {Link, useParams} from "react-router-dom";
 import imgp2 from "../../../assets/images/user/05.jpg";
 import imgp3 from "../../../assets/images/user/06.jpg";
@@ -16,12 +15,12 @@ import DanceEventDetailHeaderEditButton
   from "./dance-event-detail-header-edit-button";
 import {useKeycloak} from "@react-keycloak/web";
 import {
-  EVENTS_ENDPOINT,
+  EVENTS_CLOSED_ENDPOINT,
+  EVENTS_OPEN_ENDPOINT,
   fetchData,
   putData
 } from "../../../components/util/network";
 import LocationIcon from "../../../components/text_icons/location";
-import Website from "../../../components/text_icons/website";
 import WebsiteIcon from "../../../components/text_icons/website";
 import EmailIcon from "../../../components/text_icons/email";
 import DateIcon from "../../../components/text_icons/date";
@@ -35,25 +34,23 @@ const DanceEventDetailHeader=()=> {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-      if(keycloak.authenticated) {
-        fetchData(`${EVENTS_ENDPOINT}/${id}`, keycloak.token, setData);
-      }
-  }, [keycloak.authenticated]);
+        fetchData(`${EVENTS_OPEN_ENDPOINT}/${id}`, setData);
+  }, []);
 
   const publishEvent = async () => {
-    await putData(`${EVENTS_ENDPOINT}/${id}/publish`, keycloak.token);
+    await putData(`${EVENTS_CLOSED_ENDPOINT}/${id}/publish`, null,  keycloak.token);
     window.location.reload();
   };
 
   return(
       <>
-        {data.published === false &&
+        {keycloak.authenticated && data.published === false &&
           <div className="btn dance-btn-fixed-bottom btn-danger btn-icon btn-setting" >
             <Button variant="info" className="rounded-pill mb-1" onClick={publishEvent}>Publish event</Button>
           </div>
         }
         <Card>
-            {data.published === false &&
+            {keycloak.authenticated && data.published === false &&
               <Card.Header>
                 <Col lg={12}>
                   <Alert variant="alert alert-left alert-warning show d-flex align-items-center gap-2 mb-3">
@@ -76,11 +73,13 @@ const DanceEventDetailHeader=()=> {
                     <h4 className="">{data.name}</h4>
                     <span>60 630 are going</span>
                   </div>
-                  <div className="item4 ms-1">
-                    <div className="d-flex justify-content-between align-items-center ms-1 flex-wrap">
-                      <DanceEventDetailHeaderEditButton data={data} setData={setData} />
+                  {keycloak.authenticated &&
+                    <div className="item4 ms-1">
+                      <div className="d-flex justify-content-between align-items-center ms-1 flex-wrap">
+                        <DanceEventDetailHeaderEditButton data={data} setData={setData} />
+                      </div>
                     </div>
-                  </div>
+                  }
                 </div>
                 <Row>
                   <Col lg="6">

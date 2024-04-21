@@ -18,8 +18,8 @@ import DanceBuyTicketsSummary
     from "../../../components/dance-buy-tickets/dance-buy-tickets-summary";
 import {
     fetchData,
-    PAYMENTS_ENDPOINT,
-    postData, TICKET_TYPES_ENDPOINT
+    PAYMENTS_OPEN_ENDPOINT,
+    postData, TICKET_TYPES_OPEN_ENDPOINT
 } from "../../../components/util/network";
 import {
     getNameForId
@@ -28,8 +28,6 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const DanceBuyTickets = () => {
-
-    const { keycloak, initialized } = useKeycloak();
 
     const { id } = useParams();
 
@@ -104,14 +102,13 @@ const DanceBuyTickets = () => {
                     }
                     tickets.push(newObj);
                 });
-
                 console.log(tickets)
                 let requestData = {
                     tickets: tickets
                 }
                 console.log(requestData)
 
-                const response = await postData(PAYMENTS_ENDPOINT, keycloak.token, requestData)
+                const response = await postData(PAYMENTS_OPEN_ENDPOINT, requestData)
                 if (response.status === 201) {
                     const resourceUrl = response.headers.get('Location')
                     const id = resourceUrl.split('/').pop();
@@ -151,10 +148,8 @@ const DanceBuyTickets = () => {
     };
 
     useEffect(() => {
-        if(keycloak.authenticated) {
-            fetchData(`${TICKET_TYPES_ENDPOINT}?eventId=${id}`, keycloak.token, setTicketTypes);
-        }
-    }, [keycloak.authenticated]);
+        fetchData(`${TICKET_TYPES_OPEN_ENDPOINT}?eventId=${id}`, setTicketTypes);
+    }, []);
 
     useEffect( () => {
         let newFormData = [];

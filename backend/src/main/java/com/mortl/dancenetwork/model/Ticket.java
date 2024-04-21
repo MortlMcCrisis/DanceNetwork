@@ -29,7 +29,6 @@ public class Ticket {
   @Column(nullable = false)
   private Long id;
 
-  @Column(nullable = false)
   private UUID owner;
 
   @ManyToOne

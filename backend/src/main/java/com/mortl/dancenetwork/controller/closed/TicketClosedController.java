@@ -1,4 +1,4 @@
-package com.mortl.dancenetwork.controller;
+package com.mortl.dancenetwork.controller.closed;
 
 import com.mortl.dancenetwork.dto.TicketInfoDTO;
 import com.mortl.dancenetwork.service.ITicketService;
@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/tickets")
+@RequestMapping("/api/closed/v1/tickets")
 @Slf4j
 @RequiredArgsConstructor
-public class TicketController {
+public class TicketClosedController {
 
   private final ITicketService ticketService;
   @GetMapping("/infos")

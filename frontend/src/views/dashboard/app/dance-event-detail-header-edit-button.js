@@ -1,10 +1,9 @@
 import {Button, Form, ListGroup, ListGroupItem, Modal} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
-import { format } from 'date-fns';
 import {useKeycloak} from "@react-keycloak/web";
 import _ from "lodash";
 import DanceAbortButton from "./dance-abort-button";
-import {EVENTS_ENDPOINT, putData} from "../../../components/util/network";
+import {EVENTS_CLOSED_ENDPOINT, putData} from "../../../components/util/network";
 import {toast} from "react-toastify";
 import DanceFormInput from "./dance-form-input";
 
@@ -63,7 +62,7 @@ const DanceEventDetailHeaderEditButton=({data, setData})=> {
         return;
       }
 
-      await putData(`${EVENTS_ENDPOINT}/${form.id}`, keycloak.token, newEventData);
+      await putData(`${EVENTS_CLOSED_ENDPOINT}/${form.id}`, newEventData, keycloak.token);
 
       setData(newEventData);
       toast.success("Event successfully updated");
