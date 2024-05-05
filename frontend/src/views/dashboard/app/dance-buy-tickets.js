@@ -29,6 +29,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 const DanceBuyTickets = () => {
 
+    const { keycloak, initialized } = useKeycloak();
+
     const { id } = useParams();
 
     const [state,setState] = useState(Util.TICKET_STEP);
@@ -108,7 +110,7 @@ const DanceBuyTickets = () => {
                 }
                 console.log(requestData)
 
-                const response = await postData(PAYMENTS_OPEN_ENDPOINT, requestData)
+                const response = await postData(PAYMENTS_OPEN_ENDPOINT, requestData, keycloak.token)
                 if (response.status === 201) {
                     const resourceUrl = response.headers.get('Location')
                     const id = resourceUrl.split('/').pop();

@@ -19,7 +19,7 @@ public class UserClosedController {
   private final IUserService userService;
 
   @PutMapping
-  public ResponseEntity updateUser(@RequestBody UserDTO userDTO) {
+  public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO) {
     return ResponseEntity.ok(userService.updateUser(userDTO));
   }
 }

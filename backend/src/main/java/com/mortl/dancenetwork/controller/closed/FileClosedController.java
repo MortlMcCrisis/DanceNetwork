@@ -19,7 +19,7 @@ public class FileClosedController {
   private final IStorageService storageService;
 
   @PostMapping("/photo-upload")
-  public ResponseEntity uploadPhoto(@RequestParam("file") MultipartFile file) {
+  public ResponseEntity<Void> uploadPhoto(@RequestParam("file") MultipartFile file) {
     log.info("Uploaded " + file.getOriginalFilename());
     storageService.storeImage(file);
     return ResponseEntity.ok().build();

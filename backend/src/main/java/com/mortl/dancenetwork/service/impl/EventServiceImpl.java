@@ -65,11 +65,14 @@ public class EventServiceImpl implements IEventService {
   }
 
   @Override
-  public EventDTO updateEvent(EventDTO event) throws NotFoundException
+  public EventDTO updateEvent(EventDTO event) throws NotFoundException, IllegalAccessException
   {
-    //TODO only the owner of a user should be able to update an entry
     Event currentEvent = eventRepository.findById(event.id())
         .orElseThrow(NotFoundException::new);
+
+    if(currentEvent.getCreator() != userService.getCurrentUser().get().uuid()){
+      throw new IllegalAccessException();
+    }
 
     currentEvent.setName(event.name());
     currentEvent.setEmail(event.email());
@@ -83,11 +86,14 @@ public class EventServiceImpl implements IEventService {
   }
 
   @Override
-  public void publishEvent(long id)
+  public void publishEvent(long id) throws NotFoundException, IllegalAccessException
   {
-    //TODO only the owner of a user should be able to publish an entry
     Event event = eventRepository.findById(id)
         .orElseThrow(NotFoundException::new);
+
+    if(event.getCreator() != userService.getCurrentUser().get().uuid()){
+      throw new IllegalAccessException();
+    }
 
     event.setPublished(true);
     eventRepository.saveAndFlush(event);

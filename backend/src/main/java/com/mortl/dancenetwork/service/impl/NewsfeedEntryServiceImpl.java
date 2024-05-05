@@ -39,10 +39,15 @@ public class NewsfeedEntryServiceImpl implements INewsfeedEntryService {
   }
 
   @Override
-  public NewsfeedEntryDTO updateNewsfeedEntry(NewsfeedEntryDTO newsfeedEntry) throws NotFoundException {
-    //TODO only the owner of a user should be able to update an entry
+  public NewsfeedEntryDTO updateNewsfeedEntry(NewsfeedEntryDTO newsfeedEntry)
+      throws NotFoundException, IllegalAccessException {
     NewsfeedEntry currentNewsfeedEntry = newsfeedEntryRepository.findById(newsfeedEntry.id())
         .orElseThrow(NotFoundException::new);
+
+    if(currentNewsfeedEntry.getCreator() != userService.getCurrentUser().get().uuid()){
+      throw new IllegalAccessException();
+    }
+
     User currentUser = userService.getNonNullCurrentUser();
     currentNewsfeedEntry.setCreator(currentUser.uuid());
     currentNewsfeedEntry.setType(newsfeedEntry.type());

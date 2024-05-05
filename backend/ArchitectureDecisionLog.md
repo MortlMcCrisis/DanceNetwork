@@ -8,6 +8,7 @@ REST endpoints
 - There are two type of endpoints for every ressource:
   - The "open" endpoints in the path "/api/open"
   - The "closed" endpoints which can be called with keycloak authentification in the path "/api/closed"
+- Always return a ResponseEntity and not a dto itself
 
 Data Loading
 ------------
@@ -61,3 +62,19 @@ Wording is for code and frontend
 Business partners
 -----------------
 - Somebody must always be available and respond to alarms or customer problems.
+
+
+
+
+
+Besprechen mit Daniel:
+- Testing:
+  - Soviel ich weiß, soll man immer Komponenten möglichst isoliert von allem anderen Testen. Das 
+  würde bedeuten alles immer zu Mocken. Ich bin mir nicht socher ob das nicht unverhältnismäßig mehr
+  arbeit ist, da man immer alle Methodenaufrufe manuell mocken muss.
+  - Testrichtlinien: 
+    - Folgendes wird durch Application Context Tests getestet
+      - Repositories
+      - Http-Return Codes von Controller
+      - Authentifizierung von Controllern
+    - Alles andere wird durch Unit Tests getestet

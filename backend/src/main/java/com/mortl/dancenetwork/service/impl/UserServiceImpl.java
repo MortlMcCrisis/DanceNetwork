@@ -60,7 +60,7 @@ public class UserServiceImpl implements IUserService {
   public User getNonNullCurrentUser() {
     Optional<User> currentUser = getCurrentUser();
     if(currentUser.isEmpty()){
-      throw new IllegalStateException("Current user must not be null when creating an event.");
+      throw new IllegalStateException("Current user must not be null.");
     }
     return currentUser.get();
   }

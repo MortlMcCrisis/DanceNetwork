@@ -1,10 +1,13 @@
 package com.mortl.dancenetwork.controller.open;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mortl.dancenetwork.dto.EventDTO;
 import com.mortl.dancenetwork.dto.PaymentRequestDTO;
+import com.mortl.dancenetwork.model.Event;
 import com.mortl.dancenetwork.service.IEventService;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,12 +29,12 @@ public class EventOpenController {
   private final IEventService eventService;
 
   @GetMapping
-  public List<EventDTO> getEvents() {
-      return eventService.getAllPublishedEvents();
+  public ResponseEntity<List<EventDTO>> getEvents() {
+      return ResponseEntity.ok(eventService.getAllPublishedEvents());
   }
 
   @GetMapping("/{id}")
-  public EventDTO getEvent(@PathVariable Long id) {
-    return eventService.getEvent(id);
+  public ResponseEntity<EventDTO> getEvent(@PathVariable Long id) {
+    return ResponseEntity.ok(eventService.getEvent(id));
   }
 }

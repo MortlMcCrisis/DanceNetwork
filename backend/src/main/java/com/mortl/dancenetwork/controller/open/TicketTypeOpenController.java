@@ -3,6 +3,7 @@ package com.mortl.dancenetwork.controller.open;
 import com.mortl.dancenetwork.dto.TicketTypeDTO;
 import com.mortl.dancenetwork.service.ITicketTypeService;
 import java.util.List;
+import javax.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +23,9 @@ public class TicketTypeOpenController {
   private final ITicketTypeService ticketTypeService;
 
   @GetMapping
-  public List<TicketTypeDTO> getTicketTypesForEvent(@RequestParam long eventId) {
+  public ResponseEntity<List<TicketTypeDTO>> getTicketTypesForEvent(@RequestParam long eventId) {
     log.info("Fetching ticket types for event  " + eventId);
 
-    return ticketTypeService.getTicketTypesForEvent(eventId);
+    return ResponseEntity.ok(ticketTypeService.getTicketTypesForEvent(eventId));
   }
 }

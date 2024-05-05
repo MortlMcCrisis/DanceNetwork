@@ -23,16 +23,11 @@ public class PaymentOpenController {
   private final ITicketService ticketService;
 
   @PostMapping
-  public ResponseEntity newPayment(@RequestBody PaymentRequestDTO tickets) {
+  public ResponseEntity<Void> newPayment(@RequestBody PaymentRequestDTO tickets) {
     paymentService.doPayment(tickets);
 
     ticketService.addTickets(tickets.tickets());
 
-    return ResponseEntity.ok().build();
-  }
-
-  @GetMapping
-  public ResponseEntity payment() {
     return ResponseEntity.ok().build();
   }
 }

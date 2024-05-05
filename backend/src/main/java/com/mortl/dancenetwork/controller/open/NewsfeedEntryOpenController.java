@@ -5,6 +5,7 @@ import com.mortl.dancenetwork.service.INewsfeedEntryService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,8 +19,8 @@ public class NewsfeedEntryOpenController {
   private final INewsfeedEntryService newsfeedEntryService;
 
   @GetMapping
-  public List<NewsfeedEntryDTO> getNewsfeedEntries(){
+  public ResponseEntity<List<NewsfeedEntryDTO>> getNewsfeedEntries(){
     log.info("getting newsfeed entries");
-    return newsfeedEntryService.getNewsfeedEntries();
+    return ResponseEntity.ok(newsfeedEntryService.getNewsfeedEntries());
   }
 }

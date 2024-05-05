@@ -4,6 +4,7 @@ import com.mortl.dancenetwork.dto.EventDTO;
 import com.mortl.dancenetwork.service.IEventService;
 import java.net.URI;
 import java.net.URISyntaxException;
+import javax.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +24,14 @@ public class EventClosedController {
   private final IEventService eventService;
 
   @PostMapping
-  public ResponseEntity createEvent(@RequestBody EventDTO eventDTO) throws URISyntaxException {
+  public ResponseEntity<EventDTO> createEvent(@RequestBody EventDTO eventDTO) throws URISyntaxException {
     EventDTO savedEvent = eventService.createEvent(eventDTO);
     return ResponseEntity.created(new URI("/api/v1/events/" + savedEvent.id())).body(savedEvent);
   }
+
   @PutMapping("/{id}")
-  public ResponseEntity updateEvent(@PathVariable Long id, @RequestBody EventDTO eventDTO) {
+  public ResponseEntity<EventDTO> updateEvent(@PathVariable Long id, @RequestBody EventDTO eventDTO)
+      throws NotFoundException, IllegalAccessException {
     log.info("saving event with id " + id);
     if( id != eventDTO.id()){
       throw new IllegalArgumentException("id in path (" + id + ") does not match the id of the object (" + eventDTO.id() + ").");
@@ -38,7 +41,8 @@ public class EventClosedController {
   }
 
   @PutMapping("/{id}/publish")
-  public ResponseEntity publishEvent(@PathVariable Long id) {
+  public ResponseEntity<Void> publishEvent(@PathVariable Long id)
+      throws NotFoundException, IllegalAccessException{
     log.info("Publishing event with id " + id);
 
     eventService.publishEvent(id);

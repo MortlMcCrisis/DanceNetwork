@@ -22,7 +22,7 @@ public class TicketTypeClosedController {
   private final ITicketTypeService ticketTypeService;
 
   @PostMapping
-  public ResponseEntity addTicketType(@RequestBody TicketTypeDTO ticketTypeDTO) {
+  public ResponseEntity<Void> addTicketType(@RequestBody TicketTypeDTO ticketTypeDTO) {
     log.info("Add ticket type for event  " + ticketTypeDTO.eventId());
 
     ticketTypeService.addTicketType(ticketTypeDTO);

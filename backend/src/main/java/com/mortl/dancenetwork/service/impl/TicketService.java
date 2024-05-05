@@ -49,16 +49,10 @@ public class TicketService implements ITicketService {
   public void addTickets(List<TicketDTO> tickets) {
     tickets.forEach(ticket -> log.info("new tickets: {}", ticket.ticketTypeId()));
     Optional<User> currentUser = userService.getCurrentUser();
-    UUID userUUid;
-    if(currentUser.isPresent()){
-      userUUid = currentUser.get().uuid();
-    } else {
-      userUUid = null;
-    }
     List<Ticket> savedTickets = ticketRepository.saveAllAndFlush(
         tickets.stream()
             .map(ticketMapper::toModel)
-            .peek(ticket -> ticket.setOwner(userUUid))
+            .peek(ticket -> ticket.setOwner(getUuidOfUser(currentUser)))
             .toList());
 
     for(Ticket ticket : savedTickets) {
@@ -80,10 +74,17 @@ public class TicketService implements ITicketService {
     }
   }
 
+  private UUID getUuidOfUser(Optional<User> user){
+    if(user.isEmpty()){
+      return null;
+    }
+    return user.get().uuid();
+  }
+
   @Override
   public List<TicketInfoDTO> getTicketInfosForUser(){
-    //TODO order by event start date in repository
-    return ticketRepository.findByOwner(userService.getNonNullCurrentUser().uuid()).stream()
+    var shit = ticketRepository.findAll();
+    return ticketRepository.findByOwnerOrderByEventStartDateAsc(userService.getNonNullCurrentUser().uuid()).stream()
         .map(this::createTicketInfoDTO)
         .toList();
   }

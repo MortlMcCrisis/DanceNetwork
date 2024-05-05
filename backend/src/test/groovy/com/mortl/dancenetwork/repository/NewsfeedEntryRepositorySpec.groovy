@@ -4,7 +4,6 @@ import com.mortl.dancenetwork.model.NewsfeedEntry
 import com.mortl.dancenetwork.model.NewsfeedEntryType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.annotation.DirtiesContext
 import spock.lang.Specification
 
 import java.time.LocalDateTime

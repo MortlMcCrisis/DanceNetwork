@@ -4,9 +4,9 @@ import com.mortl.dancenetwork.dto.NewsfeedEntryDTO;
 import com.mortl.dancenetwork.service.INewsfeedEntryService;
 import java.net.URI;
 import java.net.URISyntaxException;
+import javax.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,14 +25,14 @@ public class NewsfeedEntryClosedController {
   private final INewsfeedEntryService newsfeedEntryService;
 
   @PostMapping
-  public ResponseEntity createNewsfeedEntry(@RequestBody NewsfeedEntryDTO newsfeedEntryDTO) throws URISyntaxException {
+  public ResponseEntity<NewsfeedEntryDTO> createNewsfeedEntry(@RequestBody NewsfeedEntryDTO newsfeedEntryDTO)
+      throws URISyntaxException {
     NewsfeedEntryDTO savedNewsfeedEntry = newsfeedEntryService.createNewsfeedEntry(newsfeedEntryDTO);
     return ResponseEntity.created(new URI("/newsfeedentries/" + savedNewsfeedEntry.id())).body(savedNewsfeedEntry);
   }
-
-  //TODO gleichziehen: ResponseEntity oder direkt das objekt überall zurück geben
   @PutMapping("/{id}")
-  public ResponseEntity updateNewsfeedEntry(@PathVariable Long id, @RequestBody NewsfeedEntryDTO newsfeedEntry) throws NotFoundException {
+  public ResponseEntity<NewsfeedEntryDTO> updateNewsfeedEntry(@PathVariable Long id, @RequestBody NewsfeedEntryDTO newsfeedEntry)
+      throws NotFoundException, IllegalAccessException{
     if( id != newsfeedEntry.id()){
       throw new IllegalArgumentException("id in path (" + id + ") does not match the id of the object (" + newsfeedEntry.id() + ").");
     }
@@ -40,7 +40,7 @@ public class NewsfeedEntryClosedController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity deleteNewsfeedEntry(@PathVariable Long id) {
+  public ResponseEntity<Void> deleteNewsfeedEntry(@PathVariable Long id) {
     newsfeedEntryService.deleteNewsfeedEntry(id);
     return ResponseEntity.ok().build();
   }

@@ -43,7 +43,6 @@ export const fetchData = async (url, setMethod, keycloakToken) => {
 //TODO all methods should function in the same way
 export const postData = async (url, form, keycloakToken) => {
   try {
-    //TODO TODO hier geht das gerade nicht beim payment
     const req = keycloakToken == null ? {
       method: 'POST',
       headers: {

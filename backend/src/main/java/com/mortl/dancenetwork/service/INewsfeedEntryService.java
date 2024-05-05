@@ -2,7 +2,7 @@ package com.mortl.dancenetwork.service;
 
 import com.mortl.dancenetwork.dto.NewsfeedEntryDTO;
 import java.util.List;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import javax.ws.rs.NotFoundException;
 
 public interface INewsfeedEntryService {
 
@@ -10,7 +10,7 @@ public interface INewsfeedEntryService {
 
   NewsfeedEntryDTO createNewsfeedEntry(NewsfeedEntryDTO newsfeedEntry);
 
-  NewsfeedEntryDTO updateNewsfeedEntry(NewsfeedEntryDTO newsfeedEntry) throws NotFoundException;
+  NewsfeedEntryDTO updateNewsfeedEntry(NewsfeedEntryDTO newsfeedEntry) throws NotFoundException, IllegalAccessException;
 
   void deleteNewsfeedEntry(Long id);
 }

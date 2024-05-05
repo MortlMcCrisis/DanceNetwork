@@ -5,6 +5,7 @@ import com.mortl.dancenetwork.service.ITicketService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +18,7 @@ public class TicketClosedController {
 
   private final ITicketService ticketService;
   @GetMapping("/infos")
-  public List<TicketInfoDTO> getTicketInfosForUser() {
-    return ticketService.getTicketInfosForUser();
+  public ResponseEntity<List<TicketInfoDTO>> getTicketInfosForUser() {
+    return ResponseEntity.ok(ticketService.getTicketInfosForUser());
   }
 }

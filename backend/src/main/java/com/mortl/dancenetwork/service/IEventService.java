@@ -12,7 +12,7 @@ public interface IEventService {
 
   List<EventDTO> getAllPublishedEvents();
 
-  EventDTO updateEvent(EventDTO event) throws NotFoundException;
+  EventDTO updateEvent(EventDTO event) throws NotFoundException, IllegalAccessException;
 
-  void publishEvent(long id);
+  void publishEvent(long id) throws NotFoundException, IllegalAccessException;
 }
