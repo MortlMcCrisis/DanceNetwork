@@ -1,0 +1,10 @@
+.image-gallery-hoverable {
+    &:hover {
+        color: var(--#{$variable-prefix}primary);
+        background: rgba(var(--#{$variable-prefix}primary-rgb), .2);
+    }
+}
+.image-gallery-selected {
+    color: var(--#{$variable-prefix}primary);
+    background: rgba(var(--#{$variable-prefix}primary-rgb), .4);
+}

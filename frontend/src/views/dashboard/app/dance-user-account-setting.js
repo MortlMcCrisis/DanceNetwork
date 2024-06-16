@@ -12,6 +12,9 @@ import {useKeycloak} from "@react-keycloak/web";
 import DanceFormInput from "./dance-form-input";
 import DanceFormCheckbox from "./dance-form-checkbox";
 import {FILES_CLOSED_ENDPOINT, USERS_CLOSED_ENDPOINT} from "../../../components/util/network";
+import {Link} from "react-router-dom";
+import ImageGalleryModal
+    from "../../../components/image-gallery/image-gallery-modal";
 
 const DanceUserAccountSetting =() =>{
 
@@ -75,32 +78,20 @@ const DanceUserAccountSetting =() =>{
         setPercentage(calculatePercentage());
     }, []);
 
-    const handlePhotoChange = async (event) => {
-        const formData = new FormData();
-        formData.append("file", event.target.files[0]);
-        try {
-            const result = await fetch(`${FILES_CLOSED_ENDPOINT}/photo-upload`, {
-                method: "POST",
-                headers: {
-                    Authorization: `Bearer ${keycloak.token}`,
-                },
-                body: formData,
-            });
-
-            const data= await result;
-            console.log(data);
-
-            setForm({
-                ...form,
-                ['photoPath']: event.target.files[0].name,
-            });
-        } catch (error) {
-            console.error(error);
-        }
+    const setImage=(path)=>{
+        console.log(path);
+        setForm({
+            ...form,
+            ['photoPath']: path,
+        });
     }
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        console.log(keycloak.token)
+
+        //TODO use util method
         try {
             const response = await fetch(USERS_CLOSED_ENDPOINT, {
                 method: 'PUT',
@@ -149,14 +140,15 @@ const DanceUserAccountSetting =() =>{
                             <ListGroup className=" list-group-flush">
                                 <ListGroupItem>
                                     <div className="user-detail text-center mb-3">
-                                        <div className="profile-img">
-                                            <img loading="lazy" src={form.photoPath === null || form.photoPath === undefined ? '/users/placeholder.jpg' : `/users/${form.photoPath}`} alt="profile-img" className="avatar-130 img-fluid"/>
-                                        </div>
+                                        <Link className="profile-img">
+                                            <img loading="lazy" src={form.photoPath === null || form.photoPath === undefined ? '/users/placeholder.jpg' : `${form.photoPath}`} alt="profile-img" className="avatar-130 img-fluid"/>
+                                        </Link>
+
                                     </div>
-                                    <Form.Group className="form-group">
-                                        <Form.Label htmlFor="photo">Upload Your Photo:</Form.Label>
-                                        <Form.Control type="file" name="pic" id="photo" accept="image/*" onChange={handlePhotoChange}/>
-                                    </Form.Group>
+
+                                    <div className="user-detail text-center mb-3">
+                                        <ImageGalleryModal setImage={setImage}/>
+                                    </div>
                                 </ListGroupItem>
                                 <ListGroupItem>
                                     <DanceFormInput id="username" label="User name" placeholder="Enter your user name" type="text" value={form.username} onChange={(event) => handleChange(event)} />

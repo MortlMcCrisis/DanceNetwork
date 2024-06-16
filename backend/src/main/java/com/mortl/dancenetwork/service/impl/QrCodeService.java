@@ -43,6 +43,6 @@ public class QrCodeService implements IQrCodeService {
         }
       }
     }
-    storageService.storeImage(image, "png", fileName);
+    storageService.storeUploadedImage(image, "qrcodes", fileName, "png");
   }
 }

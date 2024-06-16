@@ -105,8 +105,8 @@ public class UserClientImpl implements IUserClient {
 //  }
 
   @Override
-  public void updateUser(User updatedUser){
-    UserResource currentUserResource = getUserResource(updatedUser.uuid());
+  public void updateUser(User updatedUser, UUID uuid){
+    UserResource currentUserResource = getUserResource(uuid);
     UserRepresentation userRepresentation = currentUserResource
         .toRepresentation();
 

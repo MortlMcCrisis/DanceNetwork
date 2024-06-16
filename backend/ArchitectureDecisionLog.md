@@ -64,6 +64,12 @@ Business partners
 - Somebody must always be available and respond to alarms or customer problems.
 
 
+Corporate design
+----------------
+- Background Color: 
+- Main Color: 
+- Admin Color: 
+
 
 
 

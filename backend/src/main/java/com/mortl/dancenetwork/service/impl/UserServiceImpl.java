@@ -29,7 +29,8 @@ public class UserServiceImpl implements IUserService {
 
   @Override
   public UserDTO updateUser(UserDTO userDTO) {
-    userClient.updateUser(userMapper.toEntity(userDTO));
+    //TODO find better solution to set uuid
+    userClient.updateUser(userMapper.toEntity(userDTO), getCurrentUser().get().uuid());
     return userDTO;
   }
 

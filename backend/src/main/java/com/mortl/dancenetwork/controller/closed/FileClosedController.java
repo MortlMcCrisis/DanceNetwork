@@ -1,9 +1,12 @@
 package com.mortl.dancenetwork.controller.closed;
 
+import com.mortl.dancenetwork.dto.ImageDTO;
 import com.mortl.dancenetwork.service.IStorageService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +24,12 @@ public class FileClosedController {
   @PostMapping("/photo-upload")
   public ResponseEntity<Void> uploadPhoto(@RequestParam("file") MultipartFile file) {
     log.info("Uploaded " + file.getOriginalFilename());
-    storageService.storeImage(file);
+    storageService.storeUploadedImage(file);
     return ResponseEntity.ok().build();
+  }
+
+  @GetMapping("/list-user-images")
+  public ResponseEntity<List<ImageDTO>> listUserImages(){
+    return ResponseEntity.ok(storageService.listUserImages());
   }
 }

@@ -57,6 +57,7 @@ import user1 from '../../../assets/images/user/1.jpg'
 import small07 from '../../../assets/images/small/07.png'
 import small08 from '../../../assets/images/small/08.png'
 import small09 from '../../../assets/images/small/09.png'
+
 import DanceEventDetailHeader from "./dance-event-detail-header";
 
 // Fslightbox plugin

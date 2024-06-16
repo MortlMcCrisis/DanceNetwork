@@ -36,7 +36,7 @@ const DanceNewsfeedCardHeader = ({type, creator, creationDate}) => {
                 <div className="user-post-data">
                     <div className="d-flex justify-content-between">
                         <div className="me-3">
-                            <img className="rounded-circle img-fluid" src={creator.photoPath === null ? '/users/placeholder.jpg' : `/users/${creator.photoPath}`} alt="" style={{ width: '65px', height: '55px' }}/>
+                            <img className="rounded-circle img-fluid" src={creator.photoPath === null ? '/users/placeholder.jpg' : `${creator.photoPath}`} alt="" style={{ width: '65px', height: '55px' }}/>
                         </div>
                         <div className="w-100">
                             <div className=" d-flex  justify-content-between">

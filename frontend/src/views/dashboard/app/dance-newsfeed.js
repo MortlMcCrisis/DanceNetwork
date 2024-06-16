@@ -22,6 +22,8 @@ import {
     fetchData,
     NEWSFEED_ENTRIES_OPEN_ENDPOINT, USERS_OPEN_ENDPOINT
 } from "../../../components/util/network";
+import DanceImageGalleryModal
+    from "../../../components/image-gallery/image-gallery-modal";
 
 const DanceNewsfeed=()=>{
 

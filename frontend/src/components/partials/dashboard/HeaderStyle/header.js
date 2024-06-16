@@ -1336,7 +1336,7 @@ const Header = () => {
                   variant="d-flex align-items-center"
                 >
                   <Image
-                    src={keycloak.idTokenParsed.photo_path === undefined || keycloak.idTokenParsed.photo_path === null ? '/users/placeholder.jpg' : `/users/${keycloak.idTokenParsed.photo_path}`}
+                    src={keycloak.idTokenParsed.photo_path === undefined || keycloak.idTokenParsed.photo_path === null ? '/users/placeholder.jpg' : `${keycloak.idTokenParsed.photo_path}`}
                     className="img-fluid rounded-circle me-3"
                     alt="user"
                     loading="lazy"
