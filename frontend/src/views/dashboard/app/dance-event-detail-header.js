@@ -4,7 +4,6 @@ import {
   Col,
   Row
 } from "react-bootstrap";
-import imgp1 from "../../../assets/images/user/15.jpg";
 import {Link, useParams} from "react-router-dom";
 import imgp2 from "../../../assets/images/user/05.jpg";
 import imgp3 from "../../../assets/images/user/06.jpg";
@@ -24,6 +23,9 @@ import LocationIcon from "../../../components/text_icons/location";
 import WebsiteIcon from "../../../components/text_icons/website";
 import EmailIcon from "../../../components/text_icons/email";
 import DateIcon from "../../../components/text_icons/date";
+import DanceImageGallerySelectableImage
+  from "../../../components/image-gallery/image-gallery-selectable-image";
+import {toast} from "react-toastify";
 
 const DanceEventDetailHeader=()=> {
 
@@ -37,9 +39,35 @@ const DanceEventDetailHeader=()=> {
         fetchData(`${EVENTS_OPEN_ENDPOINT}/${id}`, setData);
   }, []);
 
+  const setImage=(path)=>{
+    setImageAndSave(path, saveEvent)
+  }
+
+  const saveEvent = async (dataToSave) => {
+    await putData(`${EVENTS_CLOSED_ENDPOINT}/${id}`, dataToSave, keycloak.token);
+    toast.success("Event successfully updated");
+  }
+
+  const setImageAndSave=(path, saveCallback)=>{
+    setData(prevData => {
+      const newData = {
+        ...prevData,
+        profileImage: path,
+      };
+      saveCallback(newData);
+      return newData;
+    });
+  }
+
   const publishEvent = async () => {
-    await putData(`${EVENTS_CLOSED_ENDPOINT}/${id}/publish`, null,  keycloak.token);
-    window.location.reload();
+    if(data.profileImage === "" || data.profileImage === null){
+      toast.error("Profile image must be set")
+    }
+    else {
+      await putData(`${EVENTS_CLOSED_ENDPOINT}/${id}/publish`, null,
+          keycloak.token);
+      window.location.reload();
+    }
   };
 
   return(
@@ -63,9 +91,7 @@ const DanceEventDetailHeader=()=> {
           <Card.Body>
             <Row>
               <Col lg="2">
-                <div className="item1 ms-1">
-                  <img loading="lazy" src={imgp1} className="img-fluid rounded profile-image" alt="profile-img"/>
-                </div>
+                <DanceImageGallerySelectableImage startImage={data.profileImage} setImage={setImage} />
               </Col>
               <Col lg="10">
                 <div className="d-flex justify-content-between">

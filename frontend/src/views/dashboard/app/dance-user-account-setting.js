@@ -11,10 +11,12 @@ import {
 import {useKeycloak} from "@react-keycloak/web";
 import DanceFormInput from "./dance-form-input";
 import DanceFormCheckbox from "./dance-form-checkbox";
-import {FILES_CLOSED_ENDPOINT, USERS_CLOSED_ENDPOINT} from "../../../components/util/network";
+import {USERS_CLOSED_ENDPOINT} from "../../../components/util/network";
 import {Link} from "react-router-dom";
 import ImageGalleryModal
     from "../../../components/image-gallery/image-gallery-modal";
+import DanceImageGallerySelectableImage
+    from "../../../components/image-gallery/image-gallery-selectable-image";
 
 const DanceUserAccountSetting =() =>{
 
@@ -79,7 +81,6 @@ const DanceUserAccountSetting =() =>{
     }, []);
 
     const setImage=(path)=>{
-        console.log(path);
         setForm({
             ...form,
             ['photoPath']: path,
@@ -139,15 +140,18 @@ const DanceUserAccountSetting =() =>{
                         <Form className="form-horizontal" onSubmit={handleSubmit}>
                             <ListGroup className=" list-group-flush">
                                 <ListGroupItem>
-                                    <div className="user-detail text-center mb-3">
+                                    {/*<div className="user-detail text-center mb-3">
                                         <Link className="profile-img">
                                             <img loading="lazy" src={form.photoPath === null || form.photoPath === undefined ? '/users/placeholder.jpg' : `${form.photoPath}`} alt="profile-img" className="avatar-130 img-fluid"/>
                                         </Link>
-
                                     </div>
-
                                     <div className="user-detail text-center mb-3">
                                         <ImageGalleryModal setImage={setImage}/>
+                                    </div>*/}
+                                    <div className="user-detail text-center mb-3">
+                                        <Link className="profile-img">
+                                            <DanceImageGallerySelectableImage startImage={form.photoPath} setImage={setImage} />
+                                        </Link>
                                     </div>
                                 </ListGroupItem>
                                 <ListGroupItem>

@@ -35,6 +35,7 @@ public class EventOpenController {
 
   @GetMapping("/{id}")
   public ResponseEntity<EventDTO> getEvent(@PathVariable Long id) {
-    return ResponseEntity.ok(eventService.getEvent(id));
+    EventDTO event = eventService.getEvent(id);
+    return ResponseEntity.ok(event);
   }
 }

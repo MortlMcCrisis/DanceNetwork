@@ -18,7 +18,7 @@ const DanceEventCard =({event}) => {
          <Card className=" rounded  mb-0">
             <div className="event-images">
                <Link to={`/dashboards/app/dance-event-detail/${event.id}`}>
-                  <img src={placeholder} className="img-fluid" alt="Responsive"/>
+                  <img src={event.profileImage === "" || event.profileImage === null ? placeholder : event.profileImage} className="img-fluid" alt="Responsive"/>
                </Link>
             </div>
             <Card.Body>

@@ -29,6 +29,8 @@ public class Event {
   @Column(nullable = false)
   private UUID creator;
 
+  private String profileImage;
+
   @Column(nullable = false)
   @NonNull
   private LocalDate startDate;

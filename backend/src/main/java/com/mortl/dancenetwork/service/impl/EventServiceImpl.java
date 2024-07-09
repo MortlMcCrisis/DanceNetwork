@@ -12,6 +12,7 @@ import com.mortl.dancenetwork.service.IUserService;
 import com.mortl.dancenetwork.util.NewsfeedFactory;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -70,7 +71,8 @@ public class EventServiceImpl implements IEventService {
     Event currentEvent = eventRepository.findById(event.id())
         .orElseThrow(NotFoundException::new);
 
-    if(currentEvent.getCreator() != userService.getCurrentUser().get().uuid()){
+    UUID uuid = userService.getCurrentUser().get().uuid();
+    if(!currentEvent.getCreator().equals(uuid)){
       throw new IllegalAccessException();
     }
 
@@ -80,6 +82,7 @@ public class EventServiceImpl implements IEventService {
     currentEvent.setEndDate(event.endDate());
     currentEvent.setLocation(event.location());
     currentEvent.setWebsite(event.website());
+    currentEvent.setProfileImage(event.profileImage());
     currentEvent = eventRepository.save(currentEvent);
 
     return eventMapper.toDTO(currentEvent);
@@ -91,7 +94,7 @@ public class EventServiceImpl implements IEventService {
     Event event = eventRepository.findById(id)
         .orElseThrow(NotFoundException::new);
 
-    if(event.getCreator() != userService.getCurrentUser().get().uuid()){
+    if(!event.getCreator().equals(userService.getCurrentUser().get().uuid())){
       throw new IllegalAccessException();
     }
 
