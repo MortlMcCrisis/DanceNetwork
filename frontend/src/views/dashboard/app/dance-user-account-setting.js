@@ -140,17 +140,15 @@ const DanceUserAccountSetting =() =>{
                         <Form className="form-horizontal" onSubmit={handleSubmit}>
                             <ListGroup className=" list-group-flush">
                                 <ListGroupItem>
-                                    {/*<div className="user-detail text-center mb-3">
-                                        <Link className="profile-img">
-                                            <img loading="lazy" src={form.photoPath === null || form.photoPath === undefined ? '/users/placeholder.jpg' : `${form.photoPath}`} alt="profile-img" className="avatar-130 img-fluid"/>
-                                        </Link>
-                                    </div>
-                                    <div className="user-detail text-center mb-3">
-                                        <ImageGalleryModal setImage={setImage}/>
-                                    </div>*/}
                                     <div className="user-detail text-center mb-3">
                                         <Link className="profile-img">
-                                            <DanceImageGallerySelectableImage startImage={form.photoPath} setImage={setImage} />
+                                            <Row className="justify-content-center">
+                                                <Col lg="4" className="d-flex justify-content-center">
+                                                <DanceImageGallerySelectableImage setImage={setImage}>
+                                                    <img loading="lazy" src={form.photoPath === null || form.photoPath === undefined ? '/users/placeholder.jpg' : `${form.photoPath}`} alt="profile-img" className="avatar-130 img-fluid"/>
+                                                </DanceImageGallerySelectableImage>
+                                                </Col>
+                                            </Row>
                                         </Link>
                                     </div>
                                 </ListGroupItem>

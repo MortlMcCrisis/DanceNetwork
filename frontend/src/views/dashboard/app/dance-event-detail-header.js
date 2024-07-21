@@ -9,14 +9,11 @@ import imgp2 from "../../../assets/images/user/05.jpg";
 import imgp3 from "../../../assets/images/user/06.jpg";
 import imgp4 from "../../../assets/images/user/07.jpg";
 import imgp5 from "../../../assets/images/user/08.jpg";
-import React, {useEffect, useState} from "react";
 import DanceEventDetailHeaderEditButton
   from "./dance-event-detail-header-edit-button";
 import {useKeycloak} from "@react-keycloak/web";
 import {
   EVENTS_CLOSED_ENDPOINT,
-  EVENTS_OPEN_ENDPOINT,
-  fetchData,
   putData
 } from "../../../components/util/network";
 import LocationIcon from "../../../components/text_icons/location";
@@ -26,18 +23,13 @@ import DateIcon from "../../../components/text_icons/date";
 import DanceImageGallerySelectableImage
   from "../../../components/image-gallery/image-gallery-selectable-image";
 import {toast} from "react-toastify";
+import OwnerIcon from "../../../components/text_icons/owner";
 
-const DanceEventDetailHeader=()=> {
+const DanceEventDetailHeader=({data, setData, creator})=> {
 
   const { id } = useParams();
 
   const { keycloak, initialized } = useKeycloak();
-
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-        fetchData(`${EVENTS_OPEN_ENDPOINT}/${id}`, setData);
-  }, []);
 
   const setImage=(path)=>{
     setImageAndSave(path, saveEvent)
@@ -91,7 +83,14 @@ const DanceEventDetailHeader=()=> {
           <Card.Body>
             <Row>
               <Col lg="2">
-                <DanceImageGallerySelectableImage startImage={data.profileImage} setImage={setImage} />
+                {keycloak.authenticated && initialized && keycloak.idTokenParsed.sub === data.creator ? (
+                  <DanceImageGallerySelectableImage setImage={setImage}>
+                    <img loading="lazy" src={data.profileImage} className="img-fluid rounded profile-image" alt="profile-img"/>
+                  </DanceImageGallerySelectableImage>
+                ) : (
+                  <img loading="lazy" src={data.profileImage} className="img-fluid rounded profile-image" alt="profile-img"/>
+                )
+                }
               </Col>
               <Col lg="10">
                 <div className="d-flex justify-content-between">
@@ -99,7 +98,7 @@ const DanceEventDetailHeader=()=> {
                     <h4 className="">{data.name}</h4>
                     <span>60 630 are going</span>
                   </div>
-                  {keycloak.authenticated &&
+                  {keycloak.authenticated && initialized && keycloak.idTokenParsed.sub === data.creator &&
                     <div className="item4 ms-1">
                       <div className="d-flex justify-content-between align-items-center ms-1 flex-wrap">
                         <DanceEventDetailHeaderEditButton data={data} setData={setData} />
@@ -111,15 +110,18 @@ const DanceEventDetailHeader=()=> {
                   <Col lg="6">
                     <div className="item5 mt-3">
                       <DateIcon startDate={data.startDate} endDate={data.endDate} />
-                      {data.location && (
-                          <LocationIcon text={data.location} />
-                      )}
-                      {data.website && (
-                          <WebsiteIcon text={data.website} />
-                      )}
-                      {data.email && (
-                          <EmailIcon text={data.email} />
-                      )}
+                      {data.location &&
+                        <LocationIcon text={data.location} />
+                      }
+                      {data.website &&
+                        <WebsiteIcon text={data.website} />
+                      }
+                      {data.email &&
+                        <EmailIcon text={data.email} />
+                      }
+                      {creator != undefined && creator != null &&
+                        <OwnerIcon text={`${creator.firstName} ${creator.lastName}`} />
+                      }
                     </div>
                   </Col>
                   <Col lg="6">

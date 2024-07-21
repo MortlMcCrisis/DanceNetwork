@@ -4,7 +4,7 @@ import {React, useState} from "react";
 import imgp1 from "../../assets/images/user/15.jpg";
 import {Link} from "react-router-dom";
 
-const DanceImageGallerySelectableImage=({startImage, setImage})=> {
+const DanceImageGallerySelectableImage=({setImage, children})=> {
 
   //TODO how to get current selected?
   const [currentSelected, setCurrentSelected] = useState("");
@@ -22,16 +22,10 @@ const DanceImageGallerySelectableImage=({startImage, setImage})=> {
     setCurrentSelected(path);
   }
 
-  //TODO I need 3 versions
-  // - rectangled version e.g for event profile
-  // - round version e.g. for user profile
-  // - custom size version for generic images
-  // maybe I only need the third. The first and second then can be just used by setting the heigh and length to same size and the roundness can be configured form the outside
-
   return (
       <>
         <div className="item-1 ms-1 user-images position-relative">
-          <img loading="lazy" src={currentSelected === "" ? (startImage === "" || startImage === null ? '/users/placeholder.jpg' : startImage) : `${currentSelected}`} className="img-fluid rounded profile-image" alt="profile-img"/>
+          {children}
           <OverlayTrigger placement="top" overlay={<Tooltip>Change</Tooltip>}>
             <Link onClick={handleShow} className="image-edit-btn material-symbols-outlined md-16">
               drive_file_rename_outline

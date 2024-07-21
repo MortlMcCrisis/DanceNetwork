@@ -59,17 +59,62 @@ import small08 from '../../../assets/images/small/08.png'
 import small09 from '../../../assets/images/small/09.png'
 
 import DanceEventDetailHeader from "./dance-event-detail-header";
+import DanceImageGallerySelectableImage
+    from "../../../components/image-gallery/image-gallery-selectable-image";
+import {useKeycloak} from "@react-keycloak/web";
+import {
+    EVENTS_CLOSED_ENDPOINT,
+    EVENTS_OPEN_ENDPOINT,
+    fetchData, putData, USERS_OPEN_ENDPOINT
+} from "../../../components/util/network";
+import {toast} from "react-toastify";
 
 // Fslightbox plugin
 const FsLightbox = ReactFsLightbox.default ? ReactFsLightbox.default : ReactFsLightbox;
 
 const DanceEventDetail=()=>{
 
+    const { keycloak, initialized } = useKeycloak();
+
     const { id } = useParams();
+
+    const [data, setData] = useState([]);
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const [creators, setCreators] = useState([]);
+
+    useEffect(() => {
+        if(data.creator != null && data.creator != "") {
+            fetchData(`${USERS_OPEN_ENDPOINT}?userUUID=${data.creator}`, setCreators);
+        }
+    }, [data.creator]);
+
+    useEffect(() => {
+        fetchData(`${EVENTS_OPEN_ENDPOINT}/${id}`, setData);
+    }, []);
+
+    const setBannerImage=(path)=>{
+        setBannerImageAndSave(path, saveEvent)
+    }
+
+    const saveEvent = async (dataToSave) => {
+        await putData(`${EVENTS_CLOSED_ENDPOINT}/${id}`, dataToSave, keycloak.token);
+        toast.success("Event successfully updated");
+    }
+
+    const setBannerImageAndSave=(path, saveCallback)=>{
+        setData(prevData => {
+            const newData = {
+                ...prevData,
+                bannerImage: path,
+            };
+            saveCallback(newData);
+            return newData;
+        });
+    }
 
     const [imageController, setImageController] = useState({
         toggler: false,
@@ -94,13 +139,20 @@ const DanceEventDetail=()=>{
                 sources={[g1,g2,g3,g4,g5,g6,g7,g8,g9]}
                 slide={imageController.slide}
             />
-            <ProfileHeader title="Profile 2" img={bg3}/>
+            {keycloak.authenticated && initialized && keycloak.idTokenParsed.sub === data.creator ? (
+                <DanceImageGallerySelectableImage setImage={setBannerImage}>
+                    <ProfileHeader title="Profile 2" img={data.bannerImage != null ? data.bannerImage : bg3}/>
+                </DanceImageGallerySelectableImage>
+            ) : (
+                <ProfileHeader title="Profile 2" img={data.bannerImage != null ? data.bannerImage : bg3}/>
+            )
+            }
             <div className='profile-2'>
                 <div id='content-page' className='content-page'>
                     <Container>
                         <Row>
                             <Col lg="12">
-                                <DanceEventDetailHeader/>
+                                <DanceEventDetailHeader data={data} setData={setData} creator={creators[0]}/>
                                 <Card className="card-header-3">
                                     <Card.Body>
                                         <div className="mb-2 text-center">

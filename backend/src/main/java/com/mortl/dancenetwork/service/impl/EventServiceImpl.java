@@ -83,6 +83,7 @@ public class EventServiceImpl implements IEventService {
     currentEvent.setLocation(event.location());
     currentEvent.setWebsite(event.website());
     currentEvent.setProfileImage(event.profileImage());
+    currentEvent.setBannerImage(event.bannerImage());
     currentEvent = eventRepository.save(currentEvent);
 
     return eventMapper.toDTO(currentEvent);

@@ -5,8 +5,9 @@ import java.util.UUID;
 
 public record EventDTO(
     Long id,
-    UUID creator,//TODO brauche ich das hier? löschen?
+    UUID creator,
     String profileImage,
+    String bannerImage,
     LocalDate startDate,
     LocalDate endDate,
     String name,

@@ -31,6 +31,8 @@ public class Event {
 
   private String profileImage;
 
+  private String bannerImage;
+
   @Column(nullable = false)
   @NonNull
   private LocalDate startDate;
