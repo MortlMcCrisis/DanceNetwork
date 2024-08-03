@@ -79,6 +79,7 @@ public class EventServiceImpl implements IEventService {
     currentEvent.setName(event.name());
     currentEvent.setEmail(event.email());
     currentEvent.setStartDate(event.startDate());
+    currentEvent.setStartTime(event.startTime());
     currentEvent.setEndDate(event.endDate());
     currentEvent.setLocation(event.location());
     currentEvent.setWebsite(event.website());
@@ -95,6 +96,7 @@ public class EventServiceImpl implements IEventService {
     Event event = eventRepository.findById(id)
         .orElseThrow(NotFoundException::new);
 
+    //TODO do this with an annotation on the endpoint
     if(!event.getCreator().equals(userService.getCurrentUser().get().uuid())){
       throw new IllegalAccessException();
     }

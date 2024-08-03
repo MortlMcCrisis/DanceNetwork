@@ -1,17 +1,18 @@
 import React from 'react'
-import Card from '../components/Card'
-import { Dropdown , Table, Tooltip, OverlayTrigger, Button} from 'react-bootstrap'
-import img from '../assets/images/user/user-1.jpg'
-import CustomToggle from "./dropdowns";
-import icon1 from "../assets/images/icon/01.png";
-import icon2 from "../assets/images/icon/02.png";
-import icon3 from "../assets/images/icon/03.png";
-import icon4 from "../assets/images/icon/04.png";
-import icon5 from "../assets/images/icon/05.png";
-import icon6 from "../assets/images/icon/06.png";
-import icon7 from "../assets/images/icon/07.png";
-import ShareOffcanvas from "./share-offcanvas";
+import { Dropdown , Tooltip, OverlayTrigger} from 'react-bootstrap'
+import img from '../../assets/images/user/user-1.jpg'
+import CustomToggle from "../dropdowns";
+import icon1 from "../../assets/images/icon/01.png";
+import icon2 from "../../assets/images/icon/02.png";
+import icon3 from "../../assets/images/icon/03.png";
+import icon4 from "../../assets/images/icon/04.png";
+import icon5 from "../../assets/images/icon/05.png";
+import icon6 from "../../assets/images/icon/06.png";
+import icon7 from "../../assets/images/icon/07.png";
+import ShareOffcanvas from "../share-offcanvas";
 import DanceNewsfeedCardHeader from "./dance-newsfeed-card-header";
+import {Link} from "react-router-dom";
+import Card from "../Card";
 const DanceNewsfeedCard = ({newsfeedEntry, creator}) => {
    
     return (
@@ -25,6 +26,11 @@ const DanceNewsfeedCard = ({newsfeedEntry, creator}) => {
                                 <div className="mt-3">
                                     <p>{newsfeedEntry.textField}</p>
                                 </div>
+                                {newsfeedEntry.image != null &&
+                                    <div className="text-center">
+                                        <Link to="#"><img loading="lazy" src={newsfeedEntry.image} alt="gallary-img" className="img-fluid rounded"/></Link>
+                                    </div>
+                                }
                                 <div className="comment-area mt-3">
                                     <div className="d-flex justify-content-between align-items-center flex-wrap">
                                         <div className="like-block position-relative d-flex align-items-center">

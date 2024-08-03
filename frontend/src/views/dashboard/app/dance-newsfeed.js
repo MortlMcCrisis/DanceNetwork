@@ -15,15 +15,17 @@ import imgpp4 from '../../../assets/images/page-img/06.jpg'
 import loader from "../../../assets/images/page-img/page-load-loader.gif";
 import s4 from "../../../assets/images/page-img/s4.jpg";
 import s5 from "../../../assets/images/page-img/s5.jpg";
-import DanceNewsfeedCard from "../../../components/dance-newsfeed-card";
 import {useKeycloak} from "@react-keycloak/web";
 import {
     NEWSFEED_ENTRIES_CLOSED_ENDPOINT,
     fetchData,
     NEWSFEED_ENTRIES_OPEN_ENDPOINT, USERS_OPEN_ENDPOINT
 } from "../../../components/util/network";
-import DanceImageGalleryModal
-    from "../../../components/image-gallery/image-gallery-modal";
+import DanceNewsfeedCard
+    from "../../../components/dance-newsfeed/dance-newsfeed-card";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import listPlugin from "@fullcalendar/list";
+import FullCalendar from "@fullcalendar/react";
 
 const DanceNewsfeed=()=>{
 
@@ -55,45 +57,6 @@ const DanceNewsfeed=()=>{
                 <Container>
                     <Row className="mt-1">
                         <Col lg="4" md="4">
-                            <Card>
-                                <div className="card-header d-flex justify-content-between">
-                                    <div className="header-title">
-                                        <h4 className="card-title">Today's Schedule</h4>
-                                    </div>
-                                    <div className="card-header-toolbar d-flex align-items-center">
-                                        <Dropdown>
-                                            <Dropdown.Toggle as={CustomToggle} id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" role="button">
-                                                <i className="ri-more-fill h4"></i>
-                                            </Dropdown.Toggle>
-                                            <Dropdown.Menu className=" dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                                <Dropdown.Item  href="#"><i className="ri-eye-fill me-2"></i>View</Dropdown.Item>
-                                                <Dropdown.Item  href="#"><i className="ri-delete-bin-6-fill me-2"></i>Delete</Dropdown.Item>
-                                                <Dropdown.Item  href="#"><i className="ri-pencil-fill me-2"></i>Edit</Dropdown.Item>
-                                                <Dropdown.Item  href="#"><i className="ri-printer-fill me-2"></i>Print</Dropdown.Item>
-                                                <Dropdown.Item  href="#"><i className="ri-file-download-fill me-2"></i>Download</Dropdown.Item>
-                                            </Dropdown.Menu>
-                                        </Dropdown>
-                                    </div>
-                                </div>
-                                <Card.Body>
-                                    <ul className="media-story list-inline m-0 p-0">
-                                        <li className="d-flex mb-4 align-items-center ">
-                                            <img src={s4} alt="story1" className="rounded-circle img-fluid"/>
-                                            <div className="stories-data ms-3">
-                                                <h5>Web Workshop</h5>
-                                                <p className="mb-0">1 hour ago</p>
-                                            </div>
-                                        </li>
-                                        <li className="d-flex align-items-center">
-                                            <img src={s5} alt="story2" className="rounded-circle img-fluid"/>
-                                            <div className="stories-data ms-3">
-                                                <h5>Fun Events and Festivals</h5>
-                                                <p className="mb-0">1 hour ago</p>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </Card.Body>
-                            </Card>
                             <Card>
                                 <div className="card-header d-flex justify-content-between">
                                     <div className="header-title">
@@ -134,6 +97,50 @@ const DanceNewsfeed=()=>{
                                             </div>
                                         </Col>
                                     </Row>
+                                </Card.Body>
+                            </Card>
+                            <Card>
+                                <Card.Header>
+                                    <h3>Bachaturo Workshops</h3>
+                                </Card.Header>
+                                <Card.Body>
+                                    <FullCalendar
+                                        plugins={[ dayGridPlugin,listPlugin ]}
+                                        //    themeSystem={bootstrap}
+                                        buttonText={{
+                                            day:'day',
+                                            list: 'whole event'
+                                        }}
+                                        initialView={'listWeek'}
+                                        initialDate={'2024-07-15'}
+                                        firstDay={1}
+                                        headerToolbar={{
+                                            left:'prev,next',
+                                            center:'title',
+                                            right:''
+                                        }}
+                                        events={[
+                                            {title: '5:30a Repeating Event', date: '2024-07-20',textColor:'white',backgroundColor:'#ff9b8a',borderColor:'#d592ff'},
+                                            {title: '5:30a Repeating Event', date: '2024-07-20',textColor:'white',backgroundColor:'#ff9b8a',borderColor:'#d592ff'},
+                                            {title: '5:30a Repeating Event', date: '2024-07-21',textColor:'white',backgroundColor:'#49f0d3',borderColor:'#49f0d3'},
+                                            {title: '5:30a Repeating Event', date: '2024-07-21',textColor:'white',backgroundColor:'#49f0d3',borderColor:'#49f0d3'},
+                                            {title: '5:30a Repeating Event', date: '2024-07-22',textColor:'white',backgroundColor:'#d592ff',borderColor:'#ff9b8a'},
+                                            {title: '5:30a Repeating Event', date: '2024-07-22',textColor:'white',backgroundColor:'#d592ff',borderColor:'#ff9b8a'},
+                                            {title: '5:30a Repeating Event', date: '2024-08-29',textColor:'white',backgroundColor:'#d592ff',borderColor:'#d592ff'},
+                                            {title: '5:30a Repeating Event', date: '2024-08-31',textColor:'white',backgroundColor:'#ff9b8a',borderColor:'#ff9b8a'},
+                                            {title: '5:30a Birthday Party', date: '2024-09-02',textColor:'white',backgroundColor:'#49f0d3',borderColor:'#49f0d3'},
+                                            {title: '5:30a Meeting', date: '2024-09-04',textColor:'white',backgroundColor:'#a09e9e',borderColor:'#a09e9e'},
+                                            {title: '5:30a Birthday Party', date: '2024-09-05',textColor:'white',backgroundColor:'#49f0d3',borderColor:'#49f0d3'},
+                                            {title: '5:30a Birthday Party', date: '2024-09-08',textColor:'white',backgroundColor:'#ff9b8a',borderColor:'#ff9b8a'},
+                                            {title: '5:30a Doctor Meeting', date: '2024-09-10',textColor:'white',backgroundColor:'#f4a965',borderColor:'#f4a965'},
+                                            {title: '5:30a All Day Event', date: '2024-09-11',textColor:'white',backgroundColor:'#50b5ff',borderColor:'#50b5ff'},
+                                            {title: '5:30a Repeating Event', date: '2024-09-18',textColor:'white',backgroundColor:'#50b5ff',borderColor:'#50b5ff'},
+                                            {title: '5:30a Repeating Event', date: '2024-09-20',textColor:'white',backgroundColor:'#49f0d3',borderColor:'#49f0d3'},
+                                        ]}
+                                        footerToolbar={{
+                                            center:'dayGridDay,listWeek'
+                                        }}
+                                    />
                                 </Card.Body>
                             </Card>
                         </Col>

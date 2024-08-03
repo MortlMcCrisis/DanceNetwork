@@ -1,6 +1,7 @@
 package com.mortl.dancenetwork.dto;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.UUID;
 
 public record EventDTO(
@@ -9,6 +10,7 @@ public record EventDTO(
     String profileImage,
     String bannerImage,
     LocalDate startDate,
+    LocalTime startTime,
     LocalDate endDate,
     String name,
     String location,

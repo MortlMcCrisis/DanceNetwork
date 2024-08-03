@@ -84,6 +84,8 @@ const DanceEventDetailHeaderEditButton=({data, setData})=> {
                 <ListGroupItem>
                   <DanceFormInput id="name" label="Name" placeholder="Name of the event..." type="text" value={form.name} onChange={handleTemporaryChange} required="required"/>
                   <DanceFormInput id="startDate" label={isMultipleDays ? "Start date" : "Date"} type="date" value={form.startDate} onChange={handleTemporaryChange} required="required"/>
+                  {/*TODO replace this by flatpickr or an other time picker which supports am/pm time format*/}
+                  <DanceFormInput id="startTime" label="Start Time" type="time" value={form.startTime} onChange={handleTemporaryChange} required="required"/>
                   <div className="d-flex justify-content-end">
                     {/*TODO this element should not be validated*/}
                     <Form.Group className="form-check form-switch ms-auto">

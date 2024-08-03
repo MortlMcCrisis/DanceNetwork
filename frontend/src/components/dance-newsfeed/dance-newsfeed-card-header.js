@@ -1,5 +1,5 @@
 import { Dropdown } from 'react-bootstrap'
-import img from '../assets/images/user/user-1.jpg'
+import img from '../../assets/images/user/user-1.jpg'
 
 const DanceNewsfeedCardHeader = ({type, creator, creationDate}) => {
 

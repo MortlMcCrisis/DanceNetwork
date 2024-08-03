@@ -57,7 +57,7 @@ const DanceImageGallery=({setImage})=>{
                 <hr/>
                 <Row>
                     {//TODO handle correctly when no image exists
-                        imageInfos[selectedIndex] &&
+                        imageInfos[selectedIndex] ? (
                         <>
                             <Col lg="4">
                                 <Card>
@@ -72,6 +72,25 @@ const DanceImageGallery=({setImage})=>{
                                         <h2 className="text-center">{likephoto[selectedIndex].title}</h2>*/}
                                         <Button variant="primary rounded-pill w-100 mt-3">edit</Button>
                                     </Card.Body>
+                                    <Card.Footer>
+                                        <ul className="list-inline p-0 m-0">
+                                            <li className="mb-md-3 pb-md-3 members-list">
+                                                <h4>Used at the following locations</h4>
+                                            </li>
+                                            <li className="mb-3 d-flex align-items-center">
+                                                <div className="me-2"><i className="ri-arrow-right-fill h4"></i></div>
+                                                <h6 className="mb-0">here</h6>
+                                            </li>
+                                            <li className="mb-3 d-flex align-items-center">
+                                                <div className="me-2"><i className="ri-arrow-right-fill h4"></i></div>
+                                                <h6 className="mb-0">also here</h6>
+                                            </li>
+                                            <li className="mb-3 d-flex align-items-center">
+                                                <div className="me-2"><i className="ri-arrow-right-fill h4"></i></div>
+                                                <h6 className="mb-0">and here</h6>
+                                            </li>
+                                        </ul>
+                                    </Card.Footer>
                                 </Card>
                             </Col>
                             <Col lg="8">
@@ -107,6 +126,38 @@ const DanceImageGallery=({setImage})=>{
                                 </Row>
                             </Col>
                         </>
+                        ) : (
+                            <>
+                                <Col lg="4">
+                                    <Card>
+
+                                    </Card>
+                                </Col>
+                                <Col lg="8">
+                                    <Row>
+                                        <Col sm="4">
+                                            <Card>
+                                                <Card.Body>
+                                                    <div className="event-images position-relative">
+                                                        <Link to="#">
+                                                            <img loading="lazy" src={addImage} className="img-fluid" alt="Responsive" />
+                                                        </Link>
+                                                    </div>
+                                                    <hr className="hr-horizontal"/>
+                                                    <h4>
+                                                        <Form className="form-horizontal">
+                                                            <Form.Group className="form-group">
+                                                                <Form.Control type="file" name="pic" id="photo" accept="image/*" onChange={handlePhotoUpload}/>
+                                                            </Form.Group>
+                                                        </Form>
+                                                    </h4>
+                                                </Card.Body>
+                                            </Card>
+                                        </Col>
+                                    </Row>
+                                </Col>
+                            </>
+                        )
                     }
                 </Row>
             </Container>

@@ -1,12 +1,12 @@
 package com.mortl.dancenetwork.util;
 
-import com.mortl.dancenetwork.dto.NewsfeedEntryDTO;
 import com.mortl.dancenetwork.entity.User;
 import com.mortl.dancenetwork.model.Event;
 import com.mortl.dancenetwork.model.NewsfeedEntry;
 import com.mortl.dancenetwork.model.NewsfeedEntryType;
 import com.mortl.dancenetwork.model.Ticket;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import org.springframework.stereotype.Component;
 
@@ -14,10 +14,12 @@ import org.springframework.stereotype.Component;
 public class NewsfeedFactory {
 
   public NewsfeedEntry createEventPublishedNewsfeedEntry(User user, Event event) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy");
     return NewsfeedEntry.builder()
         .type(NewsfeedEntryType.EVENT_CREATION)
         .creator(user.uuid())
-        .textField(user.username() + " created the event " + event.getName() + ".\nIt finds place at " + event.getLocation() + " at " + event.getStartDate() + ".")
+        .textField(user.username() + " created the event " + event.getName() + ".\nIt finds place at " + event.getLocation() + " at " + formatter.format(event.getStartDate()) + ".")
+        .image(event.getProfileImage())
         .creationDate(LocalDateTime.now())
         .build();
   }

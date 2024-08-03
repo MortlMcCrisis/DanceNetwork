@@ -20,7 +20,7 @@ public class NewsfeedEntryOpenController {
 
   @GetMapping
   public ResponseEntity<List<NewsfeedEntryDTO>> getNewsfeedEntries(){
-    log.info("getting newsfeed entries");
+    log.info("getting open newsfeed entries");
     return ResponseEntity.ok(newsfeedEntryService.getNewsfeedEntries());
   }
 }

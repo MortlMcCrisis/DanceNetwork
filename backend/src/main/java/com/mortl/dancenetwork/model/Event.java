@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,6 +37,8 @@ public class Event {
   @Column(nullable = false)
   @NonNull
   private LocalDate startDate;
+
+  private LocalTime startTime;
 
   private LocalDate endDate;
 

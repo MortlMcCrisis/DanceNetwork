@@ -36,6 +36,8 @@ public class NewsfeedEntry {
   @NonNull
   private String textField;
 
+  private String image;
+
   @Column(nullable = false)
   @NonNull
   private LocalDateTime creationDate;

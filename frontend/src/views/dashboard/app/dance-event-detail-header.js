@@ -24,6 +24,7 @@ import DanceImageGallerySelectableImage
   from "../../../components/image-gallery/image-gallery-selectable-image";
 import {toast} from "react-toastify";
 import OwnerIcon from "../../../components/text_icons/owner";
+import TimeIcon from "../../../components/text_icons/time";
 
 const DanceEventDetailHeader=({data, setData, creator})=> {
 
@@ -110,6 +111,7 @@ const DanceEventDetailHeader=({data, setData, creator})=> {
                   <Col lg="6">
                     <div className="item5 mt-3">
                       <DateIcon startDate={data.startDate} endDate={data.endDate} />
+                      <TimeIcon text={data.startTime} />
                       {data.location &&
                         <LocationIcon text={data.location} />
                       }

@@ -9,6 +9,7 @@ public record NewsfeedEntryDTO(
     NewsfeedEntryType type,
     UUID creator,
     String textField,
+    String image,
     LocalDateTime creationDate) {
 
   //TODO fabric class which sets automatically username and time

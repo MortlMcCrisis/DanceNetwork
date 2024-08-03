@@ -4,11 +4,13 @@ import com.mortl.dancenetwork.dto.NewsfeedEntryDTO;
 import com.mortl.dancenetwork.service.INewsfeedEntryService;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 import javax.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -23,6 +25,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class NewsfeedEntryClosedController {
 
   private final INewsfeedEntryService newsfeedEntryService;
+
+  @GetMapping
+  public ResponseEntity<List<NewsfeedEntryDTO>> getNewsfeedEntries(){
+    log.info("getting closed newsfeed entries");
+    return ResponseEntity.ok(newsfeedEntryService.getNewsfeedEntries());
+  }
 
   @PostMapping
   public ResponseEntity<NewsfeedEntryDTO> createNewsfeedEntry(@RequestBody NewsfeedEntryDTO newsfeedEntryDTO)

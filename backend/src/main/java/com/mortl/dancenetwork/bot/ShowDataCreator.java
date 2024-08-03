@@ -14,6 +14,7 @@ import de.svenjacobs.loremipsum.LoremIpsum;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Random;
 import lombok.extern.slf4j.Slf4j;
@@ -63,12 +64,14 @@ public class ShowDataCreator {
     Event bachaturo = Event.builder()
         .creator(bachaturoUser.uuid())
         .startDate(LocalDate.of(2024, 8, 16))
+        .startTime(LocalTime.NOON)
         .endDate(LocalDate.of(2024, 8, 18))
         .name("Bachaturo")
         .location("plac Sławika i Antalla 1, 40-163 Katowice, Poland")
         .website("https://bachaturo.com/")
         .email("bachaturo@info.pl")
         .published(true)
+        .profileImage("/upload/2c22e8eef931ef9a428195d8f1e55573/Bachaturo.png")
         .build();
     createEvent(bachaturo, bachaturoUser);
 
@@ -76,12 +79,14 @@ public class ShowDataCreator {
     Event bachatation = Event.builder()
         .creator(bachatationUser.uuid())
         .startDate(LocalDate.of(2024, 2, 22))
+        .startTime(LocalTime.NOON)
         .endDate(LocalDate.of(2024, 2, 25))
         .name("Bachatation")
         .location("Son Latino Studios, Gablonzer Str. 9, 76185 Karlsruhe")
         .website("http://www.bachatation.de/")
         .email("events@sonlatino.de")
         .published(true)
+        .profileImage("/upload/2c22e8eef931ef9a428195d8f1e55573/Bachatation.png")
         .build();
     createEvent(bachatation, bachatationUser);
   }
