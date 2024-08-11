@@ -57,6 +57,7 @@ class NewsfeedEntryRepositorySpec extends Specification{
                 NewsfeedEntryType.POST,
                 creator,
                 "text",
+                null,
                 creationDate)
     }
 }

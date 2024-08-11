@@ -2,6 +2,7 @@ import { Col, OverlayTrigger, Row, Tooltip} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
 import Card from "../Card";
 import TicketIcon from "../text_icons/ticket";
+import DOMPurify from "quill/formats/link";
 
 const DanceBuyTicketsTicketType = ({ticketType, setTicketType}) => {
 
@@ -22,13 +23,7 @@ const DanceBuyTicketsTicketType = ({ticketType, setTicketType}) => {
           <div className="checkout-product">
             <Row className=" align-items-center">
               <Col sm="7">
-                <div className="checkout-product-details">
-                  <ul>
-                    <li>All workshops (Master classes not included)</li>
-                    <li>All parties</li>
-                    <li>All socials</li>
-                    <li>{ticketType.description}</li>
-                  </ul>
+                <div className="checkout-product-details" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(ticketType.description) }}>
                 </div>
               </Col>
               <Col sm="5">

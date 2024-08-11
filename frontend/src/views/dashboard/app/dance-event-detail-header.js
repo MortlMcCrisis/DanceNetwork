@@ -25,6 +25,13 @@ import DanceImageGallerySelectableImage
 import {toast} from "react-toastify";
 import OwnerIcon from "../../../components/text_icons/owner";
 import TimeIcon from "../../../components/text_icons/time";
+import imgpp38 from "../../../assets/images/icon/08.png";
+import imgpp39 from "../../../assets/images/icon/09.png";
+import imgpp40 from "../../../assets/images/icon/10.png";
+import imgpp41 from "../../../assets/images/icon/11.png";
+import imgpp42 from "../../../assets/images/icon/12.png";
+import imgpp43 from "../../../assets/images/icon/13.png";
+import React from "react";
 
 const DanceEventDetailHeader=({data, setData, creator})=> {
 
@@ -37,7 +44,7 @@ const DanceEventDetailHeader=({data, setData, creator})=> {
   }
 
   const saveEvent = async (dataToSave) => {
-    await putData(`${EVENTS_CLOSED_ENDPOINT}/${id}`, dataToSave, keycloak.token);
+    await putData(`${EVENTS_CLOSED_ENDPOINT}/${id}`, JSON.stringify({...dataToSave}), keycloak.token);
     toast.success("Event successfully updated");
   }
 
@@ -97,37 +104,11 @@ const DanceEventDetailHeader=({data, setData, creator})=> {
                 <div className="d-flex justify-content-between">
                   <div className="item2 ">
                     <h4 className="">{data.name}</h4>
-                    <span>60 630 are going</span>
                   </div>
-                  {keycloak.authenticated && initialized && keycloak.idTokenParsed.sub === data.creator &&
-                    <div className="item4 ms-1">
-                      <div className="d-flex justify-content-between align-items-center ms-1 flex-wrap">
-                        <DanceEventDetailHeaderEditButton data={data} setData={setData} />
-                      </div>
-                    </div>
-                  }
                 </div>
                 <Row>
-                  <Col lg="6">
-                    <div className="item5 mt-3">
-                      <DateIcon startDate={data.startDate} endDate={data.endDate} />
-                      <TimeIcon text={data.startTime} />
-                      {data.location &&
-                        <LocationIcon text={data.location} />
-                      }
-                      {data.website &&
-                        <WebsiteIcon text={data.website} />
-                      }
-                      {data.email &&
-                        <EmailIcon text={data.email} />
-                      }
-                      {creator != undefined && creator != null &&
-                        <OwnerIcon text={`${creator.firstName} ${creator.lastName}`} />
-                      }
-                    </div>
-                  </Col>
-                  <Col lg="6">
-                    <div className="item6 border-light border-start">
+                  <div className="profile-info p-3 d-flex align-items-center justify-content-between position-relative">
+                    <div className="item6">
                       <div className="ms-2">
                         <h6 className="mb-2">Those people are going</h6>
                       </div>
@@ -146,7 +127,29 @@ const DanceEventDetailHeader=({data, setData, creator})=> {
                         </Link>
                       </div>
                     </div>
-                  </Col>
+                    <div className="social-info">
+                      <ul className="social-data-block d-flex align-items-center justify-content-between list-inline p-0 m-0">
+                        <li className="text-center pe-3">
+                          <Link to="#"><img loading="lazy" src={imgpp38} className="img-fluid rounded" alt="facebook"/></Link>
+                        </li>
+                        <li className="text-center pe-3">
+                          <Link to="#"><img loading="lazy" src={imgpp39} className="img-fluid rounded" alt="Twitter"/></Link>
+                        </li>
+                        <li className="text-center pe-3">
+                          <Link to="#"><img loading="lazy" src={imgpp40} className="img-fluid rounded" alt="Instagram"/></Link>
+                        </li>
+                        <li className="text-center pe-3">
+                          <Link to="#"><img loading="lazy" src={imgpp41} className="img-fluid rounded" alt="Google plus"/></Link>
+                        </li>
+                        <li className="text-center pe-3">
+                          <Link to="#"><img loading="lazy" src={imgpp42} className="img-fluid rounded" alt="You tube"/></Link>
+                        </li>
+                        <li className="text-center md-pe-3 pe-0">
+                          <Link to="#"><img loading="lazy" src={imgpp43} className="img-fluid rounded" alt="linkedin"/></Link>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                 </Row>
               </Col>
             </Row>

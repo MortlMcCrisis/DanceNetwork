@@ -62,7 +62,7 @@ const DanceEventDetailHeaderEditButton=({data, setData})=> {
         return;
       }
 
-      await putData(`${EVENTS_CLOSED_ENDPOINT}/${form.id}`, newEventData, keycloak.token);
+      await putData(`${EVENTS_CLOSED_ENDPOINT}/${form.id}`, JSON.stringify({...newEventData}), keycloak.token);
 
       setData(newEventData);
       toast.success("Event successfully updated");

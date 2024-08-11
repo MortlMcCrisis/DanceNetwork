@@ -2,6 +2,7 @@ package com.mortl.dancenetwork.controller.closed;
 
 import com.mortl.dancenetwork.dto.EventDTO;
 import com.mortl.dancenetwork.service.IEventService;
+import jakarta.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import javax.ws.rs.NotFoundException;
@@ -24,13 +25,13 @@ public class EventClosedController {
   private final IEventService eventService;
 
   @PostMapping
-  public ResponseEntity<EventDTO> createEvent(@RequestBody EventDTO eventDTO) throws URISyntaxException {
+  public ResponseEntity<EventDTO> createEvent(@Valid @RequestBody EventDTO eventDTO) throws URISyntaxException {
     EventDTO savedEvent = eventService.createEvent(eventDTO);
     return ResponseEntity.created(new URI("/api/v1/events/" + savedEvent.id())).body(savedEvent);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<EventDTO> updateEvent(@PathVariable Long id, @RequestBody EventDTO eventDTO)
+  public ResponseEntity<EventDTO> updateEvent(@PathVariable Long id, @Valid @RequestBody EventDTO eventDTO)
       throws NotFoundException, IllegalAccessException {
     log.info("saving event with id " + id);
     if( id != eventDTO.id()){

@@ -68,6 +68,21 @@ import {
     fetchData, putData, USERS_OPEN_ENDPOINT
 } from "../../../components/util/network";
 import {toast} from "react-toastify";
+import img53 from "../../../assets/images/page-img/53.jpg";
+import user05 from "../../../assets/images/user/05.jpg";
+import user06 from "../../../assets/images/user/06.jpg";
+import user07 from "../../../assets/images/user/07.jpg";
+import user08 from "../../../assets/images/user/08.jpg";
+import user09 from "../../../assets/images/user/09.jpg";
+import DateIcon from "../../../components/text_icons/date";
+import TimeIcon from "../../../components/text_icons/time";
+import LocationIcon from "../../../components/text_icons/location";
+import WebsiteIcon from "../../../components/text_icons/website";
+import EmailIcon from "../../../components/text_icons/email";
+import OwnerIcon from "../../../components/text_icons/owner";
+import loader from "../../../assets/images/page-img/page-load-loader.gif";
+import DanceEventDetailHeaderEditButton
+    from "./dance-event-detail-header-edit-button";
 
 // Fslightbox plugin
 const FsLightbox = ReactFsLightbox.default ? ReactFsLightbox.default : ReactFsLightbox;
@@ -101,7 +116,7 @@ const DanceEventDetail=()=>{
     }
 
     const saveEvent = async (dataToSave) => {
-        await putData(`${EVENTS_CLOSED_ENDPOINT}/${id}`, dataToSave, keycloak.token);
+        await putData(`${EVENTS_CLOSED_ENDPOINT}/${id}`, JSON.stringify({...dataToSave}), keycloak.token);
         toast.success("Event successfully updated");
     }
 
@@ -153,83 +168,151 @@ const DanceEventDetail=()=>{
                         <Row>
                             <Col lg="12">
                                 <DanceEventDetailHeader data={data} setData={setData} creator={creators[0]}/>
-                                <Card className="card-header-3">
-                                    <Card.Body>
-                                        <div className="mb-2 text-center">
-                                            <img loading="lazy" src={imgp11} className="img-fluid rounded profile-image" alt="profile-img"/>
-                                        </div>
-                                        <div className="d-flex justify-content-between align-items-center">
-                                            <div className="ms-1">
-                                                <h5 className="">Mathilda Gvarliani</h5>
-                                                <span>60 630 followers</span>
-                                            </div>
-                                            <div></div>
-                                            <div className="item4">
-                                                <div className="d-flex justify-content-between align-items-center flex-wrap">
-                                                    <div>
-                                                        <svg width="18px" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
-                                                        <span>Write a message</span>
-                                                    </div>
-                                                    <button type="button" className="btn btn-sm btn-primary ms-2"><i className="ri-add-line"></i>Follow</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <hr/>
-                                        <div className="d-flex justify-content-between">
-                                            <div className="item5 ms-1">
-                                                <div className="d-flex flex-column justify-content-between flex-wrap">
-                                                    <div>
-                                                        <svg fill="none" stroke="currentColor" width="18px"  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path></svg>
-                                                        <Link to="#" className="link-primary">Model at next model management</Link>
-                                                    </div>
-                                                    <div>
-                                                        <svg fill="none" stroke="currentColor" width="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                                                        <span>Studies public relations at <Link to="#" className="link-primary ">Cacucasus University</Link></span>
-                                                    </div>
-                                                    <div>
-                                                        <svg fill="none" stroke="currentColor" width="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
-                                                        <span>Born on October 9, 2000</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="item6 border-light border-end border-start">
-                                                <div className="ms-2">
-                                                    <span>People Mathilda follows</span>
-                                                </div>
-                                                <div className="iq-media-group ms-1">
-                                                    <Link to="#" className="iq-media">
-                                                        <img loading="lazy" className="img-fluid avatar-40 rounded-circle card-text-1" src={imgp12} alt=""/>
-                                                    </Link>
-                                                    <Link to="#" className="iq-media">
-                                                        <img loading="lazy" className="img-fluid avatar-40 rounded-circle card-text-1" src={imgp13} alt=""/>
-                                                    </Link>
-                                                    <Link to="#" className="iq-media">
-                                                        <img loading="lazy" className="img-fluid avatar-40 rounded-circle card-text-1" src={imgp13} alt=""/>
-                                                    </Link>
-                                                    <Link to="#" className="iq-media">
-                                                        <img loading="lazy" className="img-fluid avatar-40 rounded-circle card-text-1" src={imgp14} alt=""/>
-                                                    </Link>
-                                                </div>
-                                            </div>
-                                            <div className="item7 ms-2">
-                                                <div className="d-flex justify-content-between mb-2 flex-wrap">
-                                                    <span>Mathilda's Interests</span>
-                                                    <Link to="#">See all</Link>
-                                                </div>
-                                                <div className="d-flex justify-content-between">
-                                                    <button type="button" className="btn btn-sm btn-outline-dark me-1">Fashion</button>
-                                                    <button type="button" className="btn btn-sm btn-outline-dark me-1">CS</button>
-                                                    <button type="button" className="btn btn-sm btn-outline-dark me-1">Cats</button>
-                                                    <button type="button" className="btn btn-sm btn-outline-dark me-1">Politics</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </Card.Body>
-                                </Card>
                             </Col>
                         </Row>
                         <Row>
                             <Col lg="4">
+                                <Card>
+                                    <Card.Header className="d-flex align-items-center justify-content-between">
+                                        <div className="header-title">
+                                            <h4>Admin</h4>
+                                        </div>
+                                    </Card.Header>
+                                    <Card.Body>
+                                        <div className="d-grid gap-2">
+                                            <Link to={`/dashboards/app/dance-ticket-manager/${id}`} className="btn btn-primary">
+                                                Manage Tickets
+                                            </Link>
+                                        </div>
+                                    </Card.Body>
+                                </Card>
+                                <Card>
+                                    <Card.Header>
+                                        <h4>Info</h4>
+                                        {keycloak.authenticated && initialized && keycloak.idTokenParsed.sub === data.creator &&
+                                            <div className="item4 ms-1">
+                                                <div className="d-flex justify-content-between align-items-center ms-1 flex-wrap">
+                                                    <DanceEventDetailHeaderEditButton data={data} setData={setData} />
+                                                </div>
+                                            </div>
+                                        }
+                                    </Card.Header>
+                                    <Card.Body>
+                                        <div className="item5 mt-3">
+                                            <DateIcon startDate={data.startDate} endDate={data.endDate} />
+                                            <TimeIcon text={data.startTime} />
+                                            {data.location &&
+                                                <LocationIcon text={data.location} />
+                                            }
+                                            {data.website &&
+                                                <WebsiteIcon text={data.website} />
+                                            }
+                                            {data.email &&
+                                                <EmailIcon text={data.email} />
+                                            }
+                                            {creators[0] != undefined && creators[0] != null &&
+                                                <OwnerIcon text={`${creators[0].firstName} ${creators[0].lastName}`} />
+                                            }
+                                        </div>
+                                    </Card.Body>
+                                </Card>
+                                <Card>
+                                    <Card.Header>
+                                        <h4>Location</h4>
+                                    </Card.Header>
+                                    <Card.Body>
+                                        <iframe
+                                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2670.130191453018!2d7.8458112759482725!3d47.99187106129442!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47911c9f0c3b3f45%3A0x476333bdfce6ca5d!2sFriedrichsbau%20Lichtspiele!5e0!3m2!1sde!2sde!4v1723219250978!5m2!1sde!2sde"
+                                            allowFullScreen=""
+                                            width="290"
+                                            style={{border:0}}
+                                            loading="lazy"
+                                            referrerPolicy="no-referrer-when-downgrade" />
+                                    </Card.Body>
+                                </Card>
+                                <Card>
+                                    <Card.Header>
+                                        <h4>Similar events</h4>
+                                    </Card.Header>
+                                    <Card.Body>
+                                        <Card>
+                                            <div className="event-images">
+                                                <Link to="#">
+                                                    <img src={img53} className="img-fluid" alt="Responsive "/>
+                                                </Link>
+                                            </div>
+                                            <Card.Body>
+                                                <div className="d-flex">
+                                                    <div className="date-of-event">
+                                                        <span>Jan</span>
+                                                        <h5>26</h5>
+                                                    </div>
+                                                    <div className="events-detail ms-3">
+                                                        <h5><Link to="/dashboards/app/event-detail">Republic Day</Link></h5>
+                                                        <p>Lorem Ipsum is simply dummy text</p>
+                                                        <div className="event-member">
+                                                            <div className="iq-media-group">
+                                                                <Link to="#" className="iq-media">
+                                                                    <img className="img-fluid avatar-40 rounded-circle" src={user05} alt=""/>
+                                                                </Link>
+                                                                <Link to="#" className="iq-media">
+                                                                    <img className="img-fluid avatar-40 rounded-circle" src={user06} alt=""/>
+                                                                </Link>
+                                                                <Link to="#" className="iq-media">
+                                                                    <img className="img-fluid avatar-40 rounded-circle" src={user07} alt=""/>
+                                                                </Link>
+                                                                <Link to="#" className="iq-media">
+                                                                    <img className="img-fluid avatar-40 rounded-circle" src={user08} alt=""/>
+                                                                </Link>
+                                                                <Link to="#" className="iq-media">
+                                                                    <img className="img-fluid avatar-40 rounded-circle" src={user09} alt=""/>
+                                                                </Link>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </Card.Body>
+                                        </Card>
+                                        <Card>
+                                            <div className="event-images">
+                                                <Link to="#">
+                                                    <img src={img53} className="img-fluid" alt="Responsive "/>
+                                                </Link>
+                                            </div>
+                                            <Card.Body>
+                                                <div className="d-flex">
+                                                    <div className="date-of-event">
+                                                        <span>Jan</span>
+                                                        <h5>26</h5>
+                                                    </div>
+                                                    <div className="events-detail ms-3">
+                                                        <h5><Link to="/dashboards/app/event-detail">Republic Day</Link></h5>
+                                                        <p>Lorem Ipsum is simply dummy text</p>
+                                                        <div className="event-member">
+                                                            <div className="iq-media-group">
+                                                                <Link to="#" className="iq-media">
+                                                                    <img className="img-fluid avatar-40 rounded-circle" src={user05} alt=""/>
+                                                                </Link>
+                                                                <Link to="#" className="iq-media">
+                                                                    <img className="img-fluid avatar-40 rounded-circle" src={user06} alt=""/>
+                                                                </Link>
+                                                                <Link to="#" className="iq-media">
+                                                                    <img className="img-fluid avatar-40 rounded-circle" src={user07} alt=""/>
+                                                                </Link>
+                                                                <Link to="#" className="iq-media">
+                                                                    <img className="img-fluid avatar-40 rounded-circle" src={user08} alt=""/>
+                                                                </Link>
+                                                                <Link to="#" className="iq-media">
+                                                                    <img className="img-fluid avatar-40 rounded-circle" src={user09} alt=""/>
+                                                                </Link>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </Card.Body>
+                                        </Card>
+                                    </Card.Body>
+                                </Card>
                                 <Card>
                                     <Card.Header className="d-flex align-items-center justify-content-between">
                                         <div className="header-title">
@@ -935,8 +1018,6 @@ const DanceEventDetail=()=>{
                     </Container>
                 </div>
             </div>
-
-
         </>
     )
 }

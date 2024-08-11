@@ -27,66 +27,58 @@ export const fetchData = async (url, setMethod, keycloakToken) => {
       throw new Error('Network response was not ok');
     }
     console.log(url);
-    console.log("ululululululululu");
     const body = await response.json();
-    console.log("lalalalalal");
     console.log(body);
 
     setMethod(body);
 
     console.log(body);
   } catch (error) {
-    console.error('Error fetching clients:', error);
+    console.error('Error fetching data:', error);
   }
 };
 
 //TODO all methods should function in the same way
 export const postData = async (url, form, keycloakToken) => {
-  try {
-    const req = keycloakToken == null ? {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ ...form }),
-    } : {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${keycloakToken}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ ...form })
-    };
-    console.log(req)
-    const response = await fetch(url, req);
+  const req = keycloakToken == null ? {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ ...form }),
+  } : {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${keycloakToken}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ ...form })
+  };
+  console.log(req)
+  const response = await fetch(url, req);
 
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-
-    return response;
-  } catch (error) {
-    console.error('Error posting data:', error);
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
   }
+
+  return response;
 };
 
 export const putData = async (url, content, keycloakToken) => {
-  try {
-    const response = await fetch(url, {
-      method: 'PUT',
-      headers: {
-        Authorization: `Bearer ${keycloakToken}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({...content}),
-    });
-
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-
-    return response;
-  } catch (error) {
-    console.error('Error putting data:', error);
+  const request = {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${keycloakToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: content,
   }
+  console.log(request);
+  const response = await fetch(url, request);
+
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+
+  return response;
 }

@@ -170,7 +170,7 @@ const DanceEvents =() =>{
                                            </Col>
                                         </div>
                                     )}
-                                    <div>
+
                                        <Card className=" rounded  mb-0">
                                           <div className="event-images">
                                              <Link to="#">
@@ -209,7 +209,6 @@ const DanceEvents =() =>{
                                              </div>
                                           </Card.Body>
                                        </Card>
-                                    </div>
                                     <div>
                                        <Card className=" rounded  mb-0">
                                           <div className="event-images">

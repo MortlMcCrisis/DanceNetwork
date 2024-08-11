@@ -7,6 +7,7 @@ import com.mortl.dancenetwork.model.Ticket
 import com.mortl.dancenetwork.model.TicketType
 
 import java.time.LocalDate
+import java.time.LocalTime
 
 class Util {
 
@@ -14,7 +15,10 @@ class Util {
         new Event(
                 null,
                 UUID.randomUUID(),
+                null,
+                null,
                 startDate,
+                LocalTime.NOON,
                 startDate.plusDays(2),
                 name,
                 "test",

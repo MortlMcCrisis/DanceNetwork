@@ -30,6 +30,7 @@ import Profile3 from "../views/dashboard/profiles/profile3";
 import DanceEventDetail from "../views/dashboard/app/dance-event-detail";
 import DanceBuyTickets from "../views/dashboard/app/dance-buy-tickets";
 import DanceImageGallery from "../components/image-gallery/image-gallery";
+import DanceTicketManager from "../views/dashboard/app/dance-ticket-manager";
 
 export const Layout1Router = [
   {
@@ -44,9 +45,9 @@ export const Layout1Router = [
     path: "dashboards/app/dance-tickets",
     element: <DanceTickets />,
   },
-  {//TODO delete, because this should only be displayed in an overlay
-    path: "dashboards/app/dance-image-gallery",
-    element: <DanceImageGallery />,
+  {
+    path: "dashboards/app/dance-ticket-manager/:id",
+    element: <DanceTicketManager />,
   },
   {
     path: "dashboards/app/groups",

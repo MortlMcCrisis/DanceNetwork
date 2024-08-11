@@ -8,4 +8,6 @@ public interface ITicketTypeService {
   List<TicketTypeDTO> getTicketTypesForEvent(Long eventId);
 
   void addTicketType(TicketTypeDTO ticketTypeDTO);
+
+  void updateTicketTypes(List<TicketTypeDTO> ticketTypeDTO);
 }

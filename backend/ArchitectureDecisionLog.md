@@ -37,9 +37,19 @@ Used technologies
 - Database: Postgres
 - Frontend: React
 - Toasts: [Toastify](https://fkhadra.github.io/react-toastify/introduction/)
+- Rich Editor: [Quill](https://quilljs.com/playground/react)
+- Calendar: [Fullcalendar](https://fullcalendar.io/)
 
 Frontend
 ========
+
+Code
+----
+- We use semicolons at the end of the lines of JavaScript code
+
+Concepts
+--------
+- Requests for updates should only be sent when data is dirty.
 
 Symbols
 -------

@@ -12,6 +12,8 @@ import AddressIcon from "../../../components/text_icons/address";
 import TicketIcon from "../../../components/text_icons/ticket";
 import LocationIcon from "../../../components/text_icons/location";
 import DateIcon from "../../../components/text_icons/date";
+import DOMPurify from "quill/formats/link";
+
 const DanceTickets = () => {
 
   const { keycloak, initialized } = useKeycloak();
@@ -47,7 +49,8 @@ const DanceTickets = () => {
                         />
                       </div>
                       <h3>{ticketInfo.event.name}</h3>
-                      <p>{ticketInfo.ticketType.description}</p>
+                      <h4>{ticketInfo.ticketType.name}</h4>
+                      <p dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(ticketInfo.ticketType.description)}} />
                       <hr/>
                       <h5>Event</h5>
                       <DateIcon startDate={ticketInfo.event.startDate} endDate={ticketInfo.event.endDate} />
