@@ -27,6 +27,7 @@ public class UserServiceImpl implements IUserService {
 
   private final UserMapper userMapper;
 
+
   @Override
   public UserDTO updateUser(UserDTO userDTO) {
     //TODO find better solution to set uuid

@@ -83,7 +83,6 @@ public class TicketService implements ITicketService {
 
   @Override
   public List<TicketInfoDTO> getTicketInfosForUser(){
-    var shit = ticketRepository.findAll();
     return ticketRepository.findByOwnerOrderByEventStartDateAsc(userService.getNonNullCurrentUser().uuid()).stream()
         .map(this::createTicketInfoDTO)
         .toList();

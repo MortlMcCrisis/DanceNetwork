@@ -13,6 +13,7 @@ import TicketIcon from "../../../components/text_icons/ticket";
 import LocationIcon from "../../../components/text_icons/location";
 import DateIcon from "../../../components/text_icons/date";
 import DOMPurify from "quill/formats/link";
+import Ticket from "./dance-tickets-ticket";
 
 const DanceTickets = () => {
 
@@ -36,6 +37,7 @@ const DanceTickets = () => {
             <div className="mb-2">
               <h4>Tickets</h4>
             </div>
+            <Ticket />
             {ticketInfos.map((ticketInfo, idx) => (
                 <Col sm="6" md="4" key={idx}>
                   <Card className="cardhover">

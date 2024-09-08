@@ -63,6 +63,8 @@ const DanceBuyTickets = () => {
                     return;
                 }
 
+                console.log()
+
                 if(formData[i].email != formData[i].emailConfirm) {
                     toast.error("E-mail addresses must match!");
                     setValidated(true);
