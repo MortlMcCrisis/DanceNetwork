@@ -1,6 +1,7 @@
 package com.mortl.dancenetwork.controller.open;
 
 import com.mortl.dancenetwork.dto.PaymentRequestDTO;
+import com.mortl.dancenetwork.service.IMailService;
 import com.mortl.dancenetwork.service.IPaymentService;
 import com.mortl.dancenetwork.service.ITicketService;
 import lombok.RequiredArgsConstructor;
@@ -22,11 +23,15 @@ public class PaymentOpenController {
 
   private final ITicketService ticketService;
 
+  private final IMailService mailService;
+
   @PostMapping
   public ResponseEntity<Void> newPayment(@RequestBody PaymentRequestDTO tickets) {
     paymentService.doPayment(tickets);
 
     ticketService.addTickets(tickets.tickets());
+
+    mailService.sendEmail("test@test.de", "My subject", "Hier hasch dai ticket");
 
     return ResponseEntity.ok().build();
   }

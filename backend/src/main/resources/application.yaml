@@ -7,6 +7,17 @@ spring:
         jwt:
           issuer-uri: http://localhost:443/realms/dance-network
           jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+  mail:
+    host: localhost
+    port: 30026
+    username: username
+    password: password
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enabled: false
 
 token:
   converter:

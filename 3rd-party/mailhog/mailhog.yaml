@@ -45,9 +45,9 @@ spec:
           name: mailhog
           ports:
             - containerPort: 8025
-              name: mailhog1
+              name: mailhog-ui
             - containerPort: 1025
-              name: mailhog2
+              name: mailhog-smtp
           securityContext:
             privileged: false
           resources:
