@@ -89,6 +89,35 @@ public class ShowDataCreator {
         .profileImage("/upload/2c22e8eef931ef9a428195d8f1e55573/Bachatation.png")
         .build();
     createEvent(bachatation, bachatationUser);
+
+    User backataRoyalUser = users.get(new Random().nextInt(0, users.size()));
+    Event bachataRoyal = Event.builder()
+        .creator(backataRoyalUser.uuid())
+        .startDate(LocalDate.of(2024, 10, 25))
+        .startTime(LocalTime.NOON)
+        .endDate(LocalDate.of(2024, 10, 27))
+        .name("Bachata Zouk Royals")
+        .location("Freiburg, Kaiser Joseph Straße 268 79098 - Freiburg Baden-Württemberg")
+        .website("https://www.goandance.com/en/events/6476-bachata-zouk-royals-2024")
+        .email("florence.vouriot@gmx.de")
+        .published(true)
+        .profileImage("/upload/2c22e8eef931ef9a428195d8f1e55573/BachataZouk.png")
+        .build();
+    createEvent(bachataRoyal, backataRoyalUser);
+
+    User bachatologyUser = users.get(new Random().nextInt(0, users.size()));
+    Event bachatology = Event.builder()
+        .creator(backataRoyalUser.uuid())
+        .startDate(LocalDate.of(2024, 9, 27))
+        .startTime(LocalTime.NOON)
+        .endDate(LocalDate.of(2024, 9, 28))
+        .name("Bachatology")
+        .location("Karlsruhe, Hans-Sachs-Straße 8, 76133")
+        .website("https://www.tickettailor.com/events/socialdancevip/1218659?fbclid=IwZXh0bgNhZW0CMTEAAR3BWpgiEoj5x8tOD7WnCdVqaebNOKNLqwGtW5ghvZBw3cSvt5XwBYsJY6A_aem_Xdvk1biN-Ez2WXS4MEUxzg&sfnsn=scwspwa")
+        .published(true)
+        .profileImage("/upload/2c22e8eef931ef9a428195d8f1e55573/Bachatology.png")
+        .build();
+    createEvent(bachatology, bachatologyUser);
   }
 
   private void createEvent(Event event, User user){

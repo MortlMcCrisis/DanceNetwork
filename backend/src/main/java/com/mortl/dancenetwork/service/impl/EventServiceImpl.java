@@ -10,6 +10,7 @@ import com.mortl.dancenetwork.service.IEventService;
 import com.mortl.dancenetwork.service.INewsfeedEntryService;
 import com.mortl.dancenetwork.service.IUserService;
 import com.mortl.dancenetwork.util.NewsfeedFactory;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -17,6 +18,10 @@ import java.util.stream.Collectors;
 import javax.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -55,8 +60,21 @@ public class EventServiceImpl implements IEventService {
   }
 
   @Override
-  public List<EventDTO> getAllPublishedEvents(){
-    return toDTOs(eventRepository.findByPublishedTrueOrderByStartDateAsc());
+  public List<EventDTO> getPublishedEvents(
+      Optional<Integer> maxEntries,
+      Optional<LocalDate> fromDate){
+    Pageable pageable;
+    Sort sort = Sort.by(Direction.ASC, "startDate");
+    if(maxEntries.isPresent()) {
+      pageable = PageRequest.of( 0, maxEntries.get(), sort);
+    }
+    else{
+      pageable = Pageable.unpaged(sort);
+    }
+
+    LocalDate from = fromDate.orElseGet(() -> LocalDate.now());
+
+    return toDTOs(eventRepository.findByPublishedTrueAndStartDateAfter(from, pageable));
   }
 
   private List<EventDTO> toDTOs(List<Event> events){

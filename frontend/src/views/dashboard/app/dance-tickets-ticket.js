@@ -20,7 +20,7 @@ function Ticket() {
               overflow: 'hidden',
               width: '1000px',
               maxWidth: '100%',
-              backgroundColor: '#2e2136',
+              backgroundColor: 'var(--bs-primary)',
             }}
         >
           {/* Container für die Ticketpreise */}
@@ -39,7 +39,7 @@ function Ticket() {
                   alignItems: 'center',
                   color: 'white',
                   padding: '20px',
-                  backgroundColor: '#52b144',
+                  backgroundColor: 'var(--bs-success)',
                   width: '20%', // Breite auf 1/3 des Containers setzen
                   textAlign: 'center',
                 }}
@@ -60,7 +60,7 @@ function Ticket() {
                   alignItems: 'center',
                   color: 'white',
                   padding: '20px',
-                  backgroundColor: '#f9cc4d',
+                  backgroundColor: 'var(--bs-warning)',
                   width: '20%', // Breite auf 1/3 des Containers setzen
                   textAlign: 'center',
                 }}
@@ -81,14 +81,16 @@ function Ticket() {
                   alignItems: 'center',
                   color: 'white',
                   padding: '20px',
-                  backgroundColor: '#2e2136',
+                  backgroundColor: 'var(--bs-primary)',
                   width: '20%', // Breite auf 1/3 des Containers setzen
                   textAlign: 'center'
                 }}
             >
               <div style={{ fontSize: '36px', fontWeight: 'bold', writingMode: 'sideways-lr'}}>579 €</div>
               <div style={{ fontSize: '16px', fontWeight: 'bold', marginTop: '10px', writingMode: 'sideways-lr'}}>
-                LATE BIRD TICKET<br/>
+                LATE BIRD TICKET
+                <br/>
+                <span style={{ fontSize: '14px', marginTop: '5px', color: '#d4edcf' }}>until 27.01</span>
               </div>
             </div>
 
@@ -101,11 +103,11 @@ function Ticket() {
                   alignItems: 'center',
                   color: 'white',
                   padding: '20px',
-                  backgroundColor: '#2e2136',
+                  backgroundColor: 'var(--bs-primary)',
                   width: '40%', // Breite auf 1/3 des Containers setzen
                   textAlign: 'center',
-                  borderLeft: '1px dashed gray',
-                  borderRight: '1px dashed gray'
+                  borderLeft: '1px dashed white',
+                  borderRight: '1px dashed white'
                 }}
             >
               <div style={{ fontSize: '36px', fontWeight: 'bold'}}>579 €</div>

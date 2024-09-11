@@ -19,13 +19,15 @@ import {useKeycloak} from "@react-keycloak/web";
 import {
     NEWSFEED_ENTRIES_CLOSED_ENDPOINT,
     fetchData,
-    NEWSFEED_ENTRIES_OPEN_ENDPOINT, USERS_OPEN_ENDPOINT
+    NEWSFEED_ENTRIES_OPEN_ENDPOINT, USERS_OPEN_ENDPOINT, EVENTS_OPEN_ENDPOINT
 } from "../../../components/util/network";
 import DanceNewsfeedCard
     from "../../../components/dance-newsfeed/dance-newsfeed-card";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import listPlugin from "@fullcalendar/list";
 import FullCalendar from "@fullcalendar/react";
+import placeholder from "../../../assets/images/event/placeholder.png";
+import DanceEventCard from "./dance-events-card";
 
 const DanceNewsfeed=()=>{
 
@@ -34,6 +36,8 @@ const DanceNewsfeed=()=>{
     const [newsfeedEntries, setNewsfeedEntries] = useState([]);
 
     const [creators, setCreators] = useState([]);
+
+    const [events, setEvents] = useState([]);
 
     useEffect(() => {
         if(keycloak.authenticated) {
@@ -51,6 +55,11 @@ const DanceNewsfeed=()=>{
         }
     }, [newsfeedEntries]);
 
+    useEffect(() => {
+        const today = new Date().toISOString().split('T')[0];
+        fetchData(EVENTS_OPEN_ENDPOINT + `?maxEntries=2&from=${today}`, setEvents);
+    }, [keycloak.authenticated]);
+
     return(
         <>
             <div id="content-page" className="content-page">
@@ -63,39 +72,18 @@ const DanceNewsfeed=()=>{
                                         <h4 className="card-title">Upcoming Event</h4>
                                     </div>
                                     <div className="card-header-toolbar d-flex align-items-center">
-                                        <p className="m-0"><Link to="javacsript:void();"> Create </Link></p>
+                                        <p className="m-0"><Link to="/dashboards/app/dance-events"> All events </Link></p>
                                     </div>
                                 </div>
                                 <Card.Body>
                                     <Row>
-                                        <Col sm="12">
-                                            <div className="event-post position-relative">
-                                                <Link to="#"><img loading="lazy" src={imgpp3} alt="gallary-img" className="img-fluid rounded"/></Link>
-                                                <div className="job-icon-position">
-                                                    <div className="job-icon bg-primary p-2 d-inline-block rounded-circle material-symbols-outlined text-white">
-                                                        local_mall
-                                                    </div>
-                                                </div>
-                                                <div className="card-body text-center p-2">
-                                                    <h5>Started New Job at Apple</h5>
-                                                    <p>January 24, 2019</p>
-                                                </div>
+                                        {events.map(event =>
+                                            <div key={event.id}>
+                                                <Col sm={12}>
+                                                    <DanceEventCard event={event} />
+                                                </Col>
                                             </div>
-                                        </Col>
-                                        <Col sm="12">
-                                            <div className="event-post position-relative">
-                                                <Link to="#"><img loading="lazy" src={imgpp4} alt="gallary-img" className="img-fluid rounded"/></Link>
-                                                <div className="job-icon-position">
-                                                    <div className="job-icon bg-primary p-2 d-inline-block rounded-circle material-symbols-outlined text-white">
-                                                        local_mall
-                                                    </div>
-                                                </div>
-                                                <div className="card-body text-center p-2">
-                                                    <h5>Freelance Photographer</h5>
-                                                    <p className="mb-0">January 24, 2019</p>
-                                                </div>
-                                            </div>
-                                        </Col>
+                                        )}
                                     </Row>
                                 </Card.Body>
                             </Card>

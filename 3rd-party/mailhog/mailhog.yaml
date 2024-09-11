@@ -13,12 +13,16 @@ metadata:
 spec:
   ports:
     - port: 8025
-      name: mailhog1
+      targetPort: 8025
+      nodePort: 30025  # Füge dies hinzu, um den Port explizit festzulegen (zwischen 30000-32767)
+      name: mailhog-ui
     - port: 1025
-      name: mailhog2
+      targetPort: 1025
+      nodePort: 30026  # Optional für den zweiten Port
+      name: mailhog-smtp
   selector:
     app: mailhog
-  type: ClusterIP
+  type: NodePort  # Ändere den Service-Typ auf NodePort
 ---
 apiVersion: apps/v1
 kind: Deployment
