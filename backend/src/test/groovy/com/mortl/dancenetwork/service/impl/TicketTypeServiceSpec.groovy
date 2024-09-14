@@ -2,7 +2,7 @@ package com.mortl.dancenetwork.service.impl
 
 import com.mortl.dancenetwork.dto.TicketTypeDTO
 import com.mortl.dancenetwork.mapper.TicketTypeMapper
-import com.mortl.dancenetwork.model.TicketType
+import com.mortl.dancenetwork.entity.TicketType
 import com.mortl.dancenetwork.repository.TicketTypeRepository
 import spock.lang.Specification
 

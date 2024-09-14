@@ -106,18 +106,20 @@ const DanceBuyTickets = () => {
                     }
                     tickets.push(newObj);
                 });
-                console.log(tickets)
                 let requestData = {
                     tickets: tickets
                 }
-                console.log(requestData)
+
+                console.log(requestData);
 
                 const response = await postData(PAYMENTS_OPEN_ENDPOINT, requestData, keycloak.token)
-                if (response.status === 201) {
-                    const resourceUrl = response.headers.get('Location')
-                    const id = resourceUrl.split('/').pop();
-                    window.location = `/dashboards/app/dance-event-detail/${id}`;
+                if (response.ok) {
+                    toast.success("Successfully bought tickets!");
                 }
+                else{
+                    toast.error("Error while processing your request!");
+                }
+
             } catch (error) {
                 console.error('Fehler:', error);
             }

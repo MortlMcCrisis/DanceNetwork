@@ -1,6 +1,6 @@
 package com.mortl.dancenetwork.client;
 
-import com.mortl.dancenetwork.entity.User;
+import com.mortl.dancenetwork.model.User;
 import java.util.List;
 import java.util.UUID;
 

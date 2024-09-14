@@ -1,7 +1,7 @@
 package com.mortl.dancenetwork.service;
 
 import com.mortl.dancenetwork.dto.UserDTO;
-import com.mortl.dancenetwork.entity.User;
+import com.mortl.dancenetwork.model.User;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

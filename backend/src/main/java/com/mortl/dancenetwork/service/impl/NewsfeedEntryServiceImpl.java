@@ -2,9 +2,9 @@ package com.mortl.dancenetwork.service.impl;
 
 import com.mortl.dancenetwork.dto.NewsfeedEntryDTO;
 import com.mortl.dancenetwork.mapper.NewsfeedEntryMapper;
-import com.mortl.dancenetwork.model.NewsfeedEntry;
+import com.mortl.dancenetwork.entity.NewsfeedEntry;
 import com.mortl.dancenetwork.repository.NewsfeedEntryRepository;
-import com.mortl.dancenetwork.entity.User;
+import com.mortl.dancenetwork.model.User;
 import com.mortl.dancenetwork.service.INewsfeedEntryService;
 import java.util.List;
 import javax.ws.rs.NotFoundException;

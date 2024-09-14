@@ -2,7 +2,7 @@ package com.mortl.dancenetwork.client.Impl;
 
 import com.mortl.dancenetwork.client.IUserClient;
 import com.mortl.dancenetwork.dto.Gender;
-import com.mortl.dancenetwork.entity.User;
+import com.mortl.dancenetwork.model.User;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

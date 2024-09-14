@@ -1,7 +1,7 @@
 package com.mortl.dancenetwork.mapper;
 
 import com.mortl.dancenetwork.dto.UserDTO;
-import com.mortl.dancenetwork.entity.User;
+import com.mortl.dancenetwork.model.User;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

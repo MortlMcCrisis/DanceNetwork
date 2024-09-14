@@ -2,19 +2,18 @@ package com.mortl.dancenetwork.service.impl;
 
 import com.mortl.dancenetwork.dto.TicketDTO;
 import com.mortl.dancenetwork.dto.TicketInfoDTO;
-import com.mortl.dancenetwork.entity.User;
+import com.mortl.dancenetwork.model.User;
 import com.mortl.dancenetwork.mapper.EventMapper;
 import com.mortl.dancenetwork.mapper.NewsfeedEntryMapper;
 import com.mortl.dancenetwork.mapper.TicketMapper;
 import com.mortl.dancenetwork.mapper.TicketTypeMapper;
-import com.mortl.dancenetwork.model.Ticket;
+import com.mortl.dancenetwork.entity.Ticket;
 import com.mortl.dancenetwork.repository.TicketRepository;
 import com.mortl.dancenetwork.service.INewsfeedEntryService;
 import com.mortl.dancenetwork.service.IQrCodeService;
 import com.mortl.dancenetwork.service.ITicketService;
 import com.mortl.dancenetwork.service.IUserService;
 import com.mortl.dancenetwork.util.NewsfeedFactory;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -46,7 +45,7 @@ public class TicketService implements ITicketService {
   private final TicketTypeMapper ticketTypeMapper;
 
   @Override
-  public void addTickets(List<TicketDTO> tickets) {
+  public List<Ticket> addTickets(List<TicketDTO> tickets) {
     tickets.forEach(ticket -> log.info("new tickets: {}", ticket.ticketTypeId()));
     Optional<User> currentUser = userService.getCurrentUser();
     List<Ticket> savedTickets = ticketRepository.saveAllAndFlush(
@@ -72,6 +71,8 @@ public class TicketService implements ITicketService {
           )
       );
     }
+
+    return savedTickets;
   }
 
   private UUID getUuidOfUser(Optional<User> user){

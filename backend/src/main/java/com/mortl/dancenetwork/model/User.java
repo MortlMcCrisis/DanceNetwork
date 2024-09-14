@@ -1,4 +1,4 @@
-package com.mortl.dancenetwork.entity;
+package com.mortl.dancenetwork.model;
 
 import com.mortl.dancenetwork.dto.Gender;
 import java.util.UUID;

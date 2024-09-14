@@ -1,4 +1,4 @@
-package com.mortl.dancenetwork.model;
+package com.mortl.dancenetwork.entity;
 
 import com.mortl.dancenetwork.dto.Gender;
 import com.mortl.dancenetwork.dto.Role;

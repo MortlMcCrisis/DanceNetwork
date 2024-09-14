@@ -1,7 +1,7 @@
 package com.mortl.dancenetwork.mapper;
 
 import com.mortl.dancenetwork.dto.NewsfeedEntryDTO;
-import com.mortl.dancenetwork.model.NewsfeedEntry;
+import com.mortl.dancenetwork.entity.NewsfeedEntry;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

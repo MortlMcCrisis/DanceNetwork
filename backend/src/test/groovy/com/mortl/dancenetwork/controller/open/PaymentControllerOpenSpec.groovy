@@ -1,6 +1,6 @@
 package com.mortl.dancenetwork.controller.open
 
-import com.mortl.dancenetwork.model.Event
+import com.mortl.dancenetwork.entity.Event
 import com.mortl.dancenetwork.repository.EventRepository
 import com.mortl.dancenetwork.repository.TicketTypeRepository
 import com.mortl.dancenetwork.testutil.Util

@@ -1,7 +1,7 @@
 package com.mortl.dancenetwork.mapper;
 
 import com.mortl.dancenetwork.dto.TicketDTO;
-import com.mortl.dancenetwork.model.Ticket;
+import com.mortl.dancenetwork.entity.Ticket;
 import com.mortl.dancenetwork.repository.TicketTypeRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

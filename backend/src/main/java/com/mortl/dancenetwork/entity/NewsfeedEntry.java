@@ -1,4 +1,4 @@
-package com.mortl.dancenetwork.model;
+package com.mortl.dancenetwork.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

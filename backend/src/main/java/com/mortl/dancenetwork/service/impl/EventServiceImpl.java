@@ -1,10 +1,10 @@
 package com.mortl.dancenetwork.service.impl;
 
 import com.mortl.dancenetwork.dto.EventDTO;
-import com.mortl.dancenetwork.entity.User;
+import com.mortl.dancenetwork.model.User;
 import com.mortl.dancenetwork.mapper.EventMapper;
 import com.mortl.dancenetwork.mapper.NewsfeedEntryMapper;
-import com.mortl.dancenetwork.model.Event;
+import com.mortl.dancenetwork.entity.Event;
 import com.mortl.dancenetwork.repository.EventRepository;
 import com.mortl.dancenetwork.service.IEventService;
 import com.mortl.dancenetwork.service.INewsfeedEntryService;
@@ -14,7 +14,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import javax.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

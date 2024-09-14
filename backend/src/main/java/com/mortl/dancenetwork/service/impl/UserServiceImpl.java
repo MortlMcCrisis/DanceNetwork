@@ -3,7 +3,7 @@ package com.mortl.dancenetwork.service.impl;
 import com.mortl.dancenetwork.client.IUserClient;
 import com.mortl.dancenetwork.dto.Gender;
 import com.mortl.dancenetwork.dto.UserDTO;
-import com.mortl.dancenetwork.entity.User;
+import com.mortl.dancenetwork.model.User;
 import com.mortl.dancenetwork.mapper.UserMapper;
 import com.mortl.dancenetwork.service.IUserService;
 import jakarta.servlet.http.HttpServletRequest;

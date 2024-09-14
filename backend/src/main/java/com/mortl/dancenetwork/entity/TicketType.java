@@ -1,4 +1,4 @@
-package com.mortl.dancenetwork.model;
+package com.mortl.dancenetwork.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,7 +30,7 @@ public class TicketType {
   @NonNull
   private String name;
 
-  @Column(nullable = false)
+  @Column(nullable = false, length = 1000)
   @NonNull
   private String description;
 

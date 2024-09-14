@@ -1,10 +1,10 @@
 package com.mortl.dancenetwork.bot;
 
-import com.mortl.dancenetwork.entity.User;
-import com.mortl.dancenetwork.model.Event;
-import com.mortl.dancenetwork.model.NewsfeedEntry;
-import com.mortl.dancenetwork.model.NewsfeedEntryType;
-import com.mortl.dancenetwork.model.TicketType;
+import com.mortl.dancenetwork.model.User;
+import com.mortl.dancenetwork.entity.Event;
+import com.mortl.dancenetwork.entity.NewsfeedEntry;
+import com.mortl.dancenetwork.entity.NewsfeedEntryType;
+import com.mortl.dancenetwork.entity.TicketType;
 import com.mortl.dancenetwork.repository.EventRepository;
 import com.mortl.dancenetwork.repository.NewsfeedEntryRepository;
 import com.mortl.dancenetwork.repository.TicketTypeRepository;
@@ -53,7 +53,7 @@ public class ShowDataCreator {
     users = userService.getAllUsers();
   }
 
-  @Scheduled(fixedRate = 24000000)
+  @Scheduled(fixedRate = Long.MAX_VALUE)
   public void createNewsfeedEntries() {
     users.stream().forEach(user -> createRandomNewsfeed(user));
   }
@@ -74,6 +74,24 @@ public class ShowDataCreator {
         .profileImage("/upload/2c22e8eef931ef9a428195d8f1e55573/Bachaturo.png")
         .build();
     createEvent(bachaturo, bachaturoUser);
+    ticketTypeRepository.saveAndFlush(TicketType.builder()
+        .price(121.00f)
+        .name("FULLPASS")
+        .description("All workshops, all parties on all dance floors, and the Kizomba social room.")
+        .event(bachaturo)
+        .build());
+    ticketTypeRepository.saveAndFlush(TicketType.builder()
+        .price(114.00f)
+        .name("GROUP FULLPASS (with promocode)")
+        .description("All workshops, all parties on all dance floors, and the Kizomba social room.")
+        .event(bachaturo)
+        .build());
+    ticketTypeRepository.saveAndFlush(TicketType.builder()
+        .price(85.00f)
+        .name("Partypass")
+        .description("All Parties and Kizomba Social Room")
+        .event(bachaturo)
+        .build());
 
     User bachatationUser = users.get(new Random().nextInt(0, users.size()));
     Event bachatation = Event.builder()
@@ -89,6 +107,30 @@ public class ShowDataCreator {
         .profileImage("/upload/2c22e8eef931ef9a428195d8f1e55573/Bachatation.png")
         .build();
     createEvent(bachatation, bachatationUser);
+    ticketTypeRepository.saveAndFlush(TicketType.builder()
+        .price(109.00f)
+        .name("FULLPASS")
+        .description("Includes all Workshops & all Parties")
+        .event(bachatation)
+        .build());
+    ticketTypeRepository.saveAndFlush(TicketType.builder()
+        .price(109.00f)
+        .name("MASTER CLASS")
+        .description("Master Class with Kike & Nahir")
+        .event(bachatation)
+        .build());
+    ticketTypeRepository.saveAndFlush(TicketType.builder()
+        .price(45.00f)
+        .name("VIP Party-Pass")
+        .description("All 4 Parties wit Pre-Party-Workshop")
+        .event(bachatation)
+        .build());
+    ticketTypeRepository.saveAndFlush(TicketType.builder()
+        .price(29.00f)
+        .name("PARTY-PASS")
+        .description("All 4 Parties")
+        .event(bachatation)
+        .build());
 
     User backataRoyalUser = users.get(new Random().nextInt(0, users.size()));
     Event bachataRoyal = Event.builder()
@@ -104,6 +146,72 @@ public class ShowDataCreator {
         .profileImage("/upload/2c22e8eef931ef9a428195d8f1e55573/BachataZouk.png")
         .build();
     createEvent(bachataRoyal, backataRoyalUser);
+    ticketTypeRepository.saveAndFlush(TicketType.builder()
+        .price(135.00f)
+        .name("Fullpass - BachataZoukRoyals- Leader")
+        .description("Access to all Workshops (as a leader)and social rooms, including shows")
+        .event(bachataRoyal)
+        .build());
+    ticketTypeRepository.saveAndFlush(TicketType.builder()
+        .price(135.00f)
+        .name("Fullpass - BachataZoukRoyals - Follower")
+        .description("Full access to all Workshops (as a follower), party and shows")
+        .event(bachataRoyal)
+        .build());
+    ticketTypeRepository.saveAndFlush(TicketType.builder()
+        .price(65.00f)
+        .name("Party Pass")
+        .description("This pass will give you access to the Friday, Saturday night socials and sunday day & night social.<br/><br/>only limited amount available! Last year, we were sold out, and we expect the same to happen this year.")
+        .event(bachataRoyal)
+        .build());
+    ticketTypeRepository.saveAndFlush(TicketType.builder()
+        .price(35.00f)
+        .name("Friday Day Pass")
+        .description("This Day Pass includes all workshops, shows and social on Friday the 25th of October 2024.<br/>On Friday the workshops will start at 6 p.m.<br/>After the pre party workshops at 9 p.m. the social will start at 10 p.m.<br/>The shows will be around midnight ")
+        .event(bachataRoyal)
+        .build());
+    ticketTypeRepository.saveAndFlush(TicketType.builder()
+        .price(65.00f)
+        .name("Saturday Day Pass- Leader")
+        .description("This Day Pass, for Leader, includes all workshops, shows and social on Saturday the 26th of October 2024.<br/>On Saturday the workshops will start at 2 p.m.<br/>The day social will start at 6 p.m. and the night social will start at 10 p.m.<br/>The shows will be around midnight.")
+        .event(bachataRoyal)
+        .build());
+    ticketTypeRepository.saveAndFlush(TicketType.builder()
+        .price(65.00f)
+        .name("Saturday Day Pass - Follower")
+        .description("This Day Pass, for Follower, includes all workshops, shows and social on Saturday the 26th of October 2024.<br/>On Saturday the workshops will start at 2 p.m.<br/>The day social will start at 6 p.m. and the night social will start at 10 p.m.<br/>The shows will be around midnight.")
+        .event(bachataRoyal)
+        .build());
+    ticketTypeRepository.saveAndFlush(TicketType.builder()
+        .price(45.00f)
+        .name("Sunday Day Pass - Leader")
+        .description("This Day Pass, for Leader, includes all workshops and social on Sunday the 27th of October 2024.<br/>On Sunday the workshops will start at 1 p.m.<br/>The day social will start at 4 p.m. until midnight")
+        .event(bachataRoyal)
+        .build());
+    ticketTypeRepository.saveAndFlush(TicketType.builder()
+        .price(45.00f)
+        .name("Sunday Day Pass - Follower")
+        .description("This Day Pass, for Follower, includes all workshops and social on Sunday the 27th of October 2024.<br/>On Sunday the workshops will start at 1 p.m.<br/>The day social will start at 4 p.m. until midnight")
+        .event(bachataRoyal)
+        .build());
+    ticketTypeRepository.saveAndFlush(TicketType.builder()
+        .price(25.0f)
+        .name("Friday night social")
+        .description("The Friday night ticket for the 25th of October includes the social starting at 10 p.m. and the shows around midnight")
+        .event(bachataRoyal)
+        .build());
+    ticketTypeRepository.saveAndFlush(TicketType.builder()
+        .price(30.0f)
+        .name("Saturday night social")
+        .description("The Saturday night ticket for the 26th of October includes the social starting at 10 p.m. and the shows around midnight")
+        .event(bachataRoyal)
+        .build());
+    ticketTypeRepository.saveAndFlush(TicketType.builder()
+        .price(15.0f)
+        .name("Sunday social ticket")
+        .description("The Sunday social ticket for the 27th of October includes the day social starting at 4 p.m. till midnight")
+        .event(bachataRoyal)
+        .build());
 
     User bachatologyUser = users.get(new Random().nextInt(0, users.size()));
     Event bachatology = Event.builder()
@@ -118,18 +226,18 @@ public class ShowDataCreator {
         .profileImage("/upload/2c22e8eef931ef9a428195d8f1e55573/Bachatology.png")
         .build();
     createEvent(bachatology, bachatologyUser);
+    createRandomTicketTypesForEvent(bachatology);
+
   }
 
   private void createEvent(Event event, User user){
     event = eventRepository.saveAndFlush( event );
     newsfeedEntryRepository.saveAndFlush(newsfeedFactory.createEventPublishedNewsfeedEntry(user, event));
-    createTicketTypesForEvent(event);
   }
 
-  private void createTicketTypesForEvent(Event event)
-  {
+  private void createRandomTicketTypesForEvent(Event event) {
     int amountOfTickets = new Random().nextInt(2, 10);
-    for(int i=0; i<amountOfTickets; i++) {
+    for (int i = 0; i < amountOfTickets; i++) {
       ticketTypeRepository.saveAndFlush(TicketType.builder()
           .price(BigDecimal.valueOf(new Random().nextFloat(15, 250))
               .setScale(2, BigDecimal.ROUND_HALF_DOWN)
@@ -141,7 +249,8 @@ public class ShowDataCreator {
     }
   }
 
-  private void createRandomNewsfeed(User user){
+
+    private void createRandomNewsfeed(User user){
     newsfeedEntryRepository.saveAndFlush(NewsfeedEntry.builder()
             .type(NewsfeedEntryType.POST)
             .creator(user.uuid())

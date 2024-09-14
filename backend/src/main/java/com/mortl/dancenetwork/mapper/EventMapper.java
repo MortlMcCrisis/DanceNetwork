@@ -1,7 +1,7 @@
 package com.mortl.dancenetwork.mapper;
 
 import com.mortl.dancenetwork.dto.EventDTO;
-import com.mortl.dancenetwork.model.Event;
+import com.mortl.dancenetwork.entity.Event;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

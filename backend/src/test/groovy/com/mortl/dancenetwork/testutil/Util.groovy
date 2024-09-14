@@ -2,9 +2,9 @@ package com.mortl.dancenetwork.testutil
 
 import com.mortl.dancenetwork.dto.Gender
 import com.mortl.dancenetwork.dto.Role
-import com.mortl.dancenetwork.model.Event
-import com.mortl.dancenetwork.model.Ticket
-import com.mortl.dancenetwork.model.TicketType
+import com.mortl.dancenetwork.entity.Event
+import com.mortl.dancenetwork.entity.Ticket
+import com.mortl.dancenetwork.entity.TicketType
 
 import java.time.LocalDate
 import java.time.LocalTime

@@ -1,7 +1,6 @@
 package com.mortl.dancenetwork.repository;
 
-import com.mortl.dancenetwork.model.Event;
-import com.mortl.dancenetwork.model.TicketType;
+import com.mortl.dancenetwork.entity.Event;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.data.domain.Pageable;

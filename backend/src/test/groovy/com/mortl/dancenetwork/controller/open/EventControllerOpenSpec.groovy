@@ -2,7 +2,7 @@ package com.mortl.dancenetwork.controller.open
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.mortl.dancenetwork.model.Event
+import com.mortl.dancenetwork.entity.Event
 import com.mortl.dancenetwork.repository.EventRepository
 import com.mortl.dancenetwork.testutil.Util
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package com.mortl.dancenetwork.repository;
 
-import com.mortl.dancenetwork.model.TicketType;
+import com.mortl.dancenetwork.entity.TicketType;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

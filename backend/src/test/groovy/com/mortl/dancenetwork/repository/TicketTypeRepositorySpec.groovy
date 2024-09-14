@@ -1,7 +1,7 @@
 package com.mortl.dancenetwork.repository
 
-import com.mortl.dancenetwork.model.Event
-import com.mortl.dancenetwork.model.TicketType
+import com.mortl.dancenetwork.entity.Event
+import com.mortl.dancenetwork.entity.TicketType
 import com.mortl.dancenetwork.testutil.Util
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
