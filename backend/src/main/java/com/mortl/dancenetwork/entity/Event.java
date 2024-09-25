@@ -6,13 +6,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Entity
 @Table(name = "event")
@@ -35,7 +35,6 @@ public class Event {
   private String bannerImage;
 
   @Column(nullable = false)
-  @NonNull
   private LocalDate startDate;
 
   private LocalTime startTime;
@@ -43,7 +42,6 @@ public class Event {
   private LocalDate endDate;
 
   @Column(nullable = false)
-  @NonNull
   private String name;
 
   private String location;
@@ -53,4 +51,7 @@ public class Event {
   private String email;
 
   private boolean published;
+
+  @Column(nullable = false)
+  private LocalDateTime createdAt;
 }

@@ -1,6 +1,6 @@
 package com.mortl.dancenetwork.dto;
 
-import com.mortl.dancenetwork.entity.NewsfeedEntryType;
+import com.mortl.dancenetwork.enums.NewsfeedEntryType;
 import java.time.LocalDateTime;
 import java.util.UUID;
 

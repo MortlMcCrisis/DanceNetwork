@@ -14,6 +14,7 @@ import com.mortl.dancenetwork.service.IQrCodeService;
 import com.mortl.dancenetwork.service.ITicketService;
 import com.mortl.dancenetwork.service.IUserService;
 import com.mortl.dancenetwork.util.NewsfeedFactory;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -24,7 +25,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class TicketService implements ITicketService {
+public class TicketServiceImpl implements ITicketService {
 
   private final TicketRepository ticketRepository;
 
@@ -46,12 +47,19 @@ public class TicketService implements ITicketService {
 
   @Override
   public List<Ticket> addTickets(List<TicketDTO> tickets) {
-    tickets.forEach(ticket -> log.info("new tickets: {}", ticket.ticketTypeId()));
+    tickets.forEach(ticket -> log.info("new ticket: {}", ticket.ticketTypeId()));
     Optional<User> currentUser = userService.getCurrentUser();
+    List<Ticket> t = tickets.stream()
+        .map(ticketMapper::toEntity)
+        .peek(ticket -> ticket.setOwner(getUuidOfUser(currentUser)))
+        .peek(ticket -> ticket.setBuyDate(LocalDateTime.now()))
+        .toList();
+
     List<Ticket> savedTickets = ticketRepository.saveAllAndFlush(
         tickets.stream()
-            .map(ticketMapper::toModel)
+            .map(ticketMapper::toEntity)
             .peek(ticket -> ticket.setOwner(getUuidOfUser(currentUser)))
+            .peek(ticket -> ticket.setBuyDate(LocalDateTime.now()))
             .toList());
 
     for(Ticket ticket : savedTickets) {

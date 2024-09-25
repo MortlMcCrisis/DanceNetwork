@@ -4,10 +4,14 @@ import com.mortl.dancenetwork.entity.Event
 import com.mortl.dancenetwork.testutil.Util
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import spock.lang.Specification
 import spock.lang.Unroll
 
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 @SpringBootTest
 class EventRepositorySpec extends Specification{
@@ -23,30 +27,32 @@ class EventRepositorySpec extends Specification{
         eventRepository.deleteAll()
     }
 
-    def "test findByPublishedTrueOrderByStartDateAsc no content"(){
+    def "test findByPublishedTrueAndStartDateAfter no content"(){
         expect:
-        eventRepository.findByPublishedTrueOrderByStartDateAsc().size() == 0
+        eventRepository.findByPublishedTrueAndStartDateAfter(LocalDate.now(), Pageable.unpaged()).size() == 0
     }
 
     @Unroll
-    def "test findByPublishedTrueOrderByStartDateAsc test published state"(boolean published){
+    def "test findByPublishedTrueAndStartDateAfter test published state"(boolean published){
         when:
         createTestEvent(published)
 
         then:
-        eventRepository.findByPublishedTrueOrderByStartDateAsc().isEmpty() != published
+        eventRepository.findByPublishedTrueAndStartDateAfter(LocalDate.now().minusDays(1), Pageable.unpaged()).isEmpty() != published
 
         where:
         published << [true, false]
     }
 
-    def "test findByPublishedTrueOrderByStartDateAsc test order"(){
+    def "test findByPublishedTrueAndStartDateAfter test order"(){
         when:
         Event event2 = createTestEvent(true, LocalDate.now().minusDays(1), "name2")
         Event event1 = createTestEvent(true, LocalDate.now(), "name1")
         Event event3 = createTestEvent(true, LocalDate.now().plusDays(1), "name3")
 
-        List<Event> events = eventRepository.findByPublishedTrueOrderByStartDateAsc()
+        List<Event> events = eventRepository.findByPublishedTrueAndStartDateAfter(
+                LocalDate.now().minusDays(2),
+                Pageable.unpaged(Sort.by(Sort.Direction.ASC, "startDate")))
 
         then:
         events.size() == 3
@@ -56,7 +62,7 @@ class EventRepositorySpec extends Specification{
         events.get(2).getName() == event3.getName()
     }
 
-    def "test findByPublishedTrueOrderByStartDateAsc test order and publised state"(){
+    def "test findByPublishedTrueAndStartDateAfter test order and published state"(){
         when:
         Event event5 = createTestEvent(true, LocalDate.now().minusDays(2), "name5")
         Event event2 = createTestEvent(true, LocalDate.now().minusDays(1), "name2")
@@ -65,7 +71,10 @@ class EventRepositorySpec extends Specification{
         createTestEvent(false, LocalDate.now().plusDays(3), "name3")
         createTestEvent(false, LocalDate.now(), "name4")
 
-        List<Event> events = eventRepository.findByPublishedTrueOrderByStartDateAsc()
+        List<Event> events = eventRepository.findByPublishedTrueAndStartDateAfter(
+                LocalDate.now().minusDays(3),
+                Pageable.unpaged(Sort.by(Sort.Direction.ASC, "startDate"))
+        )
 
         then:
         events.size() == 4

@@ -25,19 +25,9 @@ public class PaymentOpenController {
 
   private final IPaymentService paymentService;
 
-  private final ITicketService ticketService;
-
-  private final IMailService mailService;
-
-  private final IPdfService pdfService;
-
   @PostMapping
   public ResponseEntity<Void> newPayment(@RequestBody PaymentRequestDTO tickets) {
     paymentService.doPayment(tickets);
-
-    List<Ticket> savedTickets = ticketService.addTickets(tickets.tickets());
-    pdfService.createPdf(savedTickets);
-    mailService.sendEmailWithAttachment("test@test.de", "Hier hasch dai ticket", "Hier hasch dai ticket");
 
     return ResponseEntity.ok().build();
   }

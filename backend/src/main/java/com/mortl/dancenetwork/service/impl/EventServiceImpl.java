@@ -11,6 +11,7 @@ import com.mortl.dancenetwork.service.INewsfeedEntryService;
 import com.mortl.dancenetwork.service.IUserService;
 import com.mortl.dancenetwork.util.NewsfeedFactory;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -45,6 +46,7 @@ public class EventServiceImpl implements IEventService {
   {
     Event event = eventMapper.toModel(eventDTO);
     event.setCreator(userService.getNonNullCurrentUser().uuid());
+    event.setCreatedAt(LocalDateTime.now());
     Event savedEvent = eventRepository.saveAndFlush(event);
     return eventMapper.toDTO(savedEvent);  }
 

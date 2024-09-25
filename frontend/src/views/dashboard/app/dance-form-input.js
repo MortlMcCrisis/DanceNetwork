@@ -7,10 +7,10 @@ import React from "react";
 const DanceFormInput = ({id, label, type, value, onChange, placeholder, disabled, required}) => {
   return (
     <Form.Group as={Row} className="form-group">
-      <Form.Label htmlFor={id} column sm={3}
+      <Form.Label htmlFor={id} column sm={4}
                   className={`control-label align-self-center mb-0 ${disabled ? 'text-muted' : ''}`}>{label}{required ? ": *" : ":"}
       </Form.Label>
-      <Col sm={9}>
+      <Col sm={8}>
           <Form.Control type={type}
                         className="form-control"
                         id={id}

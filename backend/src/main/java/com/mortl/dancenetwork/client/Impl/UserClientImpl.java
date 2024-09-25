@@ -1,7 +1,7 @@
 package com.mortl.dancenetwork.client.Impl;
 
 import com.mortl.dancenetwork.client.IUserClient;
-import com.mortl.dancenetwork.dto.Gender;
+import com.mortl.dancenetwork.enums.Gender;
 import com.mortl.dancenetwork.model.User;
 import java.util.HashMap;
 import java.util.List;
@@ -61,6 +61,7 @@ public class UserClientImpl implements IUserClient {
         .gender(Gender.getIfNotNull(getAttribute(attributes, "gender")))
         .phone(getAttribute(attributes, "phone"))
         .photoPath(getAttribute(attributes, "photo_path"))
+        .email(getAttribute(attributes, "email"))
         .build();
   }
 

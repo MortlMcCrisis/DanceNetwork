@@ -5,5 +5,6 @@ public record TicketTypeDTO(
     String name,
     String description,
     Float price,
+    Integer contingent,
     Long eventId){
 }

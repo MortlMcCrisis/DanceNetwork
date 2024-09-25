@@ -33,15 +33,16 @@ class TicketTypeRepositorySpec extends Specification {
     def "test findByEventId"(){
         when:
         Event event = createTestEvent()
-        TicketType ticketType1 = ticketTypeRepository.saveAndFlush(Util.createTestTicketType(event))
-        TicketType ticketType2 = ticketTypeRepository.saveAndFlush(Util.createTestTicketType(event))
+        ticketTypeRepository.saveAndFlush(Util.createTestTicketType(event))
+        ticketTypeRepository.saveAndFlush(Util.createTestTicketType(event))
         ticketTypeRepository.saveAndFlush(Util.createTestTicketType(createTestEvent()))
 
         List<TicketType> ticketTypes = ticketTypeRepository.findByEventId(event.getId())
 
         then:
-        ticketTypes.contains(ticketType1)
-        ticketTypes.contains(ticketType2)
+        ticketTypes.size() == 2
+        ticketTypes[0].event.id == event.id
+        ticketTypes[1].event.id == event.id
     }
 
     def createTestEvent() {

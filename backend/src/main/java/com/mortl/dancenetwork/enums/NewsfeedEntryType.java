@@ -1,4 +1,4 @@
-package com.mortl.dancenetwork.entity;
+package com.mortl.dancenetwork.enums;
 
 public enum NewsfeedEntryType {
 

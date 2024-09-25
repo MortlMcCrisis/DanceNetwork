@@ -1,12 +1,13 @@
 package com.mortl.dancenetwork.testutil
 
-import com.mortl.dancenetwork.dto.Gender
-import com.mortl.dancenetwork.dto.Role
+import com.mortl.dancenetwork.enums.Gender
+import com.mortl.dancenetwork.enums.Role
 import com.mortl.dancenetwork.entity.Event
 import com.mortl.dancenetwork.entity.Ticket
 import com.mortl.dancenetwork.entity.TicketType
 
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 
 class Util {
@@ -24,14 +25,36 @@ class Util {
                 "test",
                 "test",
                 "test@test",
-                published)
+                published,
+                LocalDateTime.now()
+        )
     }
 
     static def createTestTicketType(Event event){
-        new TicketType(null, "Ticket name", "Cranc ticket", 100.00, event)
+        createTestTicketType(null, "mock name", 100L, event)
+    }
+
+    static def createTestTicketType(Long id, String name, long contingent, Event event){
+        new TicketType(id, name, "Cranc ticket", 100.00, contingent, event)
     }
 
     static def createTestTicket(UUID ownerUuid, TicketType ticketType){
+        createTestTicket(ownerUuid, ticketType, Gender.MALE)
+    }
+
+    static def createTestTicket(UUID ownerUuid, TicketType ticketType, Gender gender){
+        createTestTicket(ownerUuid, ticketType, gender, Role.BOTH, LocalDateTime.now())
+    }
+
+    static def createTestTicket(UUID ownerUuid, TicketType ticketType, Role role){
+        createTestTicket(ownerUuid, ticketType, Gender.MALE, role, LocalDateTime.now())
+    }
+
+    static def createTestTicket(UUID ownerUuid, TicketType ticketType, LocalDateTime buyDate){
+        createTestTicket(ownerUuid, ticketType, Gender.MALE, Role.BOTH, buyDate)
+    }
+
+    static def createTestTicket(UUID ownerUuid, TicketType ticketType, Gender gender, Role role, LocalDateTime buyDate){
         new Ticket(
                 null,
                 ownerUuid,
@@ -42,7 +65,8 @@ class Util {
                 "Germany",
                 "janmorti@gmx.de",
                 "0160 7574886",
-                Role.LEADER,
-                Gender.MALE)
+                role,
+                gender,
+                buyDate)
     }
 }

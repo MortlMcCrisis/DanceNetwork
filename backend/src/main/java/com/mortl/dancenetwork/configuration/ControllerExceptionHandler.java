@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
-  @ResponseStatus(HttpStatus.FORBIDDEN)  // 409
+  @ResponseStatus(HttpStatus.FORBIDDEN)
   @ExceptionHandler(IllegalAccessException.class)
   public void handleForbidden() {
   }
 
-  @ResponseStatus(HttpStatus.NOT_FOUND)  // 409
+  @ResponseStatus(HttpStatus.NOT_FOUND)
   @ExceptionHandler(NotFoundException.class)
   public void handleNotFound() {
   }
 
-  @ResponseStatus(HttpStatus.BAD_REQUEST)  // 409
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(IllegalArgumentException.class)
   public void handleBadRequest() {
   }

@@ -22,7 +22,7 @@ you do not have to create separate endpoints for each combination of data.
 
 General development rules
 -------------------------
-- The only way to get well is to get fast. The first point should be always to refactor everything as
+- The only way to get fast is to get well. The first point should be always to refactor everything as
   well as possible.
 - Test coverage should be always as near to 100% as possible
 

@@ -1,6 +1,6 @@
 package com.mortl.dancenetwork.model;
 
-import com.mortl.dancenetwork.dto.Gender;
+import com.mortl.dancenetwork.enums.Gender;
 import java.util.UUID;
 import lombok.Builder;
 

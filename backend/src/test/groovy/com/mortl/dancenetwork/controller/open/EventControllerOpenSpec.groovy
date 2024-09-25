@@ -30,9 +30,9 @@ class EventControllerOpenSpec extends Specification {
     @Autowired
     ObjectMapper objectMapper
 
-    LocalDate event1Date = LocalDate.now()
-    LocalDate event2Date = LocalDate.now().plusDays(1)
-    LocalDate event3Date = LocalDate.now().plusDays(2)
+    LocalDate event1Date = LocalDate.now().plusDays(1)
+    LocalDate event2Date = LocalDate.now().plusDays(2)
+    LocalDate event3Date = LocalDate.now().plusDays(5)
 
     String event1Name = 'event1'
     String event2Name = 'event2'
@@ -63,6 +63,30 @@ class EventControllerOpenSpec extends Specification {
         events.find {it -> it.getName() == event1Name}.getStartDate() == event1Date
         events.find {it -> it.getName() == event2Name}.getStartDate() == event2Date
         events.find {it -> it.getName() == event3Name}.getStartDate() == event3Date
+    }
+
+    def 'test getEvents maxEntries'() {
+        when:
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get('/api/open/v1/events?maxEntries=2'))
+                .andExpect (status().isOk())
+                .andReturn()
+
+        List<Event> events = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<Event>>(){})
+
+        then:
+        events.size() == 2
+    }
+
+    def 'test getEvents from'() {
+        when:
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get('/api/open/v1/events?from='+LocalDate.now().plusDays(4).toString()))
+                .andExpect (status().isOk())
+                .andReturn()
+
+        List<Event> events = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<Event>>(){})
+
+        then:
+        events.size() == 1
     }
 
     def 'test getEvent'(){

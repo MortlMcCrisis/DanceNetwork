@@ -6,7 +6,7 @@ import {Button, Col, Row} from "react-bootstrap";
 import DanceRichEditor from "../dance-rich-editor/dance-rich-editor";
 import DanceFormInput from "../../views/dashboard/app/dance-form-input";
 
-const DanceTicketManagerTicket = ({name, setName, description, setDescription, price, setPrice, removeCallback}) => {
+const DanceTicketManagerTicket = ({name, setName, description, setDescription, price, setPrice, contingent, setContingent, removeCallback}) => {
   return (
       <Card>
         <Card.Header>
@@ -29,6 +29,7 @@ const DanceTicketManagerTicket = ({name, setName, description, setDescription, p
             <Col sm="6" md="4">
               {/*TODO validate amount*/}
               <DanceFormInput id="price" label="Price" type="number" required="required" value={price} onChange={setPrice}/>
+              <DanceFormInput id="contingent" label="Contingent" type="number" required="required" value={contingent} onChange={setContingent}/>
             </Col>
           </Row>
         </Card.Body>

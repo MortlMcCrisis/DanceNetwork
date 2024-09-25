@@ -1,7 +1,7 @@
 package com.mortl.dancenetwork.service.impl;
 
 import com.mortl.dancenetwork.client.IUserClient;
-import com.mortl.dancenetwork.dto.Gender;
+import com.mortl.dancenetwork.enums.Gender;
 import com.mortl.dancenetwork.dto.UserDTO;
 import com.mortl.dancenetwork.model.User;
 import com.mortl.dancenetwork.mapper.UserMapper;
@@ -55,6 +55,7 @@ public class UserServiceImpl implements IUserService {
         .lastName(jwt.getClaim("family_name"))
         .gender(Gender.getIfNotNull(jwt.getClaim("gender")))
         .phone(jwt.getClaim("phone"))
+        .email(jwt.getClaim("email"))
         .build());
   }
 

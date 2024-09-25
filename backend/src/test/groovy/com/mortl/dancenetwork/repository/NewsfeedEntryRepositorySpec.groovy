@@ -1,7 +1,7 @@
 package com.mortl.dancenetwork.repository
 
 import com.mortl.dancenetwork.entity.NewsfeedEntry
-import com.mortl.dancenetwork.entity.NewsfeedEntryType
+import com.mortl.dancenetwork.enums.NewsfeedEntryType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification

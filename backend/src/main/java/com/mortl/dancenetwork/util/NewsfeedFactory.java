@@ -3,7 +3,7 @@ package com.mortl.dancenetwork.util;
 import com.mortl.dancenetwork.model.User;
 import com.mortl.dancenetwork.entity.Event;
 import com.mortl.dancenetwork.entity.NewsfeedEntry;
-import com.mortl.dancenetwork.entity.NewsfeedEntryType;
+import com.mortl.dancenetwork.enums.NewsfeedEntryType;
 import com.mortl.dancenetwork.entity.Ticket;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

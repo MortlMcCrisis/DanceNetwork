@@ -1,5 +1,6 @@
 package com.mortl.dancenetwork.dto;
 
+import com.mortl.dancenetwork.enums.Gender;
 import java.util.UUID;
 
 public record UserDTO(

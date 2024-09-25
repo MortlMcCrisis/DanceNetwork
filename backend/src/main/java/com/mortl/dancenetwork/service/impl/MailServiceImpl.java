@@ -46,7 +46,6 @@ public class MailServiceImpl implements IMailService {
 
       // E-Mail senden
       mailSender.send(message);
-      System.out.println("E-Mail mit PDF-Anhang gesendet!");
 
     } catch (MessagingException e) {
       e.printStackTrace();

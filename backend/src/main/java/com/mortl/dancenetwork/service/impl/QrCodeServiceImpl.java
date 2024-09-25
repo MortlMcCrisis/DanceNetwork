@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class QrCodeService implements IQrCodeService {
+public class QrCodeServiceImpl implements IQrCodeService {
 
   private final IStorageService storageService;
 

@@ -9,12 +9,12 @@ export const FILES_CLOSED_ENDPOINT = API_CLOSED + API_VERSION_V1 + '/files'
 export const PAYMENTS_OPEN_ENDPOINT = API_OPEN + API_VERSION_V1 + '/payments'
 export const NEWSFEED_ENTRIES_OPEN_ENDPOINT = API_OPEN + API_VERSION_V1 + '/newsfeed-entries'
 export const NEWSFEED_ENTRIES_CLOSED_ENDPOINT = API_CLOSED + API_VERSION_V1 + '/newsfeed-entries'
-export const TICKETS_OPEN_ENDPOINT = API_OPEN + API_VERSION_V1 + '/tickets'
 export const TICKETS_CLOSED_ENDPOINT = API_CLOSED + API_VERSION_V1 + '/tickets'
 export const TICKET_TYPES_OPEN_ENDPOINT = API_OPEN + API_VERSION_V1 + '/ticket-types'
 export const TICKET_TYPES_CLOSED_ENDPOINT = API_CLOSED + API_VERSION_V1 + '/ticket-types'
 export const USERS_OPEN_ENDPOINT = API_OPEN + API_VERSION_V1 + '/users'
 export const USERS_CLOSED_ENDPOINT = API_CLOSED + API_VERSION_V1 + '/users'
+export const ADMIN_CLOSED_ENDPOINT = API_CLOSED + API_VERSION_V1 + '/admin'
 
 export const fetchData = async (url, setMethod, keycloakToken) => {
   try {

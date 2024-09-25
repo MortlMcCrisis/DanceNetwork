@@ -1,5 +1,6 @@
 package com.mortl.dancenetwork.entity;
 
+import com.mortl.dancenetwork.enums.NewsfeedEntryType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,7 +12,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Entity
 @Table(name = "newsfeed-entry")
@@ -33,12 +33,10 @@ public class NewsfeedEntry {
   private UUID creator;
 
   @Column(length = 10000, nullable = false)
-  @NonNull
   private String textField;
 
   private String image;
 
   @Column(nullable = false)
-  @NonNull
   private LocalDateTime creationDate;
 }

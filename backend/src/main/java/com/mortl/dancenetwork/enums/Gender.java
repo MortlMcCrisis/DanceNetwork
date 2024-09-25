@@ -1,4 +1,4 @@
-package com.mortl.dancenetwork.dto;
+package com.mortl.dancenetwork.enums;
 
 public enum Gender {
   MALE, FEMALE, OTHER;

@@ -8,9 +8,9 @@ import spock.lang.Specification
 
 class TicketTypeServiceSpec extends Specification {
 
-    TicketTypeRepository ticketTypeRepository = Mock(TicketTypeRepository)
+    TicketTypeRepository ticketTypeRepository = Mock()
 
-    TicketTypeMapper ticketTypeMapper = Mock(TicketTypeMapper)
+    TicketTypeMapper ticketTypeMapper = Mock()
 
     TicketTypeServiceImpl ticketTypeService
 

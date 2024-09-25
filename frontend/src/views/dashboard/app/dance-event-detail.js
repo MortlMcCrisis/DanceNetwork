@@ -172,20 +172,27 @@ const DanceEventDetail=()=>{
                         </Row>
                         <Row>
                             <Col lg="4">
-                                <Card>
-                                    <Card.Header className="d-flex align-items-center justify-content-between">
-                                        <div className="header-title">
-                                            <h4>Admin</h4>
-                                        </div>
-                                    </Card.Header>
-                                    <Card.Body>
-                                        <div className="d-grid gap-2">
-                                            <Link to={`/dashboards/app/dance-ticket-manager/${id}`} className="btn btn-primary">
-                                                Manage Tickets
-                                            </Link>
-                                        </div>
-                                    </Card.Body>
-                                </Card>
+                                {keycloak.authenticated && initialized && keycloak.idTokenParsed.sub === data.creator && (
+                                    <Card>
+                                        <Card.Header className="d-flex align-items-center justify-content-between">
+                                            <div className="header-title">
+                                                <h4>Admin</h4>
+                                            </div>
+                                        </Card.Header>
+                                        <Card.Body>
+                                            <div className="d-grid gap-2 mt-2">
+                                                <Link to={`/dashboards/app/dance-ticket-manager/${id}`} className="btn btn-primary">
+                                                    Manage Tickets
+                                                </Link>
+                                            </div>
+                                            <div className="d-grid gap-2 mt-2">
+                                                <Link to={`/dashboards/app/dance-admin/${id}`} className="btn btn-primary">
+                                                    Admin
+                                                </Link>
+                                            </div>
+                                        </Card.Body>
+                                    </Card>
+                                )}
                                 <Card>
                                     <Card.Header>
                                         <h4>Info</h4>

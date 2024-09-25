@@ -17,5 +17,5 @@ public abstract class TicketMapper {
   public abstract TicketDTO toDTO(Ticket ticket);
 
   @Mapping(target="ticketType", expression="java(ticketTypeRepository.findById(ticketDTO.ticketTypeId()).get())")
-  public abstract Ticket toModel(TicketDTO ticketDTO);
+  public abstract Ticket toEntity(TicketDTO ticketDTO);
 }

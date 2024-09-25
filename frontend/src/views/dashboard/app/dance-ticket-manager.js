@@ -63,10 +63,13 @@ const DanceTicketManager = () => {
       name: "New Ticket Type",
       description: "<p>New Description</p>",
       price: 100.00,
+      contingent: 100,
       eventId: id
     };
 
     setTicketTypes((prevTicketTypes) => [...prevTicketTypes, newTicketType]);
+
+    console.log(ticketTypes)
   };
 
   const removeTicketType = (index) => {
@@ -97,6 +100,8 @@ const DanceTicketManager = () => {
                                   setDescription={(newDescription) => updateDescription(index, newDescription)}
                                   price={item.price}
                                   setPrice={(event) => updateValue(index, event)}
+                                  contingent={item.contingent}
+                                  setContingent={(event) => updateValue(index, event)}
                                   removeCallback={() => removeTicketType(index)}
                               />
                             </ListGroupItem>
