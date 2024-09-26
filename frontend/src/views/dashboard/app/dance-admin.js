@@ -106,7 +106,7 @@ const DanceAdmin = () => {
     useEffect(() => {
 
         if(data && data.ticketSalesPerMonth) {
-            const categories = Object.keys(data.ticketSalesPerMonth)
+            const categories = Object.keys(data.ticketSalesPerMonth).map(date => formatDate(date))
 
             const salesPerMonth = Object.values(data.ticketSalesPerMonth)
 
@@ -238,7 +238,7 @@ const DanceAdmin = () => {
                                     <span>Sold tickets</span>
                                     <div className="d-flex align-items-center">
                                         <h3>{data && data.ticketSalesPerMonth ? getTotalTicketSales() : 0 }/{data && data.ticketTypesSoldFromContingent ? getTotalTickets() : 0 }</h3>
-                                        <small className="text-success ms-3">+ 57</small>
+                                        <small className="text-success ms-3">+ {data != undefined && data.ticketSalesPerMonth != undefined ? Object.values(data.ticketSalesPerMonth).pop() : 0 } this month</small>
                                     </div>
                                 </div>
                             </Card.Body>
@@ -346,6 +346,15 @@ const DanceAdmin = () => {
                                         <ProgressBar variant={getRandomColorVariant()} className="mt-2" now={(item.second.first/item.second.second)*100} style={{height: "6px"}}/>
                                     </div>
                                 ))}
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Card>
+                            <Card.Body>
+                                a
                             </Card.Body>
                         </Card>
                     </Col>
