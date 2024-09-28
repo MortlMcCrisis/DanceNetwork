@@ -1,10 +1,8 @@
 package com.mortl.dancenetwork.repository;
 
-import com.mortl.dancenetwork.enums.Role;
 import com.mortl.dancenetwork.entity.Ticket;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -35,4 +33,10 @@ public interface TicketRepository extends JpaRepository<Ticket, Long>  {
       "FROM Ticket t WHERE t.ticketType.event.id = :eventId " +
       "GROUP BY t.ticketType.id")
   List<Object[]> countTicketsByTicketTypeId(long eventId);
+
+  @Query("""
+       SELECT ticket  
+       FROM Ticket ticket 
+       WHERE ticket.ticketType.event.id = :eventId""")
+  List<Ticket> findByEventId(long eventId);
 }

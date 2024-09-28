@@ -38,11 +38,7 @@ class Util {
         new TicketType(id, name, "Cranc ticket", 100.00, contingent, event)
     }
 
-    static def createTestTicket(UUID ownerUuid, TicketType ticketType){
-        createTestTicket(ownerUuid, ticketType, Gender.MALE)
-    }
-
-    static def createTestTicket(UUID ownerUuid, TicketType ticketType, Gender gender){
+    static def createTestTicket(UUID ownerUuid, TicketType ticketType, Gender gender = Gender.MALE){
         createTestTicket(ownerUuid, ticketType, gender, Role.BOTH, LocalDateTime.now())
     }
 

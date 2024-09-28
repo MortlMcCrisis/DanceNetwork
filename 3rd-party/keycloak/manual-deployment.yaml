@@ -100,7 +100,7 @@ spec:
         app: postgres
     spec:
       containers:
-        - image: postgres:latest
+        - image: postgres:latest # or 16 when incompatible
           name: postgres
           envFrom:
             - secretRef:

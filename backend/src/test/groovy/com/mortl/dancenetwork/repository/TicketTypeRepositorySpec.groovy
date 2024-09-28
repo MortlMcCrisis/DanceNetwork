@@ -4,10 +4,11 @@ import com.mortl.dancenetwork.entity.Event
 import com.mortl.dancenetwork.entity.TicketType
 import com.mortl.dancenetwork.testutil.Util
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
 
-@SpringBootTest
+@DataJpaTest
 class TicketTypeRepositorySpec extends Specification {
 
     @Autowired
@@ -15,15 +16,6 @@ class TicketTypeRepositorySpec extends Specification {
 
     @Autowired
     TicketTypeRepository ticketTypeRepository
-
-    def setup() {
-        cleanup()
-    }
-
-    def cleanup() {
-        ticketTypeRepository.deleteAll()
-        eventRepository.deleteAll()
-    }
 
     def "test findByEventId no content"(){
         expect:

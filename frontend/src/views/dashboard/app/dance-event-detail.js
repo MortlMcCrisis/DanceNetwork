@@ -190,6 +190,11 @@ const DanceEventDetail=()=>{
                                                     Admin
                                                 </Link>
                                             </div>
+                                            <div className="d-grid gap-2 mt-2">
+                                                <Link to={`/dashboards/app/dance-attendee-table/${id}`} className="btn btn-primary">
+                                                    Admin
+                                                </Link>
+                                            </div>
                                         </Card.Body>
                                     </Card>
                                 )}

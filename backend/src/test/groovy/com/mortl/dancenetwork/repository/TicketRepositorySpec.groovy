@@ -7,15 +7,17 @@ import com.mortl.dancenetwork.enums.Gender
 import com.mortl.dancenetwork.enums.Role
 import com.mortl.dancenetwork.testutil.Util
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.cglib.core.Local
+import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.YearMonth
 
-@SpringBootTest
+@DataJpaTest
 class TicketRepositorySpec extends Specification{
 
     @Autowired
@@ -26,16 +28,6 @@ class TicketRepositorySpec extends Specification{
 
     @Autowired
     TicketRepository ticketRepository
-
-    def setup() {
-        cleanup()
-    }
-
-    def cleanup() {
-        ticketRepository.deleteAll()
-        ticketTypeRepository.deleteAll()
-        eventRepository.deleteAll()
-    }
 
     def "test findByOwnerOrderByEventStartDateAsc no content"(){
         expect:
@@ -153,6 +145,45 @@ class TicketRepositorySpec extends Specification{
         then:
         result.size() == 2
     }
+
+    def "should find tickets by event id"() {
+        given: "An event and associated tickets in the database"
+        Event event = createTestEvent()
+        TicketType ticketType = ticketTypeRepository.saveAndFlush(Util.createTestTicketType(event))
+        Ticket ticket1 = createTestTicket(UUID.randomUUID(), ticketType)
+        Ticket ticket2 = createTestTicket(UUID.randomUUID(), ticketType)
+
+        when: "findByEventId is called"
+        List<Ticket> tickets = ticketRepository.findByEventId(event.id)
+
+        then: "The correct tickets are returned"
+        tickets.size() == 2
+        tickets.stream().anyMatch {it.firstName == ticket1.getFirstName()}
+        tickets.stream().anyMatch {it.firstName == ticket2.getFirstName()}
+    }
+
+    def "should find tickets by event id, with also other tickets in the repository"() {
+        given: "An event and associated tickets in the database"
+        Event event = createTestEvent()
+        TicketType ticketType = ticketTypeRepository.saveAndFlush(Util.createTestTicketType(event))
+        Ticket ticket1 = createTestTicket(UUID.randomUUID(), ticketType)
+        Ticket ticket2 = createTestTicket(UUID.randomUUID(), ticketType)
+
+        and: "The other tickets which should not be touched"
+        Event event2 = createTestEvent()
+        TicketType ticketType2 = ticketTypeRepository.saveAndFlush(Util.createTestTicketType(event2))
+        createTestTicket(UUID.randomUUID(), ticketType2)
+        createTestTicket(UUID.randomUUID(), ticketType2)
+
+        when: "findByEventId is called"
+        List<Ticket> tickets = ticketRepository.findByEventId(event.id)
+
+        then: "The correct tickets are returned"
+        tickets.size() == 2
+        tickets.stream().anyMatch {it.firstName == ticket1.getFirstName()}
+        tickets.stream().anyMatch {it.firstName == ticket2.getFirstName()}
+    }
+
 
     def createTestEvent(LocalDate startDate = LocalDate.now()) {
         eventRepository.saveAndFlush(Util.createTestEvent(true, startDate))

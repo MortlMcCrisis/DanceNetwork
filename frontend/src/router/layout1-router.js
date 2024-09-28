@@ -33,6 +33,7 @@ import DanceImageGallery from "../components/image-gallery/image-gallery";
 import DanceTicketManager from "../views/dashboard/app/dance-ticket-manager";
 import DanceAdmin from "../views/dashboard/app/dance-admin";
 import PrivateRoute from "./private-route";
+import DanceAttendeeTable from "../views/dashboard/app/dance-attendee-table";
 
 export const Layout1Router = [
   {
@@ -82,6 +83,10 @@ export const Layout1Router = [
   {
     path: "dashboards/app/dance-admin/:id",
     element: <PrivateRoute><DanceAdmin /></PrivateRoute>,
+  },
+  {
+    path: "dashboards/app/dance-attendee-table/:id",
+    element: <PrivateRoute><DanceAttendeeTable /></PrivateRoute>,
   },
   {
     path: "dashboards/app/dance-event-detail/:id/dance-buy-ticket",

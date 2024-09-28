@@ -97,6 +97,13 @@ public class TicketServiceImpl implements ITicketService {
         .toList();
   }
 
+  @Override
+  public List<TicketInfoDTO> getTicketInfosForEvent(long eventId) {
+    return ticketRepository.findByEventId(eventId).stream()
+        .map(this::createTicketInfoDTO)
+        .toList();
+  }
+
   private TicketInfoDTO createTicketInfoDTO(Ticket ticket){
     return new TicketInfoDTO(
         ticketMapper.toDTO(ticket),

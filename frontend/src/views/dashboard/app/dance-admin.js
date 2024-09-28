@@ -1,14 +1,18 @@
 import React, {useEffect, useState} from 'react'
 
 // react-boostrap
-import {Container, Col, Row, Dropdown,ProgressBar } from 'react-bootstrap'
+import {
+    Container,
+    Col,
+    Row,
+    Dropdown,
+    ProgressBar,
+    Button
+} from 'react-bootstrap'
 
 // components
 import Card from '../../../components/Card'
 import CustomToggle from '../../../components/dropdowns'
-
-// Datepicker
-import Datepicker from '../../../components/datepicker'
 
 // apex-chart
 import Chart from "react-apexcharts"
@@ -20,6 +24,7 @@ import {
 } from "../../../components/util/network";
 
 const DanceAdmin = () => {
+
     const { keycloak, initialized } = useKeycloak();
 
     const { id } = useParams();
@@ -346,15 +351,6 @@ const DanceAdmin = () => {
                                         <ProgressBar variant={getRandomColorVariant()} className="mt-2" now={(item.second.first/item.second.second)*100} style={{height: "6px"}}/>
                                     </div>
                                 ))}
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <Card>
-                            <Card.Body>
-                                a
                             </Card.Body>
                         </Card>
                     </Col>

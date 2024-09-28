@@ -3,6 +3,7 @@ package com.mortl.dancenetwork.repository
 import com.mortl.dancenetwork.entity.Event
 import com.mortl.dancenetwork.testutil.Util
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -13,19 +14,11 @@ import spock.lang.Unroll
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-@SpringBootTest
+@DataJpaTest
 class EventRepositorySpec extends Specification{
 
     @Autowired
     EventRepository eventRepository
-
-    def setup() {
-        eventRepository.deleteAll()
-    }
-
-    def cleanup() {
-        eventRepository.deleteAll()
-    }
 
     def "test findByPublishedTrueAndStartDateAfter no content"(){
         expect:

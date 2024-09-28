@@ -10,4 +10,6 @@ public interface ITicketService {
   List<Ticket> addTickets(List<TicketDTO> tickets);
 
   List<TicketInfoDTO> getTicketInfosForUser();
+
+  List<TicketInfoDTO> getTicketInfosForEvent(long eventId);
 }

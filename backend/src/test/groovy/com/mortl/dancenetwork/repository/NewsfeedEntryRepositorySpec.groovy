@@ -3,24 +3,17 @@ package com.mortl.dancenetwork.repository
 import com.mortl.dancenetwork.entity.NewsfeedEntry
 import com.mortl.dancenetwork.enums.NewsfeedEntryType
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
 
 import java.time.LocalDateTime
 
-@SpringBootTest
+@DataJpaTest
 class NewsfeedEntryRepositorySpec extends Specification{
 
     @Autowired
     NewsfeedEntryRepository newsfeedEntryRepository
-
-    def setup() {
-        newsfeedEntryRepository.deleteAll()
-    }
-
-    def cleanup() {
-        newsfeedEntryRepository.deleteAll()
-    }
 
     def "test findAllOrderByCreationDateDesc no content"(){
         expect:
