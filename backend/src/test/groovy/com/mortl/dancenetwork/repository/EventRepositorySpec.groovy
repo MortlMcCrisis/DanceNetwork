@@ -4,29 +4,26 @@ import com.mortl.dancenetwork.entity.Event
 import com.mortl.dancenetwork.testutil.Util
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import spock.lang.Specification
 import spock.lang.Unroll
 
 import java.time.LocalDate
-import java.time.LocalDateTime
 
 @DataJpaTest
-class EventRepositorySpec extends Specification{
+class EventRepositorySpec extends Specification {
 
     @Autowired
     EventRepository eventRepository
 
-    def "test findByPublishedTrueAndStartDateAfter no content"(){
+    def "test findByPublishedTrueAndStartDateAfter no content"() {
         expect:
         eventRepository.findByPublishedTrueAndStartDateAfter(LocalDate.now(), Pageable.unpaged()).size() == 0
     }
 
     @Unroll
-    def "test findByPublishedTrueAndStartDateAfter test published state"(boolean published){
+    def "test findByPublishedTrueAndStartDateAfter test published state"(boolean published) {
         when:
         createTestEvent(published)
 
@@ -37,7 +34,7 @@ class EventRepositorySpec extends Specification{
         published << [true, false]
     }
 
-    def "test findByPublishedTrueAndStartDateAfter test order"(){
+    def "test findByPublishedTrueAndStartDateAfter test order"() {
         when:
         Event event2 = createTestEvent(true, LocalDate.now().minusDays(1), "name2")
         Event event1 = createTestEvent(true, LocalDate.now(), "name1")
@@ -55,7 +52,7 @@ class EventRepositorySpec extends Specification{
         events.get(2).getName() == event3.getName()
     }
 
-    def "test findByPublishedTrueAndStartDateAfter test order and published state"(){
+    def "test findByPublishedTrueAndStartDateAfter test order and published state"() {
         when:
         Event event5 = createTestEvent(true, LocalDate.now().minusDays(2), "name5")
         Event event2 = createTestEvent(true, LocalDate.now().minusDays(1), "name2")
@@ -79,6 +76,6 @@ class EventRepositorySpec extends Specification{
     }
 
     def createTestEvent(boolean published, LocalDate startDate = LocalDate.now(), String name = "test") {
-        eventRepository.saveAndFlush(Util.createTestEvent(published, startDate, name))
+        eventRepository.saveAndFlush(Util.createTestEvent(published, null, startDate, name))
     }
 }

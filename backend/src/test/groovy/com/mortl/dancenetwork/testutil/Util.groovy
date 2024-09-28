@@ -1,5 +1,6 @@
 package com.mortl.dancenetwork.testutil
 
+import com.mortl.dancenetwork.dto.TicketTypeDTO
 import com.mortl.dancenetwork.entity.Event
 import com.mortl.dancenetwork.entity.Ticket
 import com.mortl.dancenetwork.entity.TicketType
@@ -12,9 +13,10 @@ import java.time.LocalTime
 
 class Util {
 
-    static def createTestEvent(boolean published, LocalDate startDate = LocalDate.now(), String name = "test") {
+    //TODO rewrite and make this more elegant
+    static def createTestEvent(boolean published, Long id = null, LocalDate startDate = LocalDate.now(), String name = "test") {
         new Event(
-                null,
+                id,
                 name,
                 UUID.randomUUID(),
                 "test@test",
@@ -30,27 +32,49 @@ class Util {
         )
     }
 
-    static def createTestTicketType(Event event){
+    static def createTestTicketType(long id, long eventId) {
+        new TicketType(
+                id,
+                "name",
+                "description",
+                100.00f,
+                100,
+                createTestEvent(true, eventId)
+        )
+    }
+
+    static def createTestTicketTypeDto(long id, long eventId) {
+        new TicketTypeDTO(
+                id,
+                "name",
+                "description",
+                100.00f,
+                100,
+                eventId
+        )
+    }
+
+    static def createTestTicketType(Event event) {
         createTestTicketType(null, "mock name", 100L, event)
     }
 
-    static def createTestTicketType(Long id, String name, long contingent, Event event){
+    static def createTestTicketType(Long id, String name, long contingent, Event event) {
         new TicketType(id, name, "Cranc ticket", 100.00, contingent, event)
     }
 
-    static def createTestTicket(UUID ownerUuid, TicketType ticketType, Gender gender = Gender.MALE){
+    static def createTestTicket(UUID ownerUuid, TicketType ticketType, Gender gender = Gender.MALE) {
         createTestTicket(ownerUuid, ticketType, gender, Role.BOTH, LocalDateTime.now())
     }
 
-    static def createTestTicket(UUID ownerUuid, TicketType ticketType, Role role){
+    static def createTestTicket(UUID ownerUuid, TicketType ticketType, Role role) {
         createTestTicket(ownerUuid, ticketType, Gender.MALE, role, LocalDateTime.now())
     }
 
-    static def createTestTicket(UUID ownerUuid, TicketType ticketType, LocalDateTime buyDate){
+    static def createTestTicket(UUID ownerUuid, TicketType ticketType, LocalDateTime buyDate) {
         createTestTicket(ownerUuid, ticketType, Gender.MALE, Role.BOTH, buyDate)
     }
 
-    static def createTestTicket(UUID ownerUuid, TicketType ticketType, Gender gender, Role role, LocalDateTime buyDate){
+    static def createTestTicket(UUID ownerUuid, TicketType ticketType, Gender gender, Role role, LocalDateTime buyDate) {
         new Ticket(
                 null,
                 ownerUuid,

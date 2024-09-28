@@ -1,9 +1,10 @@
 package com.mortl.dancenetwork.service.impl
 
 import com.mortl.dancenetwork.dto.TicketTypeDTO
-import com.mortl.dancenetwork.mapper.TicketTypeMapper
 import com.mortl.dancenetwork.entity.TicketType
+import com.mortl.dancenetwork.mapper.TicketTypeMapper
 import com.mortl.dancenetwork.repository.TicketTypeRepository
+import com.mortl.dancenetwork.testutil.Util
 import spock.lang.Specification
 
 class TicketTypeServiceSpec extends Specification {
@@ -14,11 +15,11 @@ class TicketTypeServiceSpec extends Specification {
 
     TicketTypeServiceImpl ticketTypeService
 
-    def setup(){
+    def setup() {
         ticketTypeService = new TicketTypeServiceImpl(ticketTypeRepository, ticketTypeMapper)
     }
 
-    def "test getTicketTypesForEvent no events"(){
+    def "test getTicketTypesForEvent no events"() {
         given:
         long eventId = 1
 
@@ -28,7 +29,7 @@ class TicketTypeServiceSpec extends Specification {
         ticketTypeService.getTicketTypesForEvent(eventId).isEmpty()
     }
 
-    def "test getTicketTypesForEvent"(){
+    def "test getTicketTypesForEvent"() {
         given:
         long eventId = 1
 
@@ -50,7 +51,7 @@ class TicketTypeServiceSpec extends Specification {
         result.contains(ticketTypeDTO2)
     }
 
-    def "test addTicketType"(){
+    def "test addTicketType"() {
         given:
         TicketTypeDTO ticketTypeDTO = Mock(TicketTypeDTO)
 
@@ -60,5 +61,52 @@ class TicketTypeServiceSpec extends Specification {
         then:
         1 * ticketTypeMapper.toModel(ticketTypeDTO)
         1 * ticketTypeRepository.saveAndFlush(_)
+    }
+
+    def "test updateTicketTypes"() {
+        given:
+        long eventId = 1
+
+        TicketTypeDTO ticketTypeDto1 = Util.createTestTicketTypeDto(1, eventId)
+        TicketTypeDTO ticketTypeDto2 = Util.createTestTicketTypeDto(2, eventId)
+
+        ticketTypeRepository.areAllIdsPresent([1, 2], 2) >> true
+
+        TicketType ticketType1 = Util.createTestTicketType(1, eventId)
+        TicketType ticketType2 = Util.createTestTicketType(2, eventId)
+        List<TicketType> ticketTypes = [ticketType1, ticketType2]
+        ticketTypeRepository.findByEventId(eventId) >> ticketTypes
+
+        ticketTypeMapper.toModel(ticketTypeDto1) >> ticketType1
+        ticketTypeMapper.toModel(ticketTypeDto2) >> ticketType2
+
+        when:
+        ticketTypeService.updateTicketTypes([ticketTypeDto1, ticketTypeDto2])
+
+        then:
+        1 * ticketTypeRepository.saveAllAndFlush(ticketTypes);
+        1 * ticketTypeRepository.deleteAllById([]);
+    }
+
+    def "test updateTicketTypes update 1 ticket and delete the other"() {
+        given:
+        long eventId = 1
+
+        TicketTypeDTO ticketTypeDto1 = Util.createTestTicketTypeDto(1, eventId)
+
+        ticketTypeRepository.areAllIdsPresent([1], 1) >> true
+
+        TicketType ticketType1 = Util.createTestTicketType(1, eventId)
+        TicketType ticketType2 = Util.createTestTicketType(2, eventId)
+        ticketTypeRepository.findByEventId(eventId) >> [ticketType1, ticketType2]
+
+        ticketTypeMapper.toModel(ticketTypeDto1) >> ticketType1
+
+        when:
+        ticketTypeService.updateTicketTypes([ticketTypeDto1])
+
+        then:
+        1 * ticketTypeRepository.saveAllAndFlush([ticketType1]);
+        1 * ticketTypeRepository.deleteAllById([2]);
     }
 }

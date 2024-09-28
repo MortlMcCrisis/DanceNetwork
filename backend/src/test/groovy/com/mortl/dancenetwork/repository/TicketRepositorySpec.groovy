@@ -8,17 +8,13 @@ import com.mortl.dancenetwork.enums.Role
 import com.mortl.dancenetwork.testutil.Util
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.cglib.core.Local
-import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.YearMonth
 
 @DataJpaTest
-class TicketRepositorySpec extends Specification{
+class TicketRepositorySpec extends Specification {
 
     @Autowired
     EventRepository eventRepository
@@ -29,12 +25,12 @@ class TicketRepositorySpec extends Specification{
     @Autowired
     TicketRepository ticketRepository
 
-    def "test findByOwnerOrderByEventStartDateAsc no content"(){
+    def "test findByOwnerOrderByEventStartDateAsc no content"() {
         expect:
         ticketRepository.findByOwnerOrderByEventStartDateAsc(UUID.randomUUID()).size() == 0
     }
 
-    def "test findByOwnerOrderByEventStartDateAsc wrong uid"(){
+    def "test findByOwnerOrderByEventStartDateAsc wrong uid"() {
         given:
         UUID ownerUuid = UUID.randomUUID()
         Event event = createTestEvent()
@@ -46,7 +42,7 @@ class TicketRepositorySpec extends Specification{
         ticketRepository.findByOwnerOrderByEventStartDateAsc(UUID.randomUUID()).size() == 0
     }
 
-    def "test findByOwnerOrderByEventStartDateAsc only tickets of owner selected"(){
+    def "test findByOwnerOrderByEventStartDateAsc only tickets of owner selected"() {
         given:
         UUID ownerUuid = UUID.randomUUID()
         Event event = createTestEvent()
@@ -65,7 +61,7 @@ class TicketRepositorySpec extends Specification{
         ticket2.owner == ownerUuid
     }
 
-    def "test findByOwnerOrderByEventStartDateAsc correct order"(){
+    def "test findByOwnerOrderByEventStartDateAsc correct order"() {
         given:
         UUID ownerUuid = UUID.randomUUID()
         Event event1 = createTestEvent(LocalDate.now().plusDays(2))
@@ -84,7 +80,7 @@ class TicketRepositorySpec extends Specification{
         tickets[1].getId() == ticket1.getId()
     }
 
-    def "test countTicketsByEventIdAndMonth test counts"(){
+    def "test countTicketsByEventIdAndMonth test counts"() {
         given:
         Event event = createTestEvent(LocalDate.now())
         TicketType ticketType = ticketTypeRepository.saveAndFlush(Util.createTestTicketType(event))
@@ -100,7 +96,7 @@ class TicketRepositorySpec extends Specification{
         result.size() == 2
     }
 
-    def "test countTicketsByGender"(){
+    def "test countTicketsByGender"() {
         given:
         Event event = createTestEvent(LocalDate.now())
         TicketType ticketType = ticketTypeRepository.saveAndFlush(Util.createTestTicketType(event))
@@ -115,7 +111,7 @@ class TicketRepositorySpec extends Specification{
         result.size() == 2
     }
 
-    def "test countTicketsByRole"(){
+    def "test countTicketsByRole"() {
         given:
         Event event = createTestEvent(LocalDate.now())
         TicketType ticketType = ticketTypeRepository.saveAndFlush(Util.createTestTicketType(event))
@@ -130,7 +126,7 @@ class TicketRepositorySpec extends Specification{
         result.size() == 3
     }
 
-    def "test countTicketsByTicketTypeName"(){
+    def "test countTicketsByTicketTypeName"() {
         given:
         Event event = createTestEvent(LocalDate.now())
         TicketType ticketType = ticketTypeRepository.saveAndFlush(Util.createTestTicketType(event))
@@ -158,8 +154,8 @@ class TicketRepositorySpec extends Specification{
 
         then: "The correct tickets are returned"
         tickets.size() == 2
-        tickets.stream().anyMatch {it.firstName == ticket1.getFirstName()}
-        tickets.stream().anyMatch {it.firstName == ticket2.getFirstName()}
+        tickets.stream().anyMatch { it.firstName == ticket1.getFirstName() }
+        tickets.stream().anyMatch { it.firstName == ticket2.getFirstName() }
     }
 
     def "should find tickets by event id, with also other tickets in the repository"() {
@@ -180,28 +176,28 @@ class TicketRepositorySpec extends Specification{
 
         then: "The correct tickets are returned"
         tickets.size() == 2
-        tickets.stream().anyMatch {it.firstName == ticket1.getFirstName()}
-        tickets.stream().anyMatch {it.firstName == ticket2.getFirstName()}
+        tickets.stream().anyMatch { it.firstName == ticket1.getFirstName() }
+        tickets.stream().anyMatch { it.firstName == ticket2.getFirstName() }
     }
 
 
     def createTestEvent(LocalDate startDate = LocalDate.now()) {
-        eventRepository.saveAndFlush(Util.createTestEvent(true, startDate))
+        eventRepository.saveAndFlush(Util.createTestEvent(true, null, startDate))
     }
 
-    def createTestTicket(UUID ownerUuid, TicketType ticketType){
+    def createTestTicket(UUID ownerUuid, TicketType ticketType) {
         ticketRepository.saveAndFlush(Util.createTestTicket(ownerUuid, ticketType))
     }
 
-    def createTestTicket(UUID ownerUuid, TicketType ticketType, Gender gender){
+    def createTestTicket(UUID ownerUuid, TicketType ticketType, Gender gender) {
         ticketRepository.saveAndFlush(Util.createTestTicket(ownerUuid, ticketType, gender))
     }
 
-    def createTestTicket(UUID ownerUuid, TicketType ticketType, Role role){
+    def createTestTicket(UUID ownerUuid, TicketType ticketType, Role role) {
         ticketRepository.saveAndFlush(Util.createTestTicket(ownerUuid, ticketType, role))
     }
 
-    def createTestTicket(UUID ownerUuid, TicketType ticketType, LocalDateTime buyDate){
+    def createTestTicket(UUID ownerUuid, TicketType ticketType, LocalDateTime buyDate) {
         ticketRepository.saveAndFlush(Util.createTestTicket(ownerUuid, ticketType, buyDate))
     }
 }
