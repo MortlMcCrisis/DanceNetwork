@@ -12,14 +12,16 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Hashtable;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
 public class QrCodeServiceImpl implements IQrCodeService {
 
   private final IStorageService storageService;
+
+  public QrCodeServiceImpl(IStorageService storageService) {
+    this.storageService = storageService;
+  }
 
   public void createQRImage(String fileName, String qrCodeText)
       throws WriterException {

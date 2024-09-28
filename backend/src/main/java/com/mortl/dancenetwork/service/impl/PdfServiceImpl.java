@@ -2,29 +2,32 @@ package com.mortl.dancenetwork.service.impl;
 
 import com.mortl.dancenetwork.entity.Ticket;
 import com.mortl.dancenetwork.entity.TicketType;
-import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import com.mortl.dancenetwork.repository.TicketTypeRepository;
 import com.mortl.dancenetwork.service.IPdfService;
+import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.text.StringEscapeUtils;
-import org.springframework.stereotype.Service;
-
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.util.List;
 import java.util.NoSuchElementException;
+import org.apache.commons.text.StringEscapeUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
-@Slf4j
 public class PdfServiceImpl implements IPdfService {
 
+  private static final Logger log = LoggerFactory.getLogger(PdfServiceImpl.class);
+
   private final TicketTypeRepository ticketTypeRepository;
+
+  public PdfServiceImpl(TicketTypeRepository ticketTypeRepository) {
+    this.ticketTypeRepository = ticketTypeRepository;
+  }
 
   @Override
   public void createPdf(List<Ticket> tickets) {

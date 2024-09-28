@@ -17,13 +17,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 @Component
-@Slf4j
 public class StorageServiceImpl implements IStorageService {
+
+  private static final Logger log = LoggerFactory.getLogger(StorageServiceImpl.class);
 
   private String root = "../frontend/public/upload";
   private final Path rootLocation;
@@ -48,7 +50,7 @@ public class StorageServiceImpl implements IStorageService {
       Path destinationFile = getUserImagePath().resolve(Paths.get(file.getOriginalFilename()))
           .normalize().toAbsolutePath();
       try (InputStream inputStream = file.getInputStream()) {
-        log.info("Storing file {} for user {} into directory {} ", file.getOriginalFilename(), user.username(), destinationFile);
+        log.info("Storing file {} for user {} into directory {} ", file.getOriginalFilename(), user.getUsername(), destinationFile);
         Files.createDirectories(destinationFile);
         Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
       }
@@ -77,7 +79,7 @@ public class StorageServiceImpl implements IStorageService {
       if (Files.exists(userImagePath) && Files.isDirectory(userImagePath)) {
         try (Stream<Path> paths = Files.list(userImagePath)) {
           return paths.map(image -> new ImageDTO(
-                  "/upload/"+Util.calculateMD5(userService.getCurrentUser().get().username()) + File.separator + image.getFileName()))
+                  "/upload/"+Util.calculateMD5(userService.getCurrentUser().get().getUsername()) + File.separator + image.getFileName()))
               .collect(Collectors.toList());
         }
       } else {
@@ -90,6 +92,6 @@ public class StorageServiceImpl implements IStorageService {
 
   private Path getUserImagePath(){
     User user = userService.getCurrentUser().get();
-    return rootLocation.resolve(Util.calculateMD5(user.username()));
+    return rootLocation.resolve(Util.calculateMD5(user.getUsername()));
   }
 }

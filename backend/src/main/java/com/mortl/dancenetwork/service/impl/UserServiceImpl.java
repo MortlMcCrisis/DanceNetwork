@@ -1,16 +1,15 @@
 package com.mortl.dancenetwork.service.impl;
 
 import com.mortl.dancenetwork.client.IUserClient;
-import com.mortl.dancenetwork.enums.Gender;
 import com.mortl.dancenetwork.dto.UserDTO;
-import com.mortl.dancenetwork.model.User;
+import com.mortl.dancenetwork.enums.Gender;
 import com.mortl.dancenetwork.mapper.UserMapper;
+import com.mortl.dancenetwork.model.User;
 import com.mortl.dancenetwork.service.IUserService;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.stereotype.Component;
@@ -18,7 +17,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Component
-@RequiredArgsConstructor
 public class UserServiceImpl implements IUserService {
 
   private final JwtDecoder decoder;
@@ -27,11 +25,17 @@ public class UserServiceImpl implements IUserService {
 
   private final UserMapper userMapper;
 
+  public UserServiceImpl(JwtDecoder decoder, IUserClient userClient, UserMapper userMapper) {
+    this.decoder = decoder;
+    this.userClient = userClient;
+    this.userMapper = userMapper;
+  }
+
 
   @Override
   public UserDTO updateUser(UserDTO userDTO) {
     //TODO find better solution to set uuid
-    userClient.updateUser(userMapper.toEntity(userDTO), getCurrentUser().get().uuid());
+    userClient.updateUser(userMapper.toEntity(userDTO), getCurrentUser().get().getUuid());
     return userDTO;
   }
 
@@ -47,16 +51,15 @@ public class UserServiceImpl implements IUserService {
       return Optional.empty();
     }
     Jwt jwt = jwtOptional.get();
-    return Optional.of(User.builder()
-        .uuid(UUID.fromString(jwt.getClaim("sub")))
-        .photoPath(jwt.getClaim("photo_path"))
-        .username(jwt.getClaim("custom_username"))
-        .firstName(jwt.getClaim("given_name"))
-        .lastName(jwt.getClaim("family_name"))
-        .gender(Gender.getIfNotNull(jwt.getClaim("gender")))
-        .phone(jwt.getClaim("phone"))
-        .email(jwt.getClaim("email"))
-        .build());
+    return Optional.of(new User(
+        UUID.fromString(jwt.getClaim("sub")),
+        jwt.getClaim("email"),
+        jwt.getClaim("custom_username"),
+        jwt.getClaim("given_name"),
+        jwt.getClaim("family_name"),
+        Gender.getIfNotNull(jwt.getClaim("gender")),
+        jwt.getClaim("phone"),
+        jwt.getClaim("photo_path")));
   }
 
   @Override

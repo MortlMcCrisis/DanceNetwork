@@ -1,7 +1,5 @@
 package com.mortl.dancenetwork.configuration;
 
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
 import org.keycloak.OAuth2Constants;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
@@ -12,15 +10,17 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@RequiredArgsConstructor
 public class WebSecurityConfig {
 
   private final KeycloakJwtTokenConverter keycloakJwtTokenConverter;
+
+  public WebSecurityConfig(KeycloakJwtTokenConverter keycloakJwtTokenConverter) {
+    this.keycloakJwtTokenConverter = keycloakJwtTokenConverter;
+  }
 
   @Bean
   Keycloak keycloak() {

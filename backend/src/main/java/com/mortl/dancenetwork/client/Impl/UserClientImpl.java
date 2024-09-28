@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import lombok.RequiredArgsConstructor;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.admin.client.resource.UsersResource;
@@ -16,10 +15,13 @@ import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
 public class UserClientImpl implements IUserClient {
 
   private final Keycloak keycloak;
+
+  public UserClientImpl(Keycloak keycloak) {
+    this.keycloak = keycloak;
+  }
 
   @Override
   public List<User> fetchUsers(List<UUID> uuids) {
@@ -53,16 +55,15 @@ public class UserClientImpl implements IUserClient {
     Map<String, List<String>> attributes = Optional.ofNullable(
             userRepresentation.getAttributes())
         .orElse(new HashMap<>());
-    return User.builder()
-        .uuid(UUID.fromString(userRepresentation.getId()))
-        .firstName(userRepresentation.getFirstName())
-        .lastName(userRepresentation.getLastName())
-        .username(getAttribute(attributes, "custom_username"))
-        .gender(Gender.getIfNotNull(getAttribute(attributes, "gender")))
-        .phone(getAttribute(attributes, "phone"))
-        .photoPath(getAttribute(attributes, "photo_path"))
-        .email(getAttribute(attributes, "email"))
-        .build();
+    return new User(
+        UUID.fromString(userRepresentation.getId()),
+        getAttribute(attributes, "email"),
+        getAttribute(attributes, "custom_username"),
+        userRepresentation.getFirstName(),
+        userRepresentation.getLastName(),
+        Gender.getIfNotNull(getAttribute(attributes, "gender")),
+        getAttribute(attributes, "phone"),
+        getAttribute(attributes, "photo_path"));
   }
 
   private String getAttribute(Map<String, List<String>> attributes, String attributeName){
@@ -111,16 +112,16 @@ public class UserClientImpl implements IUserClient {
     UserRepresentation userRepresentation = currentUserResource
         .toRepresentation();
 
-    userRepresentation.setFirstName(updatedUser.firstName());
-    userRepresentation.setLastName(updatedUser.lastName());
+    userRepresentation.setFirstName(updatedUser.getFirstName());
+    userRepresentation.setLastName(updatedUser.getLastName());
 
     Map<String, List<String>> attributes = Optional.ofNullable(
             userRepresentation.getAttributes())
         .orElse(new HashMap<>());
-    attributes.put("custom_username", List.of(updatedUser.username()));
-    attributes.put("photo_path", List.of(updatedUser.photoPath()));
-    attributes.put("gender", List.of(updatedUser.gender().name()));
-    attributes.put("phone", List.of(updatedUser.phone()));
+    attributes.put("custom_username", List.of(updatedUser.getUsername()));
+    attributes.put("photo_path", List.of(updatedUser.getPhotoPath()));
+    attributes.put("gender", List.of(updatedUser.getGender().name()));
+    attributes.put("phone", List.of(updatedUser.getPhone()));
     userRepresentation.setAttributes(attributes);
 
     currentUserResource.update(userRepresentation);

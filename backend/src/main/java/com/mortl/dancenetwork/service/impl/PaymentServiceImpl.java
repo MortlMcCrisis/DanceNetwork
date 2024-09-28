@@ -10,11 +10,9 @@ import com.mortl.dancenetwork.service.IPdfService;
 import com.mortl.dancenetwork.service.ITicketService;
 import com.mortl.dancenetwork.service.IUserService;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
 public class PaymentServiceImpl implements IPaymentService {
 
   private final ITicketService ticketService;
@@ -26,6 +24,15 @@ public class PaymentServiceImpl implements IPaymentService {
   private final IUserService userService;
 
   private final TicketTypeRepository ticketTypeRepository;
+
+  public PaymentServiceImpl(ITicketService ticketService, IMailService mailService,
+      IPdfService pdfService, IUserService userService, TicketTypeRepository ticketTypeRepository) {
+    this.ticketService = ticketService;
+    this.mailService = mailService;
+    this.pdfService = pdfService;
+    this.userService = userService;
+    this.ticketTypeRepository = ticketTypeRepository;
+  }
 
   @Override
   public void doPayment(PaymentRequestDTO paymentRequestDTO) {

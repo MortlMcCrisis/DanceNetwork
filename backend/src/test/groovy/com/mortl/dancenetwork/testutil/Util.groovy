@@ -1,10 +1,10 @@
 package com.mortl.dancenetwork.testutil
 
-import com.mortl.dancenetwork.enums.Gender
-import com.mortl.dancenetwork.enums.Role
 import com.mortl.dancenetwork.entity.Event
 import com.mortl.dancenetwork.entity.Ticket
 import com.mortl.dancenetwork.entity.TicketType
+import com.mortl.dancenetwork.enums.Gender
+import com.mortl.dancenetwork.enums.Role
 
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -15,16 +15,16 @@ class Util {
     static def createTestEvent(boolean published, LocalDate startDate = LocalDate.now(), String name = "test") {
         new Event(
                 null,
+                name,
                 UUID.randomUUID(),
-                null,
-                null,
+                "test@test",
                 startDate,
                 LocalTime.NOON,
                 startDate.plusDays(2),
-                name,
+                null,
+                null,
                 "test",
                 "test",
-                "test@test",
                 published,
                 LocalDateTime.now()
         )

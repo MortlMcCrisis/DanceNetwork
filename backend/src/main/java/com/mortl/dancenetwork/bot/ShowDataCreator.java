@@ -1,13 +1,13 @@
 package com.mortl.dancenetwork.bot;
 
-import com.mortl.dancenetwork.enums.Gender;
-import com.mortl.dancenetwork.enums.Role;
-import com.mortl.dancenetwork.entity.Ticket;
-import com.mortl.dancenetwork.model.User;
 import com.mortl.dancenetwork.entity.Event;
 import com.mortl.dancenetwork.entity.NewsfeedEntry;
-import com.mortl.dancenetwork.enums.NewsfeedEntryType;
+import com.mortl.dancenetwork.entity.Ticket;
 import com.mortl.dancenetwork.entity.TicketType;
+import com.mortl.dancenetwork.enums.Gender;
+import com.mortl.dancenetwork.enums.NewsfeedEntryType;
+import com.mortl.dancenetwork.enums.Role;
+import com.mortl.dancenetwork.model.User;
 import com.mortl.dancenetwork.repository.EventRepository;
 import com.mortl.dancenetwork.repository.NewsfeedEntryRepository;
 import com.mortl.dancenetwork.repository.TicketRepository;
@@ -24,13 +24,11 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
-@Slf4j
 @Profile("!test")
 public class ShowDataCreator {
 
@@ -72,192 +70,197 @@ public class ShowDataCreator {
   @Scheduled(fixedDelay=Long.MAX_VALUE)
   public void createEvents(){
     User bachaturoUser = users.get(new Random().nextInt(0, users.size()));
-    Event bachaturo = Event.builder()
-        .creator(bachaturoUser.uuid())
-        .startDate(LocalDate.of(2024, 8, 16))
-        .startTime(LocalTime.NOON)
-        .endDate(LocalDate.of(2024, 8, 18))
-        .name("Bachaturo")
-        .location("plac Sławika i Antalla 1, 40-163 Katowice, Poland")
-        .website("https://bachaturo.com/")
-        .email("bachaturo@info.pl")
-        .published(true)
-        .profileImage("/upload/2c22e8eef931ef9a428195d8f1e55573/Bachaturo.png")
-        .createdAt(LocalDateTime.now().minusMonths(8))
-        .build();
+    Event bachaturo = new Event(
+        null,
+        "Bachaturo",
+        bachaturoUser.getUuid(),
+        "bachaturo@info.pl",
+        LocalDate.of(2024, 8, 16),
+        LocalTime.NOON,
+        LocalDate.of(2024, 8, 18),
+        "plac Sławika i Antalla 1, 40-163 Katowice, Poland",
+        "https://bachaturo.com/",
+        "/upload/2c22e8eef931ef9a428195d8f1e55573/Bachaturo.png",
+        null,
+        true,
+        LocalDateTime.now().minusMonths(8));
     createEvent(bachaturo, bachaturoUser);
-    createTicketType(bachaturo, TicketType.builder()
-        .price(121.00f)
-        .contingent(100L)
-        .name("FULLPASS")
-        .description("All workshops, all parties on all dance floors, and the Kizomba social room.")
-        .event(bachaturo)
-        .build());
-    createTicketType(bachaturo, TicketType.builder()
-        .price(114.00f)
-        .contingent(100L)
-        .name("GROUP FULLPASS (with promocode)")
-        .description("All workshops, all parties on all dance floors, and the Kizomba social room.")
-        .event(bachaturo)
-        .build());
-    createTicketType(bachaturo, TicketType.builder()
-        .price(85.00f)
-        .contingent(100L)
-        .name("Partypass")
-        .description("All Parties and Kizomba Social Room")
-        .event(bachaturo)
-        .build());
+    createTicketType(bachaturo, new TicketType(
+        null,
+        "FULLPASS",
+        "All workshops, all parties on all dance floors, and the Kizomba social room.",
+        121.00f,
+        100L,
+        bachaturo));
+    createTicketType(bachaturo, new TicketType(
+        null,
+        "GROUP FULLPASS (with promocode)",
+        "All workshops, all parties on all dance floors, and the Kizomba social room.",
+        114.00f,
+        100L,
+        bachaturo));
+    createTicketType(bachaturo, new TicketType(
+        null,
+        "Partypass",
+        "All Parties and Kizomba Social Room",
+        85.00f,
+        100L,
+        bachaturo));
 
     User bachatationUser = users.get(new Random().nextInt(0, users.size()));
-    Event bachatation = Event.builder()
-        .creator(bachatationUser.uuid())
-        .startDate(LocalDate.of(2024, 2, 22))
-        .startTime(LocalTime.NOON)
-        .endDate(LocalDate.of(2024, 2, 25))
-        .name("Bachatation")
-        .location("Son Latino Studios, Gablonzer Str. 9, 76185 Karlsruhe")
-        .website("http://www.bachatation.de/")
-        .email("events@sonlatino.de")
-        .published(true)
-        .profileImage("/upload/2c22e8eef931ef9a428195d8f1e55573/Bachatation.png")
-        .createdAt(LocalDateTime.now().minusMonths(8))
-        .build();
+    Event bachatation = new Event(
+        null,
+        "Bachatation",
+        bachatationUser.getUuid(),
+        "events@sonlatino.de",
+        LocalDate.of(2024, 2, 22),
+        LocalTime.NOON,
+        LocalDate.of(2024, 2, 25),
+        "Son Latino Studios, Gablonzer Str. 9, 76185 Karlsruhe",
+        "http://www.bachatation.de/",
+        "/upload/2c22e8eef931ef9a428195d8f1e55573/Bachatation.png",
+        null,
+        true,
+        LocalDateTime.now().minusMonths(8));
     createEvent(bachatation, bachatationUser);
-    createTicketType(bachatation, TicketType.builder()
-        .price(109.00f)
-        .contingent(100L)
-        .name("FULLPASS")
-        .description("Includes all Workshops & all Parties")
-        .event(bachatation)
-        .build());
-    createTicketType(bachatation, TicketType.builder()
-        .price(109.00f)
-        .contingent(100L)
-        .name("MASTER CLASS")
-        .description("Master Class with Kike & Nahir")
-        .event(bachatation)
-        .build());
-    createTicketType(bachatation, TicketType.builder()
-        .price(45.00f)
-        .contingent(100L)
-        .name("VIP Party-Pass")
-        .description("All 4 Parties wit Pre-Party-Workshop")
-        .event(bachatation)
-        .build());
-    createTicketType(bachatation, TicketType.builder()
-        .price(29.00f)
-        .contingent(100L)
-        .name("PARTY-PASS")
-        .description("All 4 Parties")
-        .event(bachatation)
-        .build());
+    createTicketType(bachatation, new TicketType(
+        null,
+        "FULLPASS",
+        "Includes all Workshops & all Parties",
+        109.00f,
+        100L,
+        bachatation));
+    createTicketType(bachatation, new TicketType(
+        null,
+        "MASTER CLASS",
+        "Master Class with Kike & Nahir",
+        109.00f,
+        100L,
+        bachatation));
+    createTicketType(bachatation, new TicketType(
+        null,
+        "VIP Party-Pass",
+        "All 4 Parties wit Pre-Party-Workshop",
+        45.00f,
+        100L,
+        bachatation));
+    createTicketType(bachatation, new TicketType(
+        null,
+        "PARTY-PASS",
+        "All 4 Parties",
+        29.00f,
+        100L,
+        bachatation));
 
     User backataRoyalUser = users.get(new Random().nextInt(0, users.size()));
-    Event bachataRoyal = Event.builder()
-        .creator(backataRoyalUser.uuid())
-        .startDate(LocalDate.of(2024, 10, 25))
-        .startTime(LocalTime.NOON)
-        .endDate(LocalDate.of(2024, 10, 27))
-        .name("Bachata Zouk Royals")
-        .location("Freiburg, Kaiser Joseph Straße 268 79098 - Freiburg Baden-Württemberg")
-        .website("https://www.goandance.com/en/events/6476-bachata-zouk-royals-2024")
-        .email("florence.vouriot@gmx.de")
-        .published(true)
-        .profileImage("/upload/2c22e8eef931ef9a428195d8f1e55573/BachataZouk.png")
-        .createdAt(LocalDateTime.now().minusMonths(8))
-        .build();
+    Event bachataRoyal = new Event(
+        null,
+        "Bachata Zouk Royals",
+        backataRoyalUser.getUuid(),
+        "florence.vouriot@gmx.de",
+        LocalDate.of(2024, 10, 25),
+        LocalTime.NOON,
+        LocalDate.of(2024, 10, 27),
+        "Freiburg, Kaiser Joseph Straße 268 79098 - Freiburg Baden-Württemberg",
+        "https://www.goandance.com/en/events/6476-bachata-zouk-royals-2024",
+        "/upload/2c22e8eef931ef9a428195d8f1e55573/BachataZouk.png",
+        null,
+        true,
+        LocalDateTime.now().minusMonths(8));
     createEvent(bachataRoyal, backataRoyalUser);
-    createTicketType(bachataRoyal, TicketType.builder()
-        .price(135.00f)
-        .contingent(100L)
-        .name("Fullpass - BachataZoukRoyals- Leader")
-        .description("Access to all Workshops (as a leader)and social rooms, including shows")
-        .event(bachataRoyal)
-        .build());
-    createTicketType(bachataRoyal, TicketType.builder()
-        .price(135.00f)
-        .contingent(100L)
-        .name("Fullpass - BachataZoukRoyals - Follower")
-        .description("Full access to all Workshops (as a follower), party and shows")
-        .event(bachataRoyal)
-        .build());
-    createTicketType(bachataRoyal, TicketType.builder()
-        .price(65.00f)
-        .contingent(100L)
-        .name("Party Pass")
-        .description("This pass will give you access to the Friday, Saturday night socials and sunday day & night social.<br/><br/>only limited amount available! Last year, we were sold out, and we expect the same to happen this year.")
-        .event(bachataRoyal)
-        .build());
-    createTicketType(bachataRoyal, TicketType.builder()
-        .price(35.00f)
-        .contingent(100L)
-        .name("Friday Day Pass")
-        .description("This Day Pass includes all workshops, shows and social on Friday the 25th of October 2024.<br/>On Friday the workshops will start at 6 p.m.<br/>After the pre party workshops at 9 p.m. the social will start at 10 p.m.<br/>The shows will be around midnight ")
-        .event(bachataRoyal)
-        .build());
-    createTicketType(bachataRoyal, TicketType.builder()
-        .price(65.00f)
-        .contingent(100L)
-        .name("Saturday Day Pass- Leader")
-        .description("This Day Pass, for Leader, includes all workshops, shows and social on Saturday the 26th of October 2024.<br/>On Saturday the workshops will start at 2 p.m.<br/>The day social will start at 6 p.m. and the night social will start at 10 p.m.<br/>The shows will be around midnight.")
-        .event(bachataRoyal)
-        .build());
-    createTicketType(bachataRoyal, TicketType.builder()
-        .price(65.00f)
-        .contingent(100L)
-        .name("Saturday Day Pass - Follower")
-        .description("This Day Pass, for Follower, includes all workshops, shows and social on Saturday the 26th of October 2024.<br/>On Saturday the workshops will start at 2 p.m.<br/>The day social will start at 6 p.m. and the night social will start at 10 p.m.<br/>The shows will be around midnight.")
-        .event(bachataRoyal)
-        .build());
-    createTicketType(bachataRoyal, TicketType.builder()
-        .price(45.00f)
-        .contingent(100L)
-        .name("Sunday Day Pass - Leader")
-        .description("This Day Pass, for Leader, includes all workshops and social on Sunday the 27th of October 2024.<br/>On Sunday the workshops will start at 1 p.m.<br/>The day social will start at 4 p.m. until midnight")
-        .event(bachataRoyal)
-        .build());
-    createTicketType(bachataRoyal, TicketType.builder()
-        .price(45.00f)
-        .contingent(100L)
-        .name("Sunday Day Pass - Follower")
-        .description("This Day Pass, for Follower, includes all workshops and social on Sunday the 27th of October 2024.<br/>On Sunday the workshops will start at 1 p.m.<br/>The day social will start at 4 p.m. until midnight")
-        .event(bachataRoyal)
-        .build());
-    createTicketType(bachataRoyal, TicketType.builder()
-        .price(25.0f)
-        .contingent(100L)
-        .name("Friday night social")
-        .description("The Friday night ticket for the 25th of October includes the social starting at 10 p.m. and the shows around midnight")
-        .event(bachataRoyal)
-        .build());
-    createTicketType(bachataRoyal, TicketType.builder()
-        .price(30.0f)
-        .contingent(100L)
-        .name("Saturday night social")
-        .description("The Saturday night ticket for the 26th of October includes the social starting at 10 p.m. and the shows around midnight")
-        .event(bachataRoyal)
-        .build());
-    createTicketType(bachataRoyal, TicketType.builder()
-        .price(15.0f)
-        .contingent(100L)
-        .name("Sunday social ticket")
-        .description("The Sunday social ticket for the 27th of October includes the day social starting at 4 p.m. till midnight")
-        .event(bachataRoyal)
-        .build());
+    createTicketType(bachataRoyal, new TicketType(
+        null,
+        "Fullpass - BachataZoukRoyals- Leader",
+        "Access to all Workshops (as a leader,and social rooms, including shows",
+        135.00f,
+        100L,
+        bachataRoyal));
+    createTicketType(bachataRoyal, new TicketType(
+        null,
+        "Fullpass - BachataZoukRoyals - Follower",
+        "Full access to all Workshops (as a follower,, party and shows",
+        135.00f,
+        100L,
+        bachataRoyal));
+    createTicketType(bachataRoyal, new TicketType(
+        null,
+        "Party Pass",
+        "This pass will give you access to the Friday, Saturday night socials and sunday day & night social.<br/><br/>only limited amount available! Last year, we were sold out, and we expect the same to happen this year.",
+        65.00f,
+        100L,
+        bachataRoyal));
+    createTicketType(bachataRoyal, new TicketType(
+        null,
+        "Friday Day Pass",
+        "This Day Pass includes all workshops, shows and social on Friday the 25th of October 2024.<br/>On Friday the workshops will start at 6 p.m.<br/>After the pre party workshops at 9 p.m. the social will start at 10 p.m.<br/>The shows will be around midnight ",
+        35.00f,
+        100L,
+        bachataRoyal));
+    createTicketType(bachataRoyal, new TicketType(
+        null,
+        "Saturday Day Pass- Leader",
+        "This Day Pass, for Leader, includes all workshops, shows and social on Saturday the 26th of October 2024.<br/>On Saturday the workshops will start at 2 p.m.<br/>The day social will start at 6 p.m. and the night social will start at 10 p.m.<br/>The shows will be around midnight.",
+        65.00f,
+        100L,
+        bachataRoyal));
+    createTicketType(bachataRoyal, new TicketType(
+        null,
+        "Saturday Day Pass - Follower",
+        "This Day Pass, for Follower, includes all workshops, shows and social on Saturday the 26th of October 2024.<br/>On Saturday the workshops will start at 2 p.m.<br/>The day social will start at 6 p.m. and the night social will start at 10 p.m.<br/>The shows will be around midnight.",
+        65.00f,
+        100L,
+        bachataRoyal));
+    createTicketType(bachataRoyal, new TicketType(
+        null,
+        "Sunday Day Pass - Leader",
+        "This Day Pass, for Leader, includes all workshops and social on Sunday the 27th of October 2024.<br/>On Sunday the workshops will start at 1 p.m.<br/>The day social will start at 4 p.m. until midnight",
+        45.00f,
+        100L,
+        bachataRoyal));
+    createTicketType(bachataRoyal, new TicketType(
+        null,
+        "Sunday Day Pass - Follower",
+        "This Day Pass, for Follower, includes all workshops and social on Sunday the 27th of October 2024.<br/>On Sunday the workshops will start at 1 p.m.<br/>The day social will start at 4 p.m. until midnight",
+        45.00f,
+        100L,
+        bachataRoyal));
+    createTicketType(bachataRoyal, new TicketType(
+        null,
+        "Friday night social",
+        "The Friday night ticket for the 25th of October includes the social starting at 10 p.m. and the shows around midnight",
+        25.0f,
+        100L,
+        bachataRoyal));
+    createTicketType(bachataRoyal, new TicketType(
+        null,
+        "Saturday night social",
+        "The Saturday night ticket for the 26th of October includes the social starting at 10 p.m. and the shows around midnight",
+        30.0f,
+        100L,
+        bachataRoyal));
+    createTicketType(bachataRoyal, new TicketType(
+        null,
+        "Sunday social ticket",
+        "The Sunday social ticket for the 27th of October includes the day social starting at 4 p.m. till midnight",
+        15.0f,
+        100L,
+        bachataRoyal));
 
     User bachatologyUser = users.get(new Random().nextInt(0, users.size()));
-    Event bachatology = Event.builder()
-        .creator(backataRoyalUser.uuid())
-        .startDate(LocalDate.of(2024, 9, 27))
-        .startTime(LocalTime.NOON)
-        .endDate(LocalDate.of(2024, 9, 28))
-        .name("Bachatology")
-        .location("Karlsruhe, Hans-Sachs-Straße 8, 76133")
-        .website("https://www.tickettailor.com/events/socialdancevip/1218659?fbclid=IwZXh0bgNhZW0CMTEAAR3BWpgiEoj5x8tOD7WnCdVqaebNOKNLqwGtW5ghvZBw3cSvt5XwBYsJY6A_aem_Xdvk1biN-Ez2WXS4MEUxzg&sfnsn=scwspwa")
-        .published(true)
-        .profileImage("/upload/2c22e8eef931ef9a428195d8f1e55573/Bachatology.png")
-        .createdAt(LocalDateTime.now().minusMonths(8))
-        .build();
+    Event bachatology = new Event(
+        null,
+        "Bachatology",
+        backataRoyalUser.getUuid(),
+        null,
+        LocalDate.of(2024, 9, 27),
+        LocalTime.NOON,
+        LocalDate.of(2024, 9, 28),
+        "Karlsruhe, Hans-Sachs-Straße 8, 76133",
+        "https://www.tickettailor.com/events/socialdancevip/1218659?fbclid=IwZXh0bgNhZW0CMTEAAR3BWpgiEoj5x8tOD7WnCdVqaebNOKNLqwGtW5ghvZBw3cSvt5XwBYsJY6A_aem_Xdvk1biN-Ez2WXS4MEUxzg&sfnsn=scwspwa",
+        "/upload/2c22e8eef931ef9a428195d8f1e55573/Bachatology.png",
+        null,
+        true,
+        LocalDateTime.now().minusMonths(8));
     createEvent(bachatology, bachatologyUser);
     createRandomTicketTypesForEvent(bachatology);
   }
@@ -270,26 +273,27 @@ public class ShowDataCreator {
   private void createRandomTicketTypesForEvent(Event event) {
     int amountOfTickets = new Random().nextInt(2, 5);
     for (int i = 0; i < amountOfTickets; i++) {
-      createTicketType(event, TicketType.builder()
-          .price(BigDecimal.valueOf(new Random().nextFloat(15, 250))
+      createTicketType(event, new TicketType(
+          null,
+              getRandomLoremIpsum(5, 20),
+          loremIpsum.getWords(new Random().nextInt(1, 10)),
+          (BigDecimal.valueOf(new Random().nextFloat(15, 250))
               .setScale(2, BigDecimal.ROUND_HALF_DOWN)
-              .floatValue())
-          .contingent(100L)
-          .description(getRandomLoremIpsum(5, 20))
-          .name(loremIpsum.getWords(new Random().nextInt(1, 10)))
-          .event(event)
-          .build());
+              .floatValue()),
+          100L,
+          event));
     }
   }
 
 
     private void createRandomNewsfeed(User user){
-    newsfeedEntryRepository.saveAndFlush(NewsfeedEntry.builder()
-            .type(NewsfeedEntryType.POST)
-            .creator(user.uuid())
-            .textField(getRandomLoremIpsum(20, 200))
-            .creationDate(LocalDateTime.now())
-            .build());
+    newsfeedEntryRepository.saveAndFlush(new NewsfeedEntry(
+        null,
+        NewsfeedEntryType.POST,
+        user.getUuid(),
+        getRandomLoremIpsum(20, 200),
+        null,
+        LocalDateTime.now()));
   }
 
   private String getRandomLoremIpsum(int min, int max){
@@ -299,19 +303,19 @@ public class ShowDataCreator {
   private void createRandomTickets(Event event, TicketType ticketType){
     Set<Ticket> tickets = new HashSet<>();
     for(int i=0; i<new Random().nextInt(0, 100); i++ ){
-      tickets.add(Ticket.builder()
-          .ticketType(ticketType)
-          .address(getRandomLoremIpsum(5,20))
-              .country("GERMANY")
-              .owner(users.get(new Random().nextInt(0, users.size())).uuid())
-              .phone(getRandomLoremIpsum(5,20))
-              .role(getRandomRole())
-              .gender(getRandomGender())
-              .firstName(getRandomLoremIpsum(1,3))
-              .lastName(getRandomLoremIpsum(1,2))
-              .email("test@test.de")
-              .buyDate(getRandomDate(event.getCreatedAt()))
-          .build());
+      tickets.add(new Ticket(
+          null,
+          users.get(new Random().nextInt(0, users.size())).getUuid(),
+          ticketType,
+          getRandomLoremIpsum(1,3),
+          getRandomLoremIpsum(1,2) ,
+          getRandomLoremIpsum(5,20),
+          "GERMANY",
+          "test@test.de",
+          getRandomLoremIpsum(5,20),
+          getRandomRole(),
+          getRandomGender(),
+          getRandomDate(event.getCreatedAt())));
     }
     ticketRepository.saveAllAndFlush(tickets);
   }

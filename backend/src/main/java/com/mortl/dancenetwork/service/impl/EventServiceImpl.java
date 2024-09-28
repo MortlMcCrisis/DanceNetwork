@@ -1,10 +1,10 @@
 package com.mortl.dancenetwork.service.impl;
 
 import com.mortl.dancenetwork.dto.EventDTO;
-import com.mortl.dancenetwork.model.User;
+import com.mortl.dancenetwork.entity.Event;
 import com.mortl.dancenetwork.mapper.EventMapper;
 import com.mortl.dancenetwork.mapper.NewsfeedEntryMapper;
-import com.mortl.dancenetwork.entity.Event;
+import com.mortl.dancenetwork.model.User;
 import com.mortl.dancenetwork.repository.EventRepository;
 import com.mortl.dancenetwork.service.IEventService;
 import com.mortl.dancenetwork.service.INewsfeedEntryService;
@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import javax.ws.rs.NotFoundException;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -25,8 +23,6 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
-@Slf4j
 public class EventServiceImpl implements IEventService {
 
   private final EventRepository eventRepository;
@@ -41,11 +37,22 @@ public class EventServiceImpl implements IEventService {
 
   private final NewsfeedEntryMapper newsfeedEntryMapper;
 
+  public EventServiceImpl(EventRepository eventRepository, IUserService userService,
+      INewsfeedEntryService newsfeedEntryService, NewsfeedFactory newsfeedFactory,
+      EventMapper eventMapper, NewsfeedEntryMapper newsfeedEntryMapper) {
+    this.eventRepository = eventRepository;
+    this.userService = userService;
+    this.newsfeedEntryService = newsfeedEntryService;
+    this.newsfeedFactory = newsfeedFactory;
+    this.eventMapper = eventMapper;
+    this.newsfeedEntryMapper = newsfeedEntryMapper;
+  }
+
   @Override
   public EventDTO createEvent(EventDTO eventDTO)
   {
     Event event = eventMapper.toModel(eventDTO);
-    event.setCreator(userService.getNonNullCurrentUser().uuid());
+    event.setCreator(userService.getNonNullCurrentUser().getUuid());
     event.setCreatedAt(LocalDateTime.now());
     Event savedEvent = eventRepository.saveAndFlush(event);
     return eventMapper.toDTO(savedEvent);  }
@@ -90,7 +97,7 @@ public class EventServiceImpl implements IEventService {
     Event currentEvent = eventRepository.findById(event.id())
         .orElseThrow(NotFoundException::new);
 
-    UUID uuid = userService.getCurrentUser().get().uuid();
+    UUID uuid = userService.getCurrentUser().get().getUuid();
     if(!currentEvent.getCreator().equals(uuid)){
       throw new IllegalAccessException();
     }
@@ -116,7 +123,7 @@ public class EventServiceImpl implements IEventService {
         .orElseThrow(NotFoundException::new);
 
     //TODO do this with an annotation on the endpoint
-    if(!event.getCreator().equals(userService.getCurrentUser().get().uuid())){
+    if(!event.getCreator().equals(userService.getCurrentUser().get().getUuid())){
       throw new IllegalAccessException();
     }
 

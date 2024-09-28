@@ -3,9 +3,11 @@ package com.mortl.dancenetwork.dto;
 import com.mortl.dancenetwork.enums.Gender;
 import com.mortl.dancenetwork.enums.Role;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public record TicketDTO(
     Long id,
+    UUID owner,
     Long ticketTypeId,
     String firstName,
     String lastName,

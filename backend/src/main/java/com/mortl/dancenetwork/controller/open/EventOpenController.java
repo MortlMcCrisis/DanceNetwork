@@ -5,9 +5,6 @@ import com.mortl.dancenetwork.service.IEventService;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,11 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/open/v1/events")
-@Slf4j
-@RequiredArgsConstructor
 public class EventOpenController {
 
   private final IEventService eventService;
+
+  public EventOpenController(IEventService eventService) {
+    this.eventService = eventService;
+  }
 
   @GetMapping
   public ResponseEntity<List<EventDTO>> getEvents(

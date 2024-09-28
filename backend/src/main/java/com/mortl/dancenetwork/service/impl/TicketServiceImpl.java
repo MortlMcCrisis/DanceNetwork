@@ -2,12 +2,12 @@ package com.mortl.dancenetwork.service.impl;
 
 import com.mortl.dancenetwork.dto.TicketDTO;
 import com.mortl.dancenetwork.dto.TicketInfoDTO;
-import com.mortl.dancenetwork.model.User;
+import com.mortl.dancenetwork.entity.Ticket;
 import com.mortl.dancenetwork.mapper.EventMapper;
 import com.mortl.dancenetwork.mapper.NewsfeedEntryMapper;
 import com.mortl.dancenetwork.mapper.TicketMapper;
 import com.mortl.dancenetwork.mapper.TicketTypeMapper;
-import com.mortl.dancenetwork.entity.Ticket;
+import com.mortl.dancenetwork.model.User;
 import com.mortl.dancenetwork.repository.TicketRepository;
 import com.mortl.dancenetwork.service.INewsfeedEntryService;
 import com.mortl.dancenetwork.service.IQrCodeService;
@@ -18,14 +18,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
-@Slf4j
 public class TicketServiceImpl implements ITicketService {
+
+  private static final Logger log = LoggerFactory.getLogger(TicketServiceImpl.class);
 
   private final TicketRepository ticketRepository;
 
@@ -44,6 +44,21 @@ public class TicketServiceImpl implements ITicketService {
   private final EventMapper eventMapper;
 
   private final TicketTypeMapper ticketTypeMapper;
+
+  public TicketServiceImpl(TicketRepository ticketRepository, IUserService userService,
+      IQrCodeService qrCodeService, INewsfeedEntryService newsfeedEntryService,
+      NewsfeedFactory newsfeedFactory, NewsfeedEntryMapper newsfeedEntryMapper,
+      TicketMapper ticketMapper, EventMapper eventMapper, TicketTypeMapper ticketTypeMapper) {
+    this.ticketRepository = ticketRepository;
+    this.userService = userService;
+    this.qrCodeService = qrCodeService;
+    this.newsfeedEntryService = newsfeedEntryService;
+    this.newsfeedFactory = newsfeedFactory;
+    this.newsfeedEntryMapper = newsfeedEntryMapper;
+    this.ticketMapper = ticketMapper;
+    this.eventMapper = eventMapper;
+    this.ticketTypeMapper = ticketTypeMapper;
+  }
 
   @Override
   public List<Ticket> addTickets(List<TicketDTO> tickets) {
@@ -87,12 +102,12 @@ public class TicketServiceImpl implements ITicketService {
     if(user.isEmpty()){
       return null;
     }
-    return user.get().uuid();
+    return user.get().getUuid();
   }
 
   @Override
   public List<TicketInfoDTO> getTicketInfosForUser(){
-    return ticketRepository.findByOwnerOrderByEventStartDateAsc(userService.getNonNullCurrentUser().uuid()).stream()
+    return ticketRepository.findByOwnerOrderByEventStartDateAsc(userService.getNonNullCurrentUser().getUuid()).stream()
         .map(this::createTicketInfoDTO)
         .toList();
   }
