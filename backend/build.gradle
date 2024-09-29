@@ -1,72 +1,73 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.2.1'
-	id 'io.spring.dependency-management' version '1.1.4'
-	id 'groovy'
+    id 'java'
+    id 'org.springframework.boot' version '3.2.1'
+    id 'io.spring.dependency-management' version '1.1.4'
+    id 'groovy'
 }
 
 group = 'com.mortl'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '17'
+    sourceCompatibility = '17'
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.2.1'
-	implementation 'org.springframework.boot:spring-boot-starter-web-services:3.2.1'
-	//implementation 'org.springframework.boot:spring-boot-starter-actuator:3.2.1'
-	//implementation 'org.springframework.boot:spring-boot-starter-web:3.2.1'
-	//implementation 'org.springframework.security:spring-security-test' //TODO security test with security (jtw)
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.2.1'
+    implementation 'org.springframework.boot:spring-boot-starter-web-services:3.2.1'
+    //implementation 'org.springframework.boot:spring-boot-starter-actuator:3.2.1'
+    //implementation 'org.springframework.boot:spring-boot-starter-web:3.2.1'
+    //implementation 'org.springframework.security:spring-security-test' //TODO security test with security (jtw)
 
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server:3.2.1'
-	implementation 'org.springframework.boot:spring-boot-starter-mail:3.2.1'
-	implementation 'org.springframework.boot:spring-boot-starter-security:3.2.1'
-	implementation 'org.keycloak:keycloak-admin-client:21.0.2'
-	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
-	implementation 'com.google.zxing:core:3.5.3'
-	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.0'
-	implementation 'com.openhtmltopdf:openhtmltopdf-pdfbox:1.0.10'
-	implementation 'org.apache.commons:commons-text:1.12.0'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server:3.2.1'
+    implementation 'org.springframework.boot:spring-boot-starter-mail:3.2.1'
+    implementation 'org.springframework.boot:spring-boot-starter-security:3.2.1'
+    implementation 'org.keycloak:keycloak-admin-client:21.0.2'
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    implementation 'com.google.zxing:core:3.5.3'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.0'
+    implementation 'com.openhtmltopdf:openhtmltopdf-pdfbox:1.0.10'
+    implementation 'org.apache.commons:commons-text:1.12.0'
 
-	implementation 'de.sven-jacobs:loremipsum:1.0' // TODO make test implementation? test profile?
+    implementation 'de.sven-jacobs:loremipsum:1.0' // TODO make test implementation? test profile?
 
-	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
-	annotationProcessor 'org.projectlombok:lombok:1.18.22'
-	annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
 
-	runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'com.h2database:h2'
 
-	testImplementation 'org.springframework.boot:spring-boot-starter-test:3.2.1'
-	testImplementation 'org.codehaus.groovy:groovy-all:3.0.21'
-	testImplementation 'org.spockframework:spock-core:2.4-M4-groovy-3.0'
-	testImplementation 'org.spockframework:spock-spring:2.4-M4-groovy-3.0'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.2.1'
+    testImplementation 'org.codehaus.groovy:groovy-all:3.0.21'
+    testImplementation 'org.spockframework:spock-core:2.4-M4-groovy-3.0'
+    testImplementation 'org.spockframework:spock-spring:2.4-M4-groovy-3.0'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
 test {
-	//TODO configure logging correctly with logback.xml:
-	// - spring logs should be shown on INFO level
-	// - in test profile application logs should be shown on DEBUG level
-	// - test results should be shown in logs
-	// - in default profile the application logs should be shown in INFO level
-	systemProperty 'spring.profiles.active', 'test'
-	//systemProperty 'logging.level.org.springframework', 'DEBUG'
-	testLogging.showStandardStreams = true
+    //TODO configure logging correctly with logback.xml:
+    // - spring logs should be shown on INFO level
+    // - in test profile application logs should be shown on DEBUG level
+    // - test results should be shown in logs
+    // - in default profile the application logs should be shown in INFO level
+    systemProperty 'spring.profiles.active', 'test'
+    //systemProperty 'logging.level.org.springframework', 'DEBUG'
+    testLogging.showStandardStreams = true
 }
 
 
 task runSpringBootApp(type: JavaExec, dependsOn: 'bootJar') {
-	group = 'application'
-	description = 'Startet die Spring Boot-Anwendung'
+    group = 'application'
+    description = 'Startet die Spring Boot-Anwendung'
 
-	classpath = sourceSets.main.runtimeClasspath
-	main = 'com.mortl.dancenetwork.DancenatworkApplication' // Ersetzen Sie 'your.package.name.YourSpringBootApplication' durch den Hauptklasse Ihrer Spring Boot-Anwendung
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'com.mortl.dancenetwork.DancenatworkApplication'
+    // Ersetzen Sie 'your.package.name.YourSpringBootApplication' durch den Hauptklasse Ihrer Spring Boot-Anwendung
 }

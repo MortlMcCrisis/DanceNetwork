@@ -46,6 +46,8 @@ Used technologies
 - Toasts: [Toastify](https://fkhadra.github.io/react-toastify/introduction/)
 - Rich Editor: [Quill](https://quilljs.com/playground/react)
 - Calendar: [Fullcalendar](https://fullcalendar.io/)
+- Charts: [Apexcharts](https://apexcharts.com)
+- Tables: [material-react-table](https://www.npmjs.com/package/material-react-table)
 
 Frontend
 ========
