@@ -4,9 +4,9 @@ import com.mortl.dancenetwork.entity.Event;
 import com.mortl.dancenetwork.entity.NewsfeedEntry;
 import com.mortl.dancenetwork.entity.Ticket;
 import com.mortl.dancenetwork.entity.TicketType;
+import com.mortl.dancenetwork.enums.DancingRole;
 import com.mortl.dancenetwork.enums.Gender;
 import com.mortl.dancenetwork.enums.NewsfeedEntryType;
-import com.mortl.dancenetwork.enums.Role;
 import com.mortl.dancenetwork.model.User;
 import com.mortl.dancenetwork.repository.EventRepository;
 import com.mortl.dancenetwork.repository.NewsfeedEntryRepository;
@@ -30,7 +30,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Profile("!test")
-public class ShowDataCreator {
+public class ShowDataCreator
+{
 
   private NewsfeedEntryRepository newsfeedEntryRepository;
 
@@ -52,7 +53,8 @@ public class ShowDataCreator {
       NewsfeedEntryRepository newsfeedEntryRepository,
       TicketTypeRepository ticketTypeRepository,
       TicketRepository ticketRepository,
-      NewsfeedFactory newsfeedFactory){
+      NewsfeedFactory newsfeedFactory)
+  {
     this.newsfeedEntryRepository = newsfeedEntryRepository;
     this.eventRepository = eventRepository;
     this.newsfeedFactory = newsfeedFactory;
@@ -63,12 +65,14 @@ public class ShowDataCreator {
   }
 
   @Scheduled(fixedRate = Long.MAX_VALUE)
-  public void createNewsfeedEntries() {
+  public void createNewsfeedEntries()
+  {
     users.stream().forEach(user -> createRandomNewsfeed(user));
   }
 
-  @Scheduled(fixedDelay=Long.MAX_VALUE)
-  public void createEvents(){
+  @Scheduled(fixedDelay = Long.MAX_VALUE)
+  public void createEvents()
+  {
     User bachaturoUser = users.get(new Random().nextInt(0, users.size()));
     Event bachaturo = new Event(
         null,
@@ -265,17 +269,21 @@ public class ShowDataCreator {
     createRandomTicketTypesForEvent(bachatology);
   }
 
-  private void createEvent(Event event, User user){
-    event = eventRepository.saveAndFlush( event );
-    newsfeedEntryRepository.saveAndFlush(newsfeedFactory.createEventPublishedNewsfeedEntry(user, event));
+  private void createEvent(Event event, User user)
+  {
+    event = eventRepository.saveAndFlush(event);
+    newsfeedEntryRepository.saveAndFlush(
+        newsfeedFactory.createEventPublishedNewsfeedEntry(user, event));
   }
 
-  private void createRandomTicketTypesForEvent(Event event) {
+  private void createRandomTicketTypesForEvent(Event event)
+  {
     int amountOfTickets = new Random().nextInt(2, 5);
-    for (int i = 0; i < amountOfTickets; i++) {
+    for (int i = 0; i < amountOfTickets; i++)
+    {
       createTicketType(event, new TicketType(
           null,
-              getRandomLoremIpsum(5, 20),
+          getRandomLoremIpsum(5, 20),
           loremIpsum.getWords(new Random().nextInt(1, 10)),
           (BigDecimal.valueOf(new Random().nextFloat(15, 250))
               .setScale(2, BigDecimal.ROUND_HALF_DOWN)
@@ -286,7 +294,8 @@ public class ShowDataCreator {
   }
 
 
-    private void createRandomNewsfeed(User user){
+  private void createRandomNewsfeed(User user)
+  {
     newsfeedEntryRepository.saveAndFlush(new NewsfeedEntry(
         null,
         NewsfeedEntryType.POST,
@@ -296,46 +305,53 @@ public class ShowDataCreator {
         LocalDateTime.now()));
   }
 
-  private String getRandomLoremIpsum(int min, int max){
+  private String getRandomLoremIpsum(int min, int max)
+  {
     return loremIpsum.getWords(new Random().nextInt(max - min + 1) + min);
   }
 
-  private void createRandomTickets(Event event, TicketType ticketType){
+  private void createRandomTickets(Event event, TicketType ticketType)
+  {
     Set<Ticket> tickets = new HashSet<>();
-    for(int i=0; i<new Random().nextInt(0, 100); i++ ){
+    for (int i = 0; i < new Random().nextInt(0, 100); i++)
+    {
       tickets.add(new Ticket(
           null,
           users.get(new Random().nextInt(0, users.size())).getUuid(),
           ticketType,
-          getRandomLoremIpsum(1,3),
-          getRandomLoremIpsum(1,2) ,
-          getRandomLoremIpsum(5,20),
+          getRandomLoremIpsum(1, 3),
+          getRandomLoremIpsum(1, 2),
+          getRandomLoremIpsum(5, 20),
           "GERMANY",
           "test@test.de",
-          getRandomLoremIpsum(5,20),
-          getRandomRole(),
+          getRandomLoremIpsum(5, 20),
+          getRandomDancingRole(),
           getRandomGender(),
           getRandomDate(event.getCreatedAt())));
     }
     ticketRepository.saveAllAndFlush(tickets);
   }
 
-  private void createTicketType(Event event, TicketType ticketType){
+  private void createTicketType(Event event, TicketType ticketType)
+  {
     ticketTypeRepository.saveAndFlush(ticketType);
     createRandomTickets(event, ticketType);
   }
 
-  private Role getRandomRole(){
-    Role[] roles = Role.values();
-    return roles[new Random().nextInt(roles.length)];
+  private DancingRole getRandomDancingRole()
+  {
+    DancingRole[] dancingRoles = DancingRole.values();
+    return dancingRoles[new Random().nextInt(dancingRoles.length)];
   }
 
-  private Gender getRandomGender(){
+  private Gender getRandomGender()
+  {
     Gender[] gender = Gender.values();
     return gender[new Random().nextInt(gender.length)];
   }
 
-  private LocalDateTime getRandomDate(LocalDateTime startDate){
+  private LocalDateTime getRandomDate(LocalDateTime startDate)
+  {
     LocalDateTime endDate = LocalDateTime.now();
 
     long startEpochSecond = startDate.toEpochSecond(java.time.ZoneOffset.UTC);

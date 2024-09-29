@@ -70,8 +70,6 @@ class TicketTypeServiceSpec extends Specification {
         TicketTypeDTO ticketTypeDto1 = Util.createTestTicketTypeDto(1, eventId)
         TicketTypeDTO ticketTypeDto2 = Util.createTestTicketTypeDto(2, eventId)
 
-        ticketTypeRepository.areAllIdsPresent([1, 2], 2) >> true
-
         TicketType ticketType1 = Util.createTestTicketType(1, eventId)
         TicketType ticketType2 = Util.createTestTicketType(2, eventId)
         List<TicketType> ticketTypes = [ticketType1, ticketType2]
@@ -93,8 +91,6 @@ class TicketTypeServiceSpec extends Specification {
         long eventId = 1
 
         TicketTypeDTO ticketTypeDto1 = Util.createTestTicketTypeDto(1, eventId)
-
-        ticketTypeRepository.areAllIdsPresent([1], 1) >> true
 
         TicketType ticketType1 = Util.createTestTicketType(1, eventId)
         TicketType ticketType2 = Util.createTestTicketType(2, eventId)

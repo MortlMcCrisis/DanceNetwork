@@ -4,8 +4,8 @@ import com.mortl.dancenetwork.dto.TicketTypeDTO
 import com.mortl.dancenetwork.entity.Event
 import com.mortl.dancenetwork.entity.Ticket
 import com.mortl.dancenetwork.entity.TicketType
+import com.mortl.dancenetwork.enums.DancingRole
 import com.mortl.dancenetwork.enums.Gender
-import com.mortl.dancenetwork.enums.Role
 
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -63,18 +63,18 @@ class Util {
     }
 
     static def createTestTicket(UUID ownerUuid, TicketType ticketType, Gender gender = Gender.MALE) {
-        createTestTicket(ownerUuid, ticketType, gender, Role.BOTH, LocalDateTime.now())
+        createTestTicket(ownerUuid, ticketType, gender, DancingRole.BOTH, LocalDateTime.now())
     }
 
-    static def createTestTicket(UUID ownerUuid, TicketType ticketType, Role role) {
+    static def createTestTicket(UUID ownerUuid, TicketType ticketType, DancingRole role) {
         createTestTicket(ownerUuid, ticketType, Gender.MALE, role, LocalDateTime.now())
     }
 
     static def createTestTicket(UUID ownerUuid, TicketType ticketType, LocalDateTime buyDate) {
-        createTestTicket(ownerUuid, ticketType, Gender.MALE, Role.BOTH, buyDate)
+        createTestTicket(ownerUuid, ticketType, Gender.MALE, DancingRole.BOTH, buyDate)
     }
 
-    static def createTestTicket(UUID ownerUuid, TicketType ticketType, Gender gender, Role role, LocalDateTime buyDate) {
+    static def createTestTicket(UUID ownerUuid, TicketType ticketType, Gender gender, DancingRole role, LocalDateTime buyDate) {
         new Ticket(
                 null,
                 ownerUuid,

@@ -51,10 +51,6 @@ public class TicketTypeServiceImpl implements ITicketTypeService
     List<Long> newTicketIds = ticketTypeDTOs.stream()
         .map(TicketTypeDTO::id)
         .toList();
-    if (!ticketTypeRepository.areAllIdsPresent(newTicketIds, newTicketIds.size()))
-    {
-      throw new IllegalArgumentException("Not all ticket ids which should be updated are present");
-    }
 
     List<Long> ticketTypeIdsToDelete = ticketTypeRepository.findByEventId(
             ticketTypeDTOs.get(0).eventId()).stream()

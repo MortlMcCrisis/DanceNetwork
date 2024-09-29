@@ -1,7 +1,7 @@
 package com.mortl.dancenetwork.dto;
 
+import com.mortl.dancenetwork.enums.DancingRole;
 import com.mortl.dancenetwork.enums.Gender;
-import com.mortl.dancenetwork.enums.Role;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -15,7 +15,9 @@ public record TicketDTO(
     String country,
     String email,
     String phone,
-    Role role,// TODO change everywhere to dancingRole or something like that. "role" is very generic and will be difficult, when e.g. administration roles are introduced
+    DancingRole dancingRole,
     Gender gender,
-    LocalDateTime buyDate) {
+    LocalDateTime buyDate)
+{
+
 }

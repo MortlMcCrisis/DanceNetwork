@@ -1,17 +1,16 @@
 package com.mortl.dancenetwork.service.impl
 
 import com.mortl.dancenetwork.entity.Event
+import com.mortl.dancenetwork.enums.DancingRole
 import com.mortl.dancenetwork.enums.Gender
-import com.mortl.dancenetwork.enums.Role
 import com.mortl.dancenetwork.repository.EventRepository
 import com.mortl.dancenetwork.repository.TicketRepository
 import com.mortl.dancenetwork.repository.TicketTypeRepository
 import com.mortl.dancenetwork.testutil.Util
 import org.springframework.data.util.Pair
-
-import java.time.LocalDateTime
 import spock.lang.Specification
 
+import java.time.LocalDateTime
 import java.time.YearMonth
 
 class AdminServiceSpec extends Specification {
@@ -25,11 +24,11 @@ class AdminServiceSpec extends Specification {
 
     AdminServiceImpl adminService
 
-    def setup(){
+    def setup() {
         adminService = new AdminServiceImpl(ticketTypeRepository, ticketRepository, eventRepository)
     }
 
-    def "test getTicketsPerMonth"(){
+    def "test getTicketsPerMonth"() {
         given:
         long eventId = 0
         LocalDateTime createdAt = LocalDateTime.of(2023, 6, 1, 0, 0)
@@ -50,7 +49,7 @@ class AdminServiceSpec extends Specification {
         result[YearMonth.of(2023, 8)] == 2L
     }
 
-    def "test getTicketsPerMonth not ticket in one month should be shown as 0"(){
+    def "test getTicketsPerMonth not ticket in one month should be shown as 0"() {
         given:
         long eventId = 0
         LocalDateTime createdAt = LocalDateTime.of(2023, 6, 1, 0, 0)
@@ -70,7 +69,7 @@ class AdminServiceSpec extends Specification {
         result[YearMonth.of(2023, 8)] == 2L
     }
 
-    def "test getTicketsPerMonth sorted ascending"(){
+    def "test getTicketsPerMonth sorted ascending"() {
         given:
         long eventId = 0
         LocalDateTime createdAt = LocalDateTime.of(2023, 6, 1, 0, 0)
@@ -85,14 +84,14 @@ class AdminServiceSpec extends Specification {
         Map<YearMonth, Long> result = adminService.getTicketsPerMonth(createdAt, eventId)
 
         then:
-        YearMonth previousYearMonth  = YearMonth.of(2023, 05)
+        YearMonth previousYearMonth = YearMonth.of(2023, 05)
         result.each { key, value ->
-            assert previousYearMonth < key : "Months are not sorted ascending"
-            previousYearMonth  = key
+            assert previousYearMonth < key: "Months are not sorted ascending"
+            previousYearMonth = key
         }
     }
 
-    def "test getTicketsByGender"(){
+    def "test getTicketsByGender"() {
         given:
         long eventId = 0
 
@@ -113,7 +112,7 @@ class AdminServiceSpec extends Specification {
         result[Gender.OTHER] == 1L
     }
 
-    def "test getTicketsByGender no ticket with gender should be returned as zero"(){
+    def "test getTicketsByGender no ticket with gender should be returned as zero"() {
         given:
         long eventId = 0
 
@@ -132,48 +131,48 @@ class AdminServiceSpec extends Specification {
         result[Gender.OTHER] == 0L
     }
 
-    def "test getTicketsByRole"(){
+    def "test getTicketsByRole"() {
         given:
         long eventId = 0
 
         List<Object[]> ticketCounts = [
-                [Role.LEADER, 1L] as Object[],
-                [Role.FOLLOWER, 2L] as Object[],
-                [Role.BOTH, 3L] as Object[]
+                [DancingRole.LEADER, 1L] as Object[],
+                [DancingRole.FOLLOWER, 2L] as Object[],
+                [DancingRole.BOTH, 3L] as Object[]
         ]
-        ticketRepository.countTicketsByRole(eventId) >> ticketCounts
+        ticketRepository.countTicketsByDancingRole(eventId) >> ticketCounts
 
         when:
-        Map<YearMonth, Long> result = adminService.getTicketsByRole(eventId)
+        Map<YearMonth, Long> result = adminService.getTicketsByDancingRole(eventId)
 
         then:
         result.size() == 3
-        result[Role.LEADER] == 1L
-        result[Role.FOLLOWER] == 2L
-        result[Role.BOTH] == 3L
+        result[DancingRole.LEADER] == 1L
+        result[DancingRole.FOLLOWER] == 2L
+        result[DancingRole.BOTH] == 3L
     }
 
-    def "test getTicketsByRole when no ticket with role should be returned as zero"(){
+    def "test getTicketsByRole when no ticket with role should be returned as zero"() {
         given:
         long eventId = 0
 
         List<Object[]> ticketCounts = [
-                [Role.LEADER, 1L] as Object[]
+                [DancingRole.LEADER, 1L] as Object[]
         ]
-        ticketRepository.countTicketsByRole(eventId) >> ticketCounts
+        ticketRepository.countTicketsByDancingRole(eventId) >> ticketCounts
 
         when:
-        Map<YearMonth, Long> result = adminService.getTicketsByRole(eventId)
+        Map<YearMonth, Long> result = adminService.getTicketsByDancingRole(eventId)
 
         then:
         result.size() == 3
-        result[Role.LEADER] == 1L
-        result[Role.FOLLOWER] == 0L
-        result[Role.BOTH] == 0L
+        result[DancingRole.LEADER] == 1L
+        result[DancingRole.FOLLOWER] == 0L
+        result[DancingRole.BOTH] == 0L
     }
 
     //TODO test when no ticket with ticketType (should be returned as zero in the result, not null)
-    def "test getTicketsByTicketType"(){
+    def "test getTicketsByTicketType"() {
         given:
         long eventId = 0
 
@@ -205,7 +204,7 @@ class AdminServiceSpec extends Specification {
         result[2].getSecond().getSecond() == 100L
     }
 
-    def "test getTicketsByTicketType when no ticket with ticketType should be returned as zero"(){
+    def "test getTicketsByTicketType when no ticket with ticketType should be returned as zero"() {
         given:
         long eventId = 0
 

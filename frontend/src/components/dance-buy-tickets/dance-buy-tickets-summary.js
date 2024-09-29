@@ -80,7 +80,7 @@ const DanceBuyTicketsSummary = ({ticketTypes, formData}) => {
                                <div>Address: {form.address}</div>
                                <div>Country: {form.country}</div>
                                <div>Gender: {form.gender}</div>
-                               <div>Role: {form.role}</div>
+                               <div>Role: {form.dancingRole}</div>
                                <div>E-Mail: {form.email}</div>
                                <div>{form.phone !== undefined && form.phone !== null && form.phone !== '' ? "Phone: " + form.phone : ''}</div>
                              </td>

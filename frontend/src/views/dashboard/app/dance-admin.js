@@ -203,12 +203,12 @@ const DanceAdmin = () => {
     }
 
     const getRoleSeriesForChart=()=> {
-        const roleOrder = ["LEADER", "FOLLOWER", "BOTH"];
-        const roleDistribution = data.roleDistribution;
+        const dancingRoleOrder = ["LEADER", "FOLLOWER", "BOTH"];
+        const dancingRoleDistribution = data.dancingRoleDistribution;
 
-        console.log(roleOrder.map(role => roleDistribution[role]))
+        console.log(dancingRoleOrder.map(dancingRole => dancingRoleDistribution[dancingRole]))
 
-        return roleOrder.map(role => roleDistribution[role]);
+        return dancingRoleOrder.map(dancingRole => dancingRoleDistribution[dancingRole]);
     }
 
     const getRandomColorVariant = () => {
@@ -330,7 +330,7 @@ const DanceAdmin = () => {
                                 </div>
                             </Card.Header>
                             <Card.Body className="text-center">
-                                <Chart options={customerRoles.options} className="col-md-8 col-lg-8" series={data.roleDistribution != undefined ? getRoleSeriesForChart() : []}   width="290" type="pie"/>
+                                <Chart options={customerRoles.options} className="col-md-8 col-lg-8" series={data.dancingRoleDistribution != undefined ? getRoleSeriesForChart() : []}   width="290" type="pie"/>
                             </Card.Body>
                         </Card>
                     </Col>

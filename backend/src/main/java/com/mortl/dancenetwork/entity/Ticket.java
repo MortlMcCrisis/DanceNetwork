@@ -1,7 +1,7 @@
 package com.mortl.dancenetwork.entity;
 
+import com.mortl.dancenetwork.enums.DancingRole;
 import com.mortl.dancenetwork.enums.Gender;
-import com.mortl.dancenetwork.enums.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,14 +15,18 @@ import java.util.UUID;
 
 @Entity
 @Table
-public class Ticket {
+public class Ticket
+{
 
-  public Ticket() {
+  public Ticket()
+  {
   }
 
   public Ticket(Long id, UUID owner, TicketType ticketType, String firstName, String lastName,
-      String address, String country, String email, String phone, Role role, Gender gender,
-      LocalDateTime buyDate) {
+      String address, String country, String email, String phone, DancingRole dancingRole,
+      Gender gender,
+      LocalDateTime buyDate)
+  {
     this.id = id;
     this.owner = owner;
     this.ticketType = ticketType;
@@ -32,7 +36,7 @@ public class Ticket {
     this.country = country;
     this.email = email;
     this.phone = phone;
-    this.role = role;
+    this.dancingRole = dancingRole;
     this.gender = gender;
     this.buyDate = buyDate;
   }
@@ -66,7 +70,7 @@ public class Ticket {
   private String phone;
 
   @Column(nullable = false)
-  private Role role;
+  private DancingRole dancingRole;
 
   @Column(nullable = false)
   private Gender gender;
@@ -74,108 +78,135 @@ public class Ticket {
   @Column(nullable = false)
   private LocalDateTime buyDate;
 
-  public Long getId() {
+  public Long getId()
+  {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(Long id)
+  {
     this.id = id;
   }
 
-  public UUID getOwner() {
+  public UUID getOwner()
+  {
     return owner;
   }
 
-  public void setOwner(UUID owner) {
+  public void setOwner(UUID owner)
+  {
     this.owner = owner;
   }
 
-  public TicketType getTicketType() {
+  public TicketType getTicketType()
+  {
     return ticketType;
   }
 
-  public void setTicketType(TicketType ticketType) {
+  public void setTicketType(TicketType ticketType)
+  {
     this.ticketType = ticketType;
   }
 
-  public String getFirstName() {
+  public String getFirstName()
+  {
     return firstName;
   }
 
-  public void setFirstName(String firstName) {
+  public void setFirstName(String firstName)
+  {
     this.firstName = firstName;
   }
 
-  public String getLastName() {
+  public String getLastName()
+  {
     return lastName;
   }
 
-  public void setLastName(String lastName) {
+  public void setLastName(String lastName)
+  {
     this.lastName = lastName;
   }
 
-  public String getAddress() {
+  public String getAddress()
+  {
     return address;
   }
 
-  public void setAddress(String address) {
+  public void setAddress(String address)
+  {
     this.address = address;
   }
 
-  public String getCountry() {
+  public String getCountry()
+  {
     return country;
   }
 
-  public void setCountry(String country) {
+  public void setCountry(String country)
+  {
     this.country = country;
   }
 
-  public String getEmail() {
+  public String getEmail()
+  {
     return email;
   }
 
-  public void setEmail(String email) {
+  public void setEmail(String email)
+  {
     this.email = email;
   }
 
-  public String getPhone() {
+  public String getPhone()
+  {
     return phone;
   }
 
-  public void setPhone(String phone) {
+  public void setPhone(String phone)
+  {
     this.phone = phone;
   }
 
-  public Role getRole() {
-    return role;
+  public DancingRole getDancingRole()
+  {
+    return dancingRole;
   }
 
-  public void setRole(Role role) {
-    this.role = role;
+  public void setDancingRole(DancingRole dancingRole)
+  {
+    this.dancingRole = dancingRole;
   }
 
-  public Gender getGender() {
+  public Gender getGender()
+  {
     return gender;
   }
 
-  public void setGender(Gender gender) {
+  public void setGender(Gender gender)
+  {
     this.gender = gender;
   }
 
-  public LocalDateTime getBuyDate() {
+  public LocalDateTime getBuyDate()
+  {
     return buyDate;
   }
 
-  public void setBuyDate(LocalDateTime buyDate) {
+  public void setBuyDate(LocalDateTime buyDate)
+  {
     this.buyDate = buyDate;
   }
 
   @Override
-  public boolean equals(Object o) {
-    if (this == o) {
+  public boolean equals(Object o)
+  {
+    if (this == o)
+    {
       return true;
     }
-    if (o == null || getClass() != o.getClass()) {
+    if (o == null || getClass() != o.getClass())
+    {
       return false;
     }
     Ticket ticket = (Ticket) o;
@@ -184,18 +215,20 @@ public class Ticket {
         firstName, ticket.firstName) && Objects.equals(lastName, ticket.lastName)
         && Objects.equals(address, ticket.address) && Objects.equals(country,
         ticket.country) && Objects.equals(email, ticket.email) && Objects.equals(
-        phone, ticket.phone) && role == ticket.role && gender == ticket.gender
+        phone, ticket.phone) && dancingRole == ticket.dancingRole && gender == ticket.gender
         && Objects.equals(buyDate, ticket.buyDate);
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode()
+  {
     return Objects.hash(id, owner, ticketType, firstName, lastName, address, country, email, phone,
-        role, gender, buyDate);
+        dancingRole, gender, buyDate);
   }
 
   @Override
-  public String toString() {
+  public String toString()
+  {
     return "Ticket{" +
         "id=" + id +
         ", owner=" + owner +
@@ -206,7 +239,7 @@ public class Ticket {
         ", country='" + country + '\'' +
         ", email='" + email + '\'' +
         ", phone='" + phone + '\'' +
-        ", role=" + role +
+        ", dancingRole=" + dancingRole +
         ", gender=" + gender +
         ", buyDate=" + buyDate +
         '}';

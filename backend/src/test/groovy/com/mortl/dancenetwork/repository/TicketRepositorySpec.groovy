@@ -3,8 +3,8 @@ package com.mortl.dancenetwork.repository
 import com.mortl.dancenetwork.entity.Event
 import com.mortl.dancenetwork.entity.Ticket
 import com.mortl.dancenetwork.entity.TicketType
+import com.mortl.dancenetwork.enums.DancingRole
 import com.mortl.dancenetwork.enums.Gender
-import com.mortl.dancenetwork.enums.Role
 import com.mortl.dancenetwork.testutil.Util
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
@@ -115,12 +115,12 @@ class TicketRepositorySpec extends Specification {
         given:
         Event event = createTestEvent(LocalDate.now())
         TicketType ticketType = ticketTypeRepository.saveAndFlush(Util.createTestTicketType(event))
-        createTestTicket(UUID.randomUUID(), ticketType, Role.LEADER)
-        createTestTicket(UUID.randomUUID(), ticketType, Role.FOLLOWER)
-        createTestTicket(UUID.randomUUID(), ticketType, Role.BOTH)
+        createTestTicket(UUID.randomUUID(), ticketType, DancingRole.LEADER)
+        createTestTicket(UUID.randomUUID(), ticketType, DancingRole.FOLLOWER)
+        createTestTicket(UUID.randomUUID(), ticketType, DancingRole.BOTH)
 
         when:
-        List<Object[]> result = ticketRepository.countTicketsByRole(event.id)
+        List<Object[]> result = ticketRepository.countTicketsByDancingRole(event.id)
 
         then:
         result.size() == 3
@@ -193,7 +193,7 @@ class TicketRepositorySpec extends Specification {
         ticketRepository.saveAndFlush(Util.createTestTicket(ownerUuid, ticketType, gender))
     }
 
-    def createTestTicket(UUID ownerUuid, TicketType ticketType, Role role) {
+    def createTestTicket(UUID ownerUuid, TicketType ticketType, DancingRole role) {
         ticketRepository.saveAndFlush(Util.createTestTicket(ownerUuid, ticketType, role))
     }
 

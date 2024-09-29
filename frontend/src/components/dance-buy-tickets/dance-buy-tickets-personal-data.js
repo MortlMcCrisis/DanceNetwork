@@ -48,7 +48,7 @@ const DanceBuyTicketsPersonalData = ({formData, handleFormDataChange}) => {
         event.target.value = '';
     }
 
-    event.target.id = 'role';
+    event.target.id = 'dancingRole';
 
     handleFormDataChange(event, idx);
   }
@@ -81,7 +81,7 @@ const DanceBuyTicketsPersonalData = ({formData, handleFormDataChange}) => {
                     {label: 'Female', id: 'female'},
                     {label: 'Other', id: 'other'}]}
                                      onChange={(event) => setGender(event, idx)} required="required"/>
-                  <DanceFormCheckbox id={`role-${idx}`} label="Role" values={[
+                  <DanceFormCheckbox id={`dancingRole-${idx}`} label="Role" values={[
                     {label: 'Leader', id: 'leader'},
                     {label: 'Follower', id: 'follower'},
                     {label: 'Both', id: 'both'}]}

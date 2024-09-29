@@ -170,7 +170,7 @@ const DanceBuyTickets = () => {
                     address: '',
                     country: '',
                     gender: '',
-                    role: '',
+                    dancingRole: '',
                     email: '',
                     phone: '',})
             ));

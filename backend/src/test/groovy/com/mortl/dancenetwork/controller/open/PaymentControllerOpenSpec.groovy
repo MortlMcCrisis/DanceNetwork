@@ -12,7 +12,6 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import spock.lang.Specification
 
-
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @AutoConfigureMockMvc
@@ -41,7 +40,7 @@ class PaymentControllerOpenSpec extends Specification {
                               "address": "asdf@adfg.de",
                               "country": "asdf@adfg.de",
                               "gender": "MALE",
-                              "role": "LEADER",
+                              "dancingRole": "LEADER",
                               "email": "asdf@adfg.de",
                               "phone": ""
                             }
@@ -52,6 +51,6 @@ class PaymentControllerOpenSpec extends Specification {
         mvc.perform(MockMvcRequestBuilders.post("/api/open/v1/payments")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(body))
-        .andExpect (status().isOk())
+                .andExpect(status().isOk())
     }
 }

@@ -50,7 +50,7 @@ const DanceAttendeeTable = () => {
                 email: item.ticket.email,
                 phone: item.ticket.phone,
                 gender: item.ticket.gender,
-                role: item.ticket.role,
+                dancingRole: item.ticket.dancingRole,
                 buyDate: item.ticket.buyDate,
                 ticketType: item.ticketType.name,
             })));
@@ -83,7 +83,7 @@ const DanceAttendeeTable = () => {
             header: 'Gender',
         },
         {
-            accessorKey: 'role',
+            accessorKey: 'dancingRole',
             header: 'Role',
         },
         {
@@ -107,7 +107,7 @@ const DanceAttendeeTable = () => {
                 item.email,
                 item.phone,
                 item.gender,
-                item.role,
+                item.dancingRole,
                 item.buyDate,
                 item.ticketType
             ]),
@@ -124,7 +124,7 @@ const DanceAttendeeTable = () => {
                 'Email': item.email,
                 'Phone': item.phone,
                 'Gender': item.gender,
-                'Role': item.role,
+                'Role': item.dancingRole,
                 'Buy Date': item.buyDate,
                 'Ticket Type': item.ticketType
         })));
@@ -161,7 +161,7 @@ const DanceAttendeeTable = () => {
                                             country: false,
                                             phone: false,
                                             gender: false,
-                                            role: false,
+                                            dancingRole: false,
                                             buyDate: false
                                         },
                                         density: 'compact',
