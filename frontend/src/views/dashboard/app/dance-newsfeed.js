@@ -133,8 +133,8 @@ const DanceNewsfeed=()=>{
                             </Card>
                         </Col>
                         <Col lg="8" md="8">
-                            {newsfeedEntries.map(newsfeedEntry =>
-                                <Col sm={12} key={newsfeedEntry.id}>
+                            {newsfeedEntries.map((newsfeedEntry, idx) =>
+                                <Col sm={12} key={idx}>
                                     <DanceNewsfeedCard newsfeedEntry={newsfeedEntry} creator={creators.find(creator => creator.uuid === newsfeedEntry.creator)}/>
                                 </Col>
                             )}

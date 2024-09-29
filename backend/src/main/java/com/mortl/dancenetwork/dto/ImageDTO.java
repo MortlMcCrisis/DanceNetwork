@@ -1,9 +1,13 @@
 package com.mortl.dancenetwork.dto;
 
-import java.time.LocalDateTime;
+import jakarta.validation.constraints.NotEmpty;
 
-public record ImageDTO (
-  String path/*,
+public record ImageDTO(
+    @NotEmpty
+    String path/*,
   String title,
   LocalDateTime uploadTime*/
-) {}
+)
+{
+
+}
