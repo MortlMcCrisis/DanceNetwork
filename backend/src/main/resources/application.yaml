@@ -29,3 +29,6 @@ token:
 #    web:
 #      exposure:
 #        include: "*"
+
+stripe:
+  api-key: "sk_test_51Q4KA0K0od2j0zBCF5uf3kNMMON4Pk1UlauYuN4jmvU7o3hSrZPJQMzZoP1RdkXRL0SxmHwbYV6XZ5TcYcabf5Su00T5jycRGh"

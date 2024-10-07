@@ -3,6 +3,7 @@ package com.mortl.dancenetwork.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
@@ -13,14 +14,17 @@ import java.util.UUID;
 
 @Entity
 @Table
-public class Event {
+public class Event
+{
 
-  public Event() {
+  public Event()
+  {
   }
 
   public Event(Long id, String name, UUID creator, String email, LocalDate startDate,
       LocalTime startTime, LocalDate endDate, String location, String website, String profileImage,
-      String bannerImage, boolean published, LocalDateTime createdAt) {
+      String bannerImage, boolean published, LocalDateTime createdAt)
+  {
     this.id = id;
     this.creator = creator;
     this.profileImage = profileImage;
@@ -37,7 +41,7 @@ public class Event {
   }
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(nullable = false)
   private Long id;
 
@@ -69,116 +73,145 @@ public class Event {
   @Column(nullable = false)
   private LocalDateTime createdAt;
 
-  public Long getId() {
+  public Long getId()
+  {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(Long id)
+  {
     this.id = id;
   }
 
-  public UUID getCreator() {
+  public UUID getCreator()
+  {
     return creator;
   }
 
-  public void setCreator(UUID creator) {
+  public void setCreator(UUID creator)
+  {
     this.creator = creator;
   }
 
-  public String getProfileImage() {
+  public String getProfileImage()
+  {
     return profileImage;
   }
 
-  public void setProfileImage(String profileImage) {
+  public void setProfileImage(String profileImage)
+  {
     this.profileImage = profileImage;
   }
 
-  public String getBannerImage() {
+  public String getBannerImage()
+  {
     return bannerImage;
   }
 
-  public void setBannerImage(String bannerImage) {
+  public void setBannerImage(String bannerImage)
+  {
     this.bannerImage = bannerImage;
   }
 
-  public LocalDate getStartDate() {
+  public LocalDate getStartDate()
+  {
     return startDate;
   }
 
-  public void setStartDate(LocalDate startDate) {
+  public void setStartDate(LocalDate startDate)
+  {
     this.startDate = startDate;
   }
 
-  public LocalTime getStartTime() {
+  public LocalTime getStartTime()
+  {
     return startTime;
   }
 
-  public void setStartTime(LocalTime startTime) {
+  public void setStartTime(LocalTime startTime)
+  {
     this.startTime = startTime;
   }
 
-  public LocalDate getEndDate() {
+  public LocalDate getEndDate()
+  {
     return endDate;
   }
 
-  public void setEndDate(LocalDate endDate) {
+  public void setEndDate(LocalDate endDate)
+  {
     this.endDate = endDate;
   }
 
-  public String getName() {
+  public String getName()
+  {
     return name;
   }
 
-  public void setName(String name) {
+  public void setName(String name)
+  {
     this.name = name;
   }
 
-  public String getLocation() {
+  public String getLocation()
+  {
     return location;
   }
 
-  public void setLocation(String location) {
+  public void setLocation(String location)
+  {
     this.location = location;
   }
 
-  public String getWebsite() {
+  public String getWebsite()
+  {
     return website;
   }
 
-  public void setWebsite(String website) {
+  public void setWebsite(String website)
+  {
     this.website = website;
   }
 
-  public String getEmail() {
+  public String getEmail()
+  {
     return email;
   }
 
-  public void setEmail(String email) {
+  public void setEmail(String email)
+  {
     this.email = email;
   }
 
-  public boolean isPublished() {
+  public boolean isPublished()
+  {
     return published;
   }
 
-  public void setPublished(boolean published) {
+  public void setPublished(boolean published)
+  {
     this.published = published;
   }
 
-  public LocalDateTime getCreatedAt() {
+  public LocalDateTime getCreatedAt()
+  {
     return createdAt;
   }
 
-  public void setCreatedAt(LocalDateTime createdAt) {
+  public void setCreatedAt(LocalDateTime createdAt)
+  {
     this.createdAt = createdAt;
   }
 
   @Override
-  public boolean equals(Object o) {
-    if (this == o) {
+  public boolean equals(Object o)
+  {
+    if (this == o)
+    {
       return true;
     }
-    if (o == null || getClass() != o.getClass()) {
+    if (o == null || getClass() != o.getClass())
+    {
       return false;
     }
     Event event = (Event) o;
@@ -194,13 +227,15 @@ public class Event {
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode()
+  {
     return Objects.hash(id, creator, profileImage, bannerImage, startDate, startTime, endDate, name,
         location, website, email, published, createdAt);
   }
 
   @Override
-  public String toString() {
+  public String toString()
+  {
     return "Event{" +
         "id=" + id +
         ", creator=" + creator +

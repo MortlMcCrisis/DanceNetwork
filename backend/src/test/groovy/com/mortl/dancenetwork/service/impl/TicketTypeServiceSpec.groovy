@@ -4,6 +4,7 @@ import com.mortl.dancenetwork.dto.TicketTypeDTO
 import com.mortl.dancenetwork.entity.TicketType
 import com.mortl.dancenetwork.mapper.TicketTypeMapper
 import com.mortl.dancenetwork.repository.TicketTypeRepository
+import com.mortl.dancenetwork.service.IStripeService
 import com.mortl.dancenetwork.testutil.Util
 import spock.lang.Specification
 
@@ -13,10 +14,12 @@ class TicketTypeServiceSpec extends Specification {
 
     TicketTypeMapper ticketTypeMapper = Mock()
 
+    IStripeService stripeService = Mock()
+
     TicketTypeServiceImpl ticketTypeService
 
     def setup() {
-        ticketTypeService = new TicketTypeServiceImpl(ticketTypeRepository, ticketTypeMapper)
+        ticketTypeService = new TicketTypeServiceImpl(ticketTypeRepository, ticketTypeMapper, stripeService)
     }
 
     def "test getTicketTypesForEvent no events"() {
@@ -49,18 +52,6 @@ class TicketTypeServiceSpec extends Specification {
         then:
         result.contains(ticketTypeDTO1)
         result.contains(ticketTypeDTO2)
-    }
-
-    def "test addTicketType"() {
-        given:
-        TicketTypeDTO ticketTypeDTO = Mock(TicketTypeDTO)
-
-        when:
-        ticketTypeService.addTicketType(ticketTypeDTO)
-
-        then:
-        1 * ticketTypeMapper.toModel(ticketTypeDTO)
-        1 * ticketTypeRepository.saveAndFlush(_)
     }
 
     def "test updateTicketTypes"() {

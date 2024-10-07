@@ -224,21 +224,24 @@ const DanceBuyTickets = () => {
                             </Col>
                         </Row>
                     </div>
-                    <div id="cart" className={`cart-card-block p-0 col-12 ${state === Util.PAYMENT_STEP ? 'show' : ''}`}>
-                        <Row className="align-item-center">
-                            <Col lg="8">
-                                <DanceBuyTicketsPayment />
-                            </Col>
-                            <Col lg="4">
-                                <DanceBuyTicketsOrderDetails
-                                    state={state}
-                                    selectedTickets={selectedTickets}
-                                    ticketTypes={ticketTypes}
-                                    increaseState={increaseState}
-                                    decreaseState={decreaseState}/>
-                            </Col>
-                        </Row>
-                    </div>
+                    {state === Util.PAYMENT_STEP &&
+                        <div id="cart" className={`cart-card-block p-0 col-12 ${state === Util.PAYMENT_STEP ? 'show' : ''}`}>
+                            <Row className="align-item-center">
+                                <Col lg="8">
+                                    <DanceBuyTicketsPayment
+                                        formData={formData}/>
+                                </Col>
+                                <Col lg="4">
+                                    <DanceBuyTicketsOrderDetails
+                                        state={state}
+                                        selectedTickets={selectedTickets}
+                                        ticketTypes={ticketTypes}
+                                        increaseState={increaseState}
+                                        decreaseState={decreaseState}/>
+                                </Col>
+                            </Row>
+                        </div>
+                    }
                     <div id="cart" className={`cart-card-block p-0 col-12 ${state === Util.FINISH_STEP ? 'show' : ''}`}>
                         <DanceBuyTicketsSummary ticketTypes={ticketTypes} formData={formData} />
                     </div>

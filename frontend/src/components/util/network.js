@@ -16,6 +16,7 @@ export const USERS_OPEN_ENDPOINT = API_OPEN + API_VERSION_V1 + '/users'
 export const USERS_CLOSED_ENDPOINT = API_CLOSED + API_VERSION_V1 + '/users'
 export const ADMIN_CLOSED_ENDPOINT = API_CLOSED + API_VERSION_V1 + '/admin'
 
+//TODO move setMethod to the end of the parameter list to be consistent with putRequest method
 export const fetchData = async (url, setMethod, keycloakToken) => {
   try {
     const response = await fetch(url, keycloakToken == null ? null : {
@@ -24,17 +25,19 @@ export const fetchData = async (url, setMethod, keycloakToken) => {
       },
     });
     if (!response.ok) {
-      throw new Error('Network response was not ok');
+      throw new Error('Network response was not ok')
     }
-    console.log(url);
-    const body = await response.json();
-    console.log(body);
+    console.log(url)
+    const body = await response.json()
+    console.log(body)
 
-    setMethod(body);
+    setMethod(body)
 
-    console.log(body);
+    console.log(body)
+
+    return response
   } catch (error) {
-    console.error('Error fetching data:', error);
+    console.error('Error fetching data:', error)
   }
 };
 
@@ -61,10 +64,11 @@ export const postData = async (url, form, keycloakToken) => {
     throw new Error('Network response was not ok');
   }
 
-  return response;
+  return response
 };
 
-export const putData = async (url, content, keycloakToken) => {
+//TODO use an object as parameter for all methods here
+export const putData = async (url, content, keycloakToken, setMethod) => {
   const request = {
     method: 'PUT',
     headers: {
@@ -74,11 +78,17 @@ export const putData = async (url, content, keycloakToken) => {
     body: content,
   }
   console.log(request);
-  const response = await fetch(url, request);
+  const response = await fetch(url, request)
 
   if (!response.ok) {
-    throw new Error('Network response was not ok');
+    throw new Error('Network response was not ok')
   }
 
-  return response;
+  if(setMethod != null) {
+    const body = await response.json()
+
+    setMethod(body)
+  }
+
+  return response
 }

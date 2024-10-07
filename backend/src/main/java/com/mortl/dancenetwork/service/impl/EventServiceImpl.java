@@ -8,8 +8,10 @@ import com.mortl.dancenetwork.model.User;
 import com.mortl.dancenetwork.repository.EventRepository;
 import com.mortl.dancenetwork.service.IEventService;
 import com.mortl.dancenetwork.service.INewsfeedEntryService;
+import com.mortl.dancenetwork.service.IStripeService;
 import com.mortl.dancenetwork.service.IUserService;
 import com.mortl.dancenetwork.util.NewsfeedFactory;
+import com.stripe.exception.StripeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,13 +25,16 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EventServiceImpl implements IEventService {
+public class EventServiceImpl implements IEventService
+{
 
   private final EventRepository eventRepository;
 
   private final IUserService userService;
 
   private final INewsfeedEntryService newsfeedEntryService;
+
+  private final IStripeService stripeService;
 
   private final NewsfeedFactory newsfeedFactory;
 
@@ -38,11 +43,14 @@ public class EventServiceImpl implements IEventService {
   private final NewsfeedEntryMapper newsfeedEntryMapper;
 
   public EventServiceImpl(EventRepository eventRepository, IUserService userService,
-      INewsfeedEntryService newsfeedEntryService, NewsfeedFactory newsfeedFactory,
-      EventMapper eventMapper, NewsfeedEntryMapper newsfeedEntryMapper) {
+      INewsfeedEntryService newsfeedEntryService, IStripeService stripeService,
+      NewsfeedFactory newsfeedFactory, EventMapper eventMapper,
+      NewsfeedEntryMapper newsfeedEntryMapper)
+  {
     this.eventRepository = eventRepository;
     this.userService = userService;
     this.newsfeedEntryService = newsfeedEntryService;
+    this.stripeService = stripeService;
     this.newsfeedFactory = newsfeedFactory;
     this.eventMapper = eventMapper;
     this.newsfeedEntryMapper = newsfeedEntryMapper;
@@ -55,13 +63,15 @@ public class EventServiceImpl implements IEventService {
     event.setCreator(userService.getNonNullCurrentUser().getUuid());
     event.setCreatedAt(LocalDateTime.now());
     Event savedEvent = eventRepository.saveAndFlush(event);
-    return eventMapper.toDTO(savedEvent);  }
+    return eventMapper.toDTO(savedEvent);
+  }
 
   @Override
   public EventDTO getEvent(Long id)
   {
     Optional<Event> event = eventRepository.findById(id);
-    if(!event.isPresent()){
+    if (!event.isPresent())
+    {
       throw new NotFoundException("Event with id " + id + " not found");
     }
     return eventMapper.toDTO(event.get());
@@ -70,13 +80,15 @@ public class EventServiceImpl implements IEventService {
   @Override
   public List<EventDTO> getPublishedEvents(
       Optional<Integer> maxEntries,
-      Optional<LocalDate> fromDate){
+      Optional<LocalDate> fromDate)
+  {
     Pageable pageable;
     Sort sort = Sort.by(Direction.ASC, "startDate");
-    if(maxEntries.isPresent()) {
-      pageable = PageRequest.of( 0, maxEntries.get(), sort);
-    }
-    else{
+    if (maxEntries.isPresent())
+    {
+      pageable = PageRequest.of(0, maxEntries.get(), sort);
+    } else
+    {
       pageable = Pageable.unpaged(sort);
     }
 
@@ -85,7 +97,8 @@ public class EventServiceImpl implements IEventService {
     return toDTOs(eventRepository.findByPublishedTrueAndStartDateAfter(from, pageable));
   }
 
-  private List<EventDTO> toDTOs(List<Event> events){
+  private List<EventDTO> toDTOs(List<Event> events)
+  {
     return events.stream()
         .map(event -> eventMapper.toDTO(event))
         .toList();
@@ -98,7 +111,8 @@ public class EventServiceImpl implements IEventService {
         .orElseThrow(NotFoundException::new);
 
     UUID uuid = userService.getCurrentUser().get().getUuid();
-    if(!currentEvent.getCreator().equals(uuid)){
+    if (!currentEvent.getCreator().equals(uuid))
+    {
       throw new IllegalAccessException();
     }
 
@@ -123,12 +137,21 @@ public class EventServiceImpl implements IEventService {
         .orElseThrow(NotFoundException::new);
 
     //TODO do this with an annotation on the endpoint
-    if(!event.getCreator().equals(userService.getCurrentUser().get().getUuid())){
+    if (!event.getCreator().equals(userService.getCurrentUser().get().getUuid()))
+    {
       throw new IllegalAccessException();
     }
 
     event.setPublished(true);
     eventRepository.saveAndFlush(event);
+
+    try
+    {
+      stripeService.activateTickets(id);
+    } catch (StripeException e)
+    {
+      throw new RuntimeException(e);
+    }
 
     User currentUser = userService.getNonNullCurrentUser();
 

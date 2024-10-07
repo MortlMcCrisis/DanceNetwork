@@ -21,28 +21,31 @@ import Card from "../../../components/Card";
 
 const DanceTicketManager = () => {
 
-  const { keycloak, initialized } = useKeycloak();
+  const { keycloak, initialized } = useKeycloak()
 
   const { id } = useParams();
 
-  const [ticketTypes, setTicketTypes] = useState([]);
+  const [ticketTypes, setTicketTypes] = useState([])
 
   useEffect(() => {
-    fetchData(`${TICKET_TYPES_OPEN_ENDPOINT}?eventId=${id}`, setTicketTypes);
-  }, []);
+    fetchData(`${TICKET_TYPES_OPEN_ENDPOINT}?eventId=${id}`, setTicketTypes)
+  }, [])
+
+  useEffect(() => {
+    console.log(ticketTypes)
+  }, [ticketTypes])
 
   //TODO only submit when dirty
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
     try {
-      console.log(ticketTypes);
       await putData(TICKET_TYPES_CLOSED_ENDPOINT, JSON.stringify(ticketTypes),
-          keycloak.token);
+          keycloak.token, setTicketTypes)
 
-      toast.success("Event successfully updated");
+      toast.success("Event successfully updated")
     } catch (error) {
-      toast.error("Error updating event");
+      toast.error("Error updating event")
     }
   };
 
@@ -75,6 +78,9 @@ const DanceTicketManager = () => {
   const removeTicketType = (index) => {
     setTicketTypes((prevTicketTypes) => prevTicketTypes.filter((_, i) => i !== index));
   };
+
+  //TODO add info:
+  // - a product can not be deleted when already a ticket was sold (maybe add possibility to deactivate)
 
   return (
       <>

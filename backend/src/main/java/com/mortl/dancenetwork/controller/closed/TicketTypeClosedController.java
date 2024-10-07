@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,27 +14,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/closed/v1/ticket-types")
-public class TicketTypeClosedController {
+public class TicketTypeClosedController
+{
 
   private static final Logger log = LoggerFactory.getLogger(TicketTypeClosedController.class);
 
   private final ITicketTypeService ticketTypeService;
 
-  public TicketTypeClosedController(ITicketTypeService ticketTypeService) {
+  public TicketTypeClosedController(ITicketTypeService ticketTypeService)
+  {
     this.ticketTypeService = ticketTypeService;
   }
 
-  @PostMapping
-  public ResponseEntity<Void> addTicketType(@RequestBody TicketTypeDTO ticketTypeDTO) {
-    log.info("Add ticket type for event  " + ticketTypeDTO.eventId());
-
-    ticketTypeService.addTicketType(ticketTypeDTO);
-
-    return ResponseEntity.ok().build();
-  }
-
   @PutMapping
-  public ResponseEntity<Void> updateTicketTypes(@RequestBody List<TicketTypeDTO> ticketTypeDTOs) {
+  public ResponseEntity<List<TicketTypeDTO>> updateTicketTypes(
+      @RequestBody List<TicketTypeDTO> ticketTypeDTOs)
+  {
     String ids = ticketTypeDTOs.stream()
         .map(TicketTypeDTO::id)
         .map(String::valueOf)
@@ -43,8 +37,6 @@ public class TicketTypeClosedController {
 
     log.info("Updating ticket types " + ids);
 
-    ticketTypeService.updateTicketTypes(ticketTypeDTOs);
-
-    return ResponseEntity.ok().build();
+    return ResponseEntity.ok(ticketTypeService.updateTicketTypes(ticketTypeDTOs));
   }
 }

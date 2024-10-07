@@ -5,41 +5,6 @@ import * as Util from "./dance-buy-tickets-util";
 
 const DanceBuyTicketsSummary = ({ticketTypes, formData}) => {
 
-  const  item_invoice = [
-    {
-      row: '1',
-      name: 'Web Design',
-      desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-      price: '$120.00',
-      quantity: '5',
-      total: '$2,880.00',
-    },
-    {
-      row: '2',
-      name: 'Web Design',
-      desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-      price: '$120.00',
-      quantity: '5',
-      total: '$2,880.00',
-    },
-    {
-      row: '3',
-      name: 'Web Design',
-      desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-      price: '$120.00',
-      quantity: '5',
-      total: '$2,880.00',
-    },
-    {
-      row: '4',
-      name: 'Web Design',
-      desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-      price: '$120.00',
-      quantity: '5',
-      total: '$2,880.00',
-    }
-  ]
-
   return (
    <>
      <Col sm="12">
@@ -80,7 +45,7 @@ const DanceBuyTicketsSummary = ({ticketTypes, formData}) => {
                                <div>Address: {form.address}</div>
                                <div>Country: {form.country}</div>
                                <div>Gender: {form.gender}</div>
-                               <div>Role: {form.dancingRole}</div>
+                               <div>Role: {form.role}</div>
                                <div>E-Mail: {form.email}</div>
                                <div>{form.phone !== undefined && form.phone !== null && form.phone !== '' ? "Phone: " + form.phone : ''}</div>
                              </td>

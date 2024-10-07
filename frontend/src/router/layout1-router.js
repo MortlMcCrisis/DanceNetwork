@@ -34,6 +34,8 @@ import DanceTicketManager from "../views/dashboard/app/dance-ticket-manager";
 import DanceAdmin from "../views/dashboard/app/dance-admin";
 import PrivateRoute from "./private-route";
 import DanceAttendeeTable from "../views/dashboard/app/dance-attendee-table";
+import DanceBuyTicketsInvoice
+  from "../views/dashboard/app/dance-buy-tickets-invoice";
 
 export const Layout1Router = [
   {
@@ -91,6 +93,10 @@ export const Layout1Router = [
   {
     path: "dashboards/app/dance-event-detail/:id/dance-buy-ticket",
     element: <DanceBuyTickets />,
+  },
+  {
+    path: "dashboards/app/dance-event-detail/:id/dance-buy-ticket-invoice",
+    element: <DanceBuyTicketsInvoice />,
   },
   {
     path: "dashboards/app/event-detail",

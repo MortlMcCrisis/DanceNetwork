@@ -4,29 +4,31 @@ import com.mortl.dancenetwork.dto.TicketTypeDTO;
 import com.mortl.dancenetwork.entity.TicketType;
 import com.mortl.dancenetwork.mapper.TicketTypeMapper;
 import com.mortl.dancenetwork.repository.TicketTypeRepository;
+import com.mortl.dancenetwork.service.IStripeService;
 import com.mortl.dancenetwork.service.ITicketTypeService;
+import com.stripe.exception.StripeException;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
 public class TicketTypeServiceImpl implements ITicketTypeService
 {
 
-  private static final Logger log = LoggerFactory.getLogger(TicketTypeServiceImpl.class);
-
   private final TicketTypeRepository ticketTypeRepository;
 
   private final TicketTypeMapper ticketTypeMapper;
 
-  public TicketTypeServiceImpl(TicketTypeRepository ticketTypeRepository,
-      TicketTypeMapper ticketTypeMapper)
+  private final IStripeService stripeService;
+
+  public TicketTypeServiceImpl(
+      TicketTypeRepository ticketTypeRepository,
+      TicketTypeMapper ticketTypeMapper,
+      IStripeService stripeService)
   {
     this.ticketTypeRepository = ticketTypeRepository;
     this.ticketTypeMapper = ticketTypeMapper;
+    this.stripeService = stripeService;
   }
-
 
   @Override
   public List<TicketTypeDTO> getTicketTypesForEvent(Long eventId)
@@ -37,31 +39,37 @@ public class TicketTypeServiceImpl implements ITicketTypeService
   }
 
   @Override
-  public void addTicketType(TicketTypeDTO ticketTypeDTO)
-  {
-    TicketType ticketType = ticketTypeMapper.toModel(ticketTypeDTO);
-    log.debug("Saving ticket: " + ticketType);
-    ticketTypeRepository.saveAndFlush(ticketType);
-  }
-
-  @Override
-  public void updateTicketTypes(List<TicketTypeDTO> ticketTypeDTOs)
+  public List<TicketTypeDTO> updateTicketTypes(List<TicketTypeDTO> ticketTypeDTOs)
   {
     //TODO test with application context test when works with jwt (see EventControllerClosedSpec)
-    List<Long> newTicketIds = ticketTypeDTOs.stream()
+    List<Long> newTicketTypeIds = ticketTypeDTOs.stream()
         .map(TicketTypeDTO::id)
         .toList();
 
     List<Long> ticketTypeIdsToDelete = ticketTypeRepository.findByEventId(
             ticketTypeDTOs.get(0).eventId()).stream()
-        .filter(oldTicketType -> !newTicketIds.contains(oldTicketType.getId()))
+        .filter(oldTicketType -> !newTicketTypeIds.contains(oldTicketType.getId()))
         .map(TicketType::getId)
         .toList();
-    List<TicketType> ticketTypesToAdd = ticketTypeDTOs.stream()
+    List<TicketType> ticketTypesToAddOrUpdate = ticketTypeDTOs.stream()
         .map(ticketTypeDTO -> ticketTypeMapper.toModel(ticketTypeDTO))
         .toList();
 
-    ticketTypeRepository.saveAllAndFlush(ticketTypesToAdd);
+    ticketTypeRepository.saveAllAndFlush(ticketTypesToAddOrUpdate);
+    try
+    {
+      //TODO set event id as url
+      //TODO when event is not published do not sync, to prevent unnecessary traffic
+      stripeService.syncTicketTypes("123", ticketTypesToAddOrUpdate);
+    } catch (StripeException e)
+    {
+      throw new RuntimeException(e);
+    }
+
     ticketTypeRepository.deleteAllById(ticketTypeIdsToDelete);
+
+    return ticketTypesToAddOrUpdate.stream()
+        .map(ticketTypeMapper::toDTO)
+        .toList();
   }
 }
