@@ -2,10 +2,12 @@ package com.mortl.dancenetwork.service.impl;
 
 import com.mortl.dancenetwork.dto.EventDTO;
 import com.mortl.dancenetwork.entity.Event;
+import com.mortl.dancenetwork.entity.TicketType;
 import com.mortl.dancenetwork.mapper.EventMapper;
 import com.mortl.dancenetwork.mapper.NewsfeedEntryMapper;
 import com.mortl.dancenetwork.model.User;
 import com.mortl.dancenetwork.repository.EventRepository;
+import com.mortl.dancenetwork.repository.TicketTypeRepository;
 import com.mortl.dancenetwork.service.IEventService;
 import com.mortl.dancenetwork.service.INewsfeedEntryService;
 import com.mortl.dancenetwork.service.IStripeService;
@@ -42,10 +44,12 @@ public class EventServiceImpl implements IEventService
 
   private final NewsfeedEntryMapper newsfeedEntryMapper;
 
+  private final TicketTypeRepository ticketTypeRepository;
+
   public EventServiceImpl(EventRepository eventRepository, IUserService userService,
       INewsfeedEntryService newsfeedEntryService, IStripeService stripeService,
       NewsfeedFactory newsfeedFactory, EventMapper eventMapper,
-      NewsfeedEntryMapper newsfeedEntryMapper)
+      NewsfeedEntryMapper newsfeedEntryMapper, TicketTypeRepository ticketTypeRepository)
   {
     this.eventRepository = eventRepository;
     this.userService = userService;
@@ -54,6 +58,7 @@ public class EventServiceImpl implements IEventService
     this.newsfeedFactory = newsfeedFactory;
     this.eventMapper = eventMapper;
     this.newsfeedEntryMapper = newsfeedEntryMapper;
+    this.ticketTypeRepository = ticketTypeRepository;
   }
 
   @Override
@@ -87,7 +92,8 @@ public class EventServiceImpl implements IEventService
     if (maxEntries.isPresent())
     {
       pageable = PageRequest.of(0, maxEntries.get(), sort);
-    } else
+    }
+    else
     {
       pageable = Pageable.unpaged(sort);
     }
@@ -133,6 +139,12 @@ public class EventServiceImpl implements IEventService
   @Override
   public void publishEvent(long id) throws NotFoundException, IllegalAccessException
   {
+    List<TicketType> ticketTypes = ticketTypeRepository.findByEventId(id);
+    if (ticketTypes.isEmpty())
+    {
+      throw new IllegalStateException("An Event without tickets can not be published");
+    }
+
     Event event = eventRepository.findById(id)
         .orElseThrow(NotFoundException::new);
 
@@ -147,8 +159,9 @@ public class EventServiceImpl implements IEventService
 
     try
     {
-      stripeService.activateTickets(id);
-    } catch (StripeException e)
+      stripeService.activateTickets(ticketTypes);
+    }
+    catch (StripeException e)
     {
       throw new RuntimeException(e);
     }

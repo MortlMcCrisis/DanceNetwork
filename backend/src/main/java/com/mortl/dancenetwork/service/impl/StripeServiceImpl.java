@@ -2,7 +2,6 @@ package com.mortl.dancenetwork.service.impl;
 
 import com.mortl.dancenetwork.entity.Ticket;
 import com.mortl.dancenetwork.entity.TicketType;
-import com.mortl.dancenetwork.mapper.TicketTypeMapper;
 import com.mortl.dancenetwork.service.IStripeService;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
@@ -45,12 +44,8 @@ public class StripeServiceImpl implements IStripeService
   @Value("${stripe.api-key}")
   private String apiKey;
 
-  private final TicketTypeMapper ticketTypeMapper;
-
-  public StripeServiceImpl(TicketTypeMapper ticketTypeMapper)
+  public StripeServiceImpl()
   {
-    this.ticketTypeMapper = ticketTypeMapper;
-
     Stripe.apiKey = apiKey;
   }
 
@@ -86,11 +81,16 @@ public class StripeServiceImpl implements IStripeService
   }
 
   @Override
-  public void syncTicketTypes(String url, List<TicketType> newTicketTypes)
+  public void syncTicketTypes(List<TicketType> newTicketTypes)
       throws StripeException
   {
+    if (newTicketTypes.isEmpty())
+    {
+      return;
+    }
+
     ProductListParams listParams = ProductListParams.builder()
-        .setUrl(url)
+        .setUrl(newTicketTypes.get(0).getEventUrl())
         .build();
 
     Set<Long> updatedIds = new HashSet<>();
@@ -114,7 +114,7 @@ public class StripeServiceImpl implements IStripeService
         updatedIds.add(newTicketType.getId());
       }
     }
-    createNotExistingProducts(url, newTicketTypes, updatedIds);
+    createNotExistingProducts(newTicketTypes, updatedIds);
   }
 
   private void updateProduct(Product product, TicketType newTicketType, Optional<String> newPriceId)
@@ -189,7 +189,6 @@ public class StripeServiceImpl implements IStripeService
   }
 
   private void createNotExistingProducts(
-      String url,
       List<TicketType> newTicketTypes,
       Set<Long> updatedIds)
       throws StripeException
@@ -204,7 +203,7 @@ public class StripeServiceImpl implements IStripeService
             ticketType.getId(),
             ticketType.getName(),
             ticketType.getDescription(),
-            url,
+            ticketType.getEventUrl(),
             monetaryAmount);
 
         log.info("created product '" + ticketType.getName() + "' with id " + ticketType.getId());
@@ -270,7 +269,8 @@ public class StripeServiceImpl implements IStripeService
     try
     {
       session = Session.create(params);
-    } catch (StripeException e)
+    }
+    catch (StripeException e)
     {
       throw new RuntimeException(e);
     }
@@ -297,11 +297,18 @@ public class StripeServiceImpl implements IStripeService
   }
 
   @Override
-  public void activateTickets(long eventId) throws StripeException
+  public void activateTickets(List<TicketType> ticketTypes)
+      throws StripeException
   {
-    //TODO use url
+    if (ticketTypes.isEmpty())
+    {
+      return;
+    }
+    //TODO do this in one request
+    syncTicketTypes(ticketTypes);
+
     ProductListParams listParams = ProductListParams.builder()
-        .setUrl("123")
+        .setUrl(ticketTypes.get(0).getEventUrl())
         .build();
 
     for (Product product : Product.list(listParams).autoPagingIterable())

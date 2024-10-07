@@ -11,13 +11,16 @@ import java.util.Objects;
 
 @Entity
 @Table
-public class TicketType {
+public class TicketType
+{
 
-  public TicketType() {
+  public TicketType()
+  {
   }
 
   public TicketType(Long id, String name, String description, Float price, Long contingent,
-      Event event) {
+      Event event)
+  {
     this.id = id;
     this.name = name;
     this.description = description;
@@ -48,60 +51,81 @@ public class TicketType {
   @JoinColumn(name = "event_id", nullable = false)
   private Event event;
 
-  public Long getId() {
+  public Long getId()
+  {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(Long id)
+  {
     this.id = id;
   }
 
-  public String getName() {
+  public String getName()
+  {
     return name;
   }
 
-  public void setName(String name) {
+  public void setName(String name)
+  {
     this.name = name;
   }
 
-  public String getDescription() {
+  public String getDescription()
+  {
     return description;
   }
 
-  public void setDescription(String description) {
+  public void setDescription(String description)
+  {
     this.description = description;
   }
 
-  public Float getPrice() {
+  public Float getPrice()
+  {
     return price;
   }
 
-  public void setPrice(Float price) {
+  public void setPrice(Float price)
+  {
     this.price = price;
   }
 
-  public Long getContingent() {
+  public Long getContingent()
+  {
     return contingent;
   }
 
-  public void setContingent(Long contingent) {
+  public void setContingent(Long contingent)
+  {
     this.contingent = contingent;
   }
 
-  public Event getEvent() {
+  public Event getEvent()
+  {
     return event;
   }
 
-  public void setEvent(Event event) {
+  public void setEvent(Event event)
+  {
     this.event = event;
   }
 
+  public String getEventUrl()
+  {
+    //TODO must be parameterised in prod env
+    return "https://dance-network.com/dashboards/app/dance-event-detail/" + id;
+  }
+
   @Override
-  public boolean equals(Object o) {
-    if (this == o) {
+  public boolean equals(Object o)
+  {
+    if (this == o)
+    {
       return true;
     }
-    if (o == null || getClass() != o.getClass()) {
+    if (o == null || getClass() != o.getClass())
+    {
       return false;
     }
     TicketType that = (TicketType) o;
@@ -112,12 +136,14 @@ public class TicketType {
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode()
+  {
     return Objects.hash(id, name, description, price, contingent, event);
   }
 
   @Override
-  public String toString() {
+  public String toString()
+  {
     return "TicketType{" +
         "id=" + id +
         ", name='" + name + '\'' +

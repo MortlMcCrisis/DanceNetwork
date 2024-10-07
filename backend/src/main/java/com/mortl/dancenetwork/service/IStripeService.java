@@ -13,7 +13,7 @@ public interface IStripeService
 
   Map<String, String> sessionStatus(String sessionId) throws StripeException;
 
-  void syncTicketTypes(String url, List<TicketType> newTicketTypes) throws StripeException;
+  void syncTicketTypes(List<TicketType> newTicketTypes) throws StripeException;
 
-  void activateTickets(long eventId) throws StripeException;
+  void activateTickets(List<TicketType> ticketTypes) throws StripeException;
 }

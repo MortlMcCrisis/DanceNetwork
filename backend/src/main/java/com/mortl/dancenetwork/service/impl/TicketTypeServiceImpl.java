@@ -56,16 +56,17 @@ public class TicketTypeServiceImpl implements ITicketTypeService
         .toList();
 
     ticketTypeRepository.saveAllAndFlush(ticketTypesToAddOrUpdate);
-    try
+    if (!ticketTypesToAddOrUpdate.isEmpty() && ticketTypesToAddOrUpdate.get(0).getEvent()
+        .isPublished())
     {
-      //TODO set event id as url
-      //TODO when event is not published do not sync, to prevent unnecessary traffic
-      stripeService.syncTicketTypes("123", ticketTypesToAddOrUpdate);
-    } catch (StripeException e)
-    {
-      throw new RuntimeException(e);
+      try
+      {
+        stripeService.syncTicketTypes(ticketTypesToAddOrUpdate);
+      } catch (StripeException e)
+      {
+        throw new RuntimeException(e);
+      }
     }
-
     ticketTypeRepository.deleteAllById(ticketTypeIdsToDelete);
 
     return ticketTypesToAddOrUpdate.stream()
