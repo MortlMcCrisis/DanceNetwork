@@ -23,9 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import javax.money.Monetary;
 import javax.money.MonetaryAmount;
-import org.javamoney.moneta.Money;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,6 +35,7 @@ public class StripeServiceImpl implements IStripeService
 
   private static final Logger log = LoggerFactory.getLogger(StripeServiceImpl.class);
 
+  //TODO make configurable to be dependent to environment
   private static final String DOMAIN = "http://localhost:3000";
 
   private static final String PRICE_ID = "price_1Q4LKpK0od2j0zBCtJVHWfIA";
@@ -158,22 +157,18 @@ public class StripeServiceImpl implements IStripeService
   private Optional<String> updatePrice(Product product, TicketType newTicketType)
       throws StripeException
   {
-    //TODO change price in ticketType to monetary amount
-    MonetaryAmount monetaryAmount = Money.of(newTicketType.getPrice(),
-        Monetary.getCurrency("EUR"));
-
     if (product.getDefaultPrice() == null)
     {
-      String newPriceId = createPrice(product.getId(), monetaryAmount);
+      String newPriceId = createPrice(product.getId(), newTicketType.getPrice());
       return Optional.of(newPriceId);
     }
     else
     {
       Price oldPrice = Price.retrieve(product.getDefaultPrice());
 
-      if (oldPrice.getUnitAmount() != toPriceInCents(monetaryAmount))
+      if (oldPrice.getUnitAmount() != toPriceInCents(newTicketType.getPrice()))
       {
-        String newPriceId = createPrice(product.getId(), monetaryAmount);
+        String newPriceId = createPrice(product.getId(), newTicketType.getPrice());
         PriceUpdateParams params =
             PriceUpdateParams.builder()
                 .setActive(false)
@@ -197,14 +192,12 @@ public class StripeServiceImpl implements IStripeService
     {
       if (!updatedIds.contains(ticketType.getId()))
       {
-        MonetaryAmount monetaryAmount = Money.of(ticketType.getPrice(),
-            Monetary.getCurrency("EUR"));
         createProduct(
             ticketType.getId(),
             ticketType.getName(),
             ticketType.getDescription(),
             ticketType.getEventUrl(),
-            monetaryAmount);
+            ticketType.getPrice());
 
         log.info("created product '" + ticketType.getName() + "' with id " + ticketType.getId());
       }

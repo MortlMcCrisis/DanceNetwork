@@ -1,6 +1,7 @@
 package com.mortl.dancenetwork.entity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -8,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.util.Objects;
+import javax.money.MonetaryAmount;
 
 @Entity
 @Table
@@ -18,7 +20,7 @@ public class TicketType
   {
   }
 
-  public TicketType(Long id, String name, String description, Float price, Long contingent,
+  public TicketType(Long id, String name, String description, MonetaryAmount price, Long contingent,
       Event event)
   {
     this.id = id;
@@ -41,7 +43,9 @@ public class TicketType
   private String description;
 
   @Column(nullable = false)
-  private Float price;
+  @Convert(converter = MonetaryAmountConverter.class)
+  //TODO Handle currency properly
+  private MonetaryAmount price;
 
   @Column(nullable = false)
   private Long contingent;
@@ -81,12 +85,12 @@ public class TicketType
     this.description = description;
   }
 
-  public Float getPrice()
+  public MonetaryAmount getPrice()
   {
     return price;
   }
 
-  public void setPrice(Float price)
+  public void setPrice(MonetaryAmount price)
   {
     this.price = price;
   }

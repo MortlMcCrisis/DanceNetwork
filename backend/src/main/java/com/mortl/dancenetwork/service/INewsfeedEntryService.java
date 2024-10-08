@@ -1,16 +1,18 @@
 package com.mortl.dancenetwork.service;
 
-import com.mortl.dancenetwork.dto.NewsfeedEntryDTO;
+import com.mortl.dancenetwork.entity.NewsfeedEntry;
 import java.util.List;
 import javax.ws.rs.NotFoundException;
 
-public interface INewsfeedEntryService {
+public interface INewsfeedEntryService
+{
 
-  List<NewsfeedEntryDTO> getNewsfeedEntries();
+  List<NewsfeedEntry> getNewsfeedEntries();
 
-  NewsfeedEntryDTO createNewsfeedEntry(NewsfeedEntryDTO newsfeedEntry);
+  NewsfeedEntry createNewsfeedEntry(NewsfeedEntry newsfeedEntry);
 
-  NewsfeedEntryDTO updateNewsfeedEntry(NewsfeedEntryDTO newsfeedEntry) throws NotFoundException, IllegalAccessException;
+  NewsfeedEntry updateNewsfeedEntry(NewsfeedEntry newsfeedEntry)
+      throws NotFoundException, IllegalAccessException;
 
   void deleteNewsfeedEntry(Long id);
 }

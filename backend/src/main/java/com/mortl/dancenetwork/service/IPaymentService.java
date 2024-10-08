@@ -9,6 +9,4 @@ public interface IPaymentService
   Map<String, String> createSession(PaymentRequestDTO ticketRequest);
 
   Map<String, String> sessionStatus(String sessionId);
-
-  void doPayment(PaymentRequestDTO paymentRequestDTO);
 }

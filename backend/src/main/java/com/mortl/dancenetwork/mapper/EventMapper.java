@@ -6,10 +6,12 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
-public interface EventMapper {
+public interface EventMapper
+{
 
   EventDTO toDTO(Event event);
 
+  //TODO rename all to toEntity
   @Mapping(target = "createdAt", ignore = true)
-  Event toModel(EventDTO eventDTO);
+  Event toEntity(EventDTO eventDTO);
 }

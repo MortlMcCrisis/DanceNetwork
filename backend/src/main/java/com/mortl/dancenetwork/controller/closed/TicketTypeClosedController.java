@@ -1,6 +1,8 @@
 package com.mortl.dancenetwork.controller.closed;
 
 import com.mortl.dancenetwork.dto.TicketTypeDTO;
+import com.mortl.dancenetwork.entity.TicketType;
+import com.mortl.dancenetwork.mapper.TicketTypeMapper;
 import com.mortl.dancenetwork.service.ITicketTypeService;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,9 +23,13 @@ public class TicketTypeClosedController
 
   private final ITicketTypeService ticketTypeService;
 
-  public TicketTypeClosedController(ITicketTypeService ticketTypeService)
+  private final TicketTypeMapper ticketTypeMapper;
+
+  public TicketTypeClosedController(ITicketTypeService ticketTypeService,
+      TicketTypeMapper ticketTypeMapper)
   {
     this.ticketTypeService = ticketTypeService;
+    this.ticketTypeMapper = ticketTypeMapper;
   }
 
   @PutMapping
@@ -37,6 +43,10 @@ public class TicketTypeClosedController
 
     log.info("Updating ticket types " + ids);
 
-    return ResponseEntity.ok(ticketTypeService.updateTicketTypes(ticketTypeDTOs));
+    List<TicketType> ticketTypes = ticketTypeService.updateTicketTypes(
+        ticketTypeDTOs.stream()
+            .map(ticketTypeMapper::toEntity)
+            .toList());
+    return ResponseEntity.ok(ticketTypes.stream().map(ticketTypeMapper::toDTO).toList());
   }
 }

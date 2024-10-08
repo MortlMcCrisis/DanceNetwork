@@ -1,9 +1,7 @@
 package com.mortl.dancenetwork.service.impl;
 
-import com.mortl.dancenetwork.dto.EventDTO;
 import com.mortl.dancenetwork.entity.Event;
 import com.mortl.dancenetwork.entity.TicketType;
-import com.mortl.dancenetwork.mapper.EventMapper;
 import com.mortl.dancenetwork.mapper.NewsfeedEntryMapper;
 import com.mortl.dancenetwork.model.User;
 import com.mortl.dancenetwork.repository.EventRepository;
@@ -40,7 +38,7 @@ public class EventServiceImpl implements IEventService
 
   private final NewsfeedFactory newsfeedFactory;
 
-  private final EventMapper eventMapper;
+  //private final EventMapper eventMapper;
 
   private final NewsfeedEntryMapper newsfeedEntryMapper;
 
@@ -48,42 +46,35 @@ public class EventServiceImpl implements IEventService
 
   public EventServiceImpl(EventRepository eventRepository, IUserService userService,
       INewsfeedEntryService newsfeedEntryService, IStripeService stripeService,
-      NewsfeedFactory newsfeedFactory, EventMapper eventMapper,
-      NewsfeedEntryMapper newsfeedEntryMapper, TicketTypeRepository ticketTypeRepository)
+      NewsfeedFactory newsfeedFactory, NewsfeedEntryMapper newsfeedEntryMapper,
+      TicketTypeRepository ticketTypeRepository)
   {
     this.eventRepository = eventRepository;
     this.userService = userService;
     this.newsfeedEntryService = newsfeedEntryService;
     this.stripeService = stripeService;
     this.newsfeedFactory = newsfeedFactory;
-    this.eventMapper = eventMapper;
     this.newsfeedEntryMapper = newsfeedEntryMapper;
     this.ticketTypeRepository = ticketTypeRepository;
   }
 
   @Override
-  public EventDTO createEvent(EventDTO eventDTO)
+  public Event createEvent(Event event)
   {
-    Event event = eventMapper.toModel(eventDTO);
     event.setCreator(userService.getNonNullCurrentUser().getUuid());
     event.setCreatedAt(LocalDateTime.now());
-    Event savedEvent = eventRepository.saveAndFlush(event);
-    return eventMapper.toDTO(savedEvent);
+    return eventRepository.saveAndFlush(event);
   }
 
   @Override
-  public EventDTO getEvent(Long id)
+  public Event getEvent(Long id)
   {
-    Optional<Event> event = eventRepository.findById(id);
-    if (!event.isPresent())
-    {
-      throw new NotFoundException("Event with id " + id + " not found");
-    }
-    return eventMapper.toDTO(event.get());
+    return eventRepository.findById(id)
+        .orElseThrow(() -> new NotFoundException("Event with id " + id + " not found"));
   }
 
   @Override
-  public List<EventDTO> getPublishedEvents(
+  public List<Event> getPublishedEvents(
       Optional<Integer> maxEntries,
       Optional<LocalDate> fromDate)
   {
@@ -100,20 +91,13 @@ public class EventServiceImpl implements IEventService
 
     LocalDate from = fromDate.orElseGet(() -> LocalDate.now());
 
-    return toDTOs(eventRepository.findByPublishedTrueAndStartDateAfter(from, pageable));
-  }
-
-  private List<EventDTO> toDTOs(List<Event> events)
-  {
-    return events.stream()
-        .map(event -> eventMapper.toDTO(event))
-        .toList();
+    return eventRepository.findByPublishedTrueAndStartDateAfter(from, pageable);
   }
 
   @Override
-  public EventDTO updateEvent(EventDTO event) throws NotFoundException, IllegalAccessException
+  public Event updateEvent(Event event) throws NotFoundException, IllegalAccessException
   {
-    Event currentEvent = eventRepository.findById(event.id())
+    Event currentEvent = eventRepository.findById(event.getId())
         .orElseThrow(NotFoundException::new);
 
     UUID uuid = userService.getCurrentUser().get().getUuid();
@@ -122,18 +106,18 @@ public class EventServiceImpl implements IEventService
       throw new IllegalAccessException();
     }
 
-    currentEvent.setName(event.name());
-    currentEvent.setEmail(event.email());
-    currentEvent.setStartDate(event.startDate());
-    currentEvent.setStartTime(event.startTime());
-    currentEvent.setEndDate(event.endDate());
-    currentEvent.setLocation(event.location());
-    currentEvent.setWebsite(event.website());
-    currentEvent.setProfileImage(event.profileImage());
-    currentEvent.setBannerImage(event.bannerImage());
+    currentEvent.setName(event.getName());
+    currentEvent.setEmail(event.getEmail());
+    currentEvent.setStartDate(event.getStartDate());
+    currentEvent.setStartTime(event.getStartTime());
+    currentEvent.setEndDate(event.getEndDate());
+    currentEvent.setLocation(event.getLocation());
+    currentEvent.setWebsite(event.getWebsite());
+    currentEvent.setProfileImage(event.getProfileImage());
+    currentEvent.setBannerImage(event.getBannerImage());
     currentEvent = eventRepository.save(currentEvent);
 
-    return eventMapper.toDTO(currentEvent);
+    return currentEvent;
   }
 
   @Override
@@ -168,7 +152,7 @@ public class EventServiceImpl implements IEventService
 
     User currentUser = userService.getNonNullCurrentUser();
 
-    newsfeedEntryService.createNewsfeedEntry(newsfeedEntryMapper.toDTO(
-        newsfeedFactory.createEventPublishedNewsfeedEntry(currentUser, event)));
+    newsfeedEntryService.createNewsfeedEntry(
+        newsfeedFactory.createEventPublishedNewsfeedEntry(currentUser, event));
   }
 }

@@ -1,12 +1,14 @@
 package com.mortl.dancenetwork.testutil
 
-import com.mortl.dancenetwork.dto.TicketTypeDTO
+
 import com.mortl.dancenetwork.entity.Event
 import com.mortl.dancenetwork.entity.Ticket
 import com.mortl.dancenetwork.entity.TicketType
 import com.mortl.dancenetwork.enums.DancingRole
 import com.mortl.dancenetwork.enums.Gender
+import org.javamoney.moneta.Money
 
+import javax.money.Monetary
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -37,20 +39,9 @@ class Util {
                 id,
                 "name",
                 "description",
-                100.00f,
+                Money.of(100, Monetary.getCurrency("EUR")),
                 100,
                 createTestEvent(true, eventId)
-        )
-    }
-
-    static def createTestTicketTypeDto(long id, long eventId) {
-        new TicketTypeDTO(
-                id,
-                "name",
-                "description",
-                100.00f,
-                100,
-                eventId
         )
     }
 
@@ -59,7 +50,7 @@ class Util {
     }
 
     static def createTestTicketType(Long id, String name, long contingent, Event event) {
-        new TicketType(id, name, "Cranc ticket", 100.00, contingent, event)
+        new TicketType(id, name, "Cranc ticket", Money.of(100, Monetary.getCurrency("EUR")), contingent, event)
     }
 
     static def createTestTicket(UUID ownerUuid, TicketType ticketType, Gender gender = Gender.MALE) {

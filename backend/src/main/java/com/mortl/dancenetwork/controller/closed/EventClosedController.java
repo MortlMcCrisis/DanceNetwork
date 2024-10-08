@@ -1,6 +1,8 @@
 package com.mortl.dancenetwork.controller.closed;
 
 import com.mortl.dancenetwork.dto.EventDTO;
+import com.mortl.dancenetwork.entity.Event;
+import com.mortl.dancenetwork.mapper.EventMapper;
 import com.mortl.dancenetwork.service.IEventService;
 import jakarta.validation.Valid;
 import java.net.URI;
@@ -18,36 +20,51 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/closed/v1/events")
-public class EventClosedController {
+public class EventClosedController
+{
 
   private static final Logger log = LoggerFactory.getLogger(EventClosedController.class);
 
   private final IEventService eventService;
 
-  public EventClosedController(IEventService eventService) {
+  private final EventMapper eventMapper;
+
+  public EventClosedController(IEventService eventService, EventMapper eventMapper)
+  {
     this.eventService = eventService;
+    this.eventMapper = eventMapper;
   }
 
   @PostMapping
-  public ResponseEntity<EventDTO> createEvent(@Valid @RequestBody EventDTO eventDTO) throws URISyntaxException {
-    EventDTO savedEvent = eventService.createEvent(eventDTO);
-    return ResponseEntity.created(new URI("/api/v1/events/" + savedEvent.id())).body(savedEvent);
+  public ResponseEntity<EventDTO> createEvent(@Valid @RequestBody EventDTO eventDTO)
+      throws URISyntaxException
+  {
+    Event savedEvent = eventService.createEvent(eventMapper.toEntity(eventDTO));
+    return ResponseEntity
+        .created(new URI("/api/v1/events/" + savedEvent.getId()))
+        .body(eventMapper.toDTO(savedEvent));
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<EventDTO> updateEvent(@PathVariable Long id, @Valid @RequestBody EventDTO eventDTO)
-      throws NotFoundException, IllegalAccessException {
+  public ResponseEntity<EventDTO> updateEvent(@PathVariable Long id,
+      @Valid @RequestBody EventDTO eventDTO)
+      throws NotFoundException, IllegalAccessException
+  {
     log.info("saving event with id " + id);
-    if( id != eventDTO.id()){
-      throw new IllegalArgumentException("id in path (" + id + ") does not match the id of the object (" + eventDTO.id() + ").");
+    if (id != eventDTO.id())
+    {
+      throw new IllegalArgumentException(
+          "id in path (" + id + ") does not match the id of the object (" + eventDTO.id() + ").");
     }
 
-    return ResponseEntity.ok(eventService.updateEvent(eventDTO));
+    Event updateEvent = eventService.updateEvent(eventMapper.toEntity(eventDTO));
+    return ResponseEntity.ok(eventMapper.toDTO(updateEvent));
   }
 
   @PutMapping("/{id}/publish")
   public ResponseEntity<Void> publishEvent(@PathVariable Long id)
-      throws NotFoundException, IllegalAccessException{
+      throws NotFoundException, IllegalAccessException
+  {
     log.info("Publishing event with id " + id);
 
     eventService.publishEvent(id);

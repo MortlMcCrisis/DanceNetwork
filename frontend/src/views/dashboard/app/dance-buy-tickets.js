@@ -82,48 +82,11 @@ const DanceBuyTickets = () => {
         if(state <= Util.FINISH_STEP) {
             validateAndSetState(state + 1)
         }
-
-        if(state == Util.PAYMENT_STEP){
-            triggerPayment()
-        }
     }
     const decreaseState = () => {
         if(state >= Util.TICKET_STEP) {
             setState(state - 1)
         }
-    }
-
-    const triggerPayment = () => {
-        (async () => {
-            try {
-                let tickets = [];
-                formData.forEach(obj => {
-                    const newObj = {};
-                    for (const key in obj) {
-                        if (key !== 'ticketTypeName' && key !== 'emailConfirm') {
-                            newObj[key] = obj[key];
-                        }
-                    }
-                    tickets.push(newObj);
-                });
-                let requestData = {
-                    tickets: tickets
-                }
-
-                console.log(requestData);
-
-                const response = await postData(PAYMENTS_OPEN_ENDPOINT, requestData, keycloak.token)
-                if (response.ok) {
-                    toast.success("Successfully bought tickets!");
-                }
-                else{
-                    toast.error("Error while processing your request!");
-                }
-
-            } catch (error) {
-                console.error('Fehler:', error);
-            }
-        })();
     }
 
     const [ticketTypes, setTicketTypes] = useState([]);

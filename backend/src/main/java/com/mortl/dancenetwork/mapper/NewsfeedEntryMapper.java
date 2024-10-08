@@ -5,9 +5,10 @@ import com.mortl.dancenetwork.entity.NewsfeedEntry;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface NewsfeedEntryMapper {
+public interface NewsfeedEntryMapper
+{
 
   NewsfeedEntryDTO toDTO(NewsfeedEntry newsfeedEntry);
 
-  NewsfeedEntry toModel(NewsfeedEntryDTO newsfeedEntryDTO);
+  NewsfeedEntry toEntity(NewsfeedEntryDTO newsfeedEntryDTO);
 }

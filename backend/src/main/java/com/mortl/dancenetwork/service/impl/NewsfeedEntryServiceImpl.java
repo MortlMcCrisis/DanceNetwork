@@ -1,8 +1,6 @@
 package com.mortl.dancenetwork.service.impl;
 
-import com.mortl.dancenetwork.dto.NewsfeedEntryDTO;
 import com.mortl.dancenetwork.entity.NewsfeedEntry;
-import com.mortl.dancenetwork.mapper.NewsfeedEntryMapper;
 import com.mortl.dancenetwork.model.User;
 import com.mortl.dancenetwork.repository.NewsfeedEntryRepository;
 import com.mortl.dancenetwork.service.INewsfeedEntryService;
@@ -11,60 +9,61 @@ import javax.ws.rs.NotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NewsfeedEntryServiceImpl implements INewsfeedEntryService {
+public class NewsfeedEntryServiceImpl implements INewsfeedEntryService
+{
 
   private final NewsfeedEntryRepository newsfeedEntryRepository;
 
   private final UserServiceImpl userService;
 
-  private final NewsfeedEntryMapper newsfeedEntryMapper;
-
   public NewsfeedEntryServiceImpl(NewsfeedEntryRepository newsfeedEntryRepository,
-      UserServiceImpl userService, NewsfeedEntryMapper newsfeedEntryMapper) {
+      UserServiceImpl userService)
+  {
     this.newsfeedEntryRepository = newsfeedEntryRepository;
     this.userService = userService;
-    this.newsfeedEntryMapper = newsfeedEntryMapper;
   }
 
   @Override
-  public List<NewsfeedEntryDTO> getNewsfeedEntries() {
-    return newsfeedEntryRepository.findAllOrderByCreationDateDesc().stream()
-        .map(dto -> newsfeedEntryMapper.toDTO(dto))
-        .toList();
+  public List<NewsfeedEntry> getNewsfeedEntries()
+  {
+    return newsfeedEntryRepository.findAllOrderByCreationDateDesc();
   }
 
   @Override
-  public NewsfeedEntryDTO createNewsfeedEntry(NewsfeedEntryDTO newsfeedEntryDTO) {
-    NewsfeedEntry newsfeedEntry = newsfeedEntryMapper.toModel(newsfeedEntryDTO);
+  public NewsfeedEntry createNewsfeedEntry(NewsfeedEntry newsfeedEntry)
+  {
     newsfeedEntry.setCreator(userService.getNonNullCurrentUser().getUuid());
     NewsfeedEntry savedNewsfeedEntry = newsfeedEntryRepository.saveAndFlush(
         newsfeedEntry);
 
-    return newsfeedEntryMapper.toDTO(savedNewsfeedEntry);
+    return savedNewsfeedEntry;
   }
 
   @Override
-  public NewsfeedEntryDTO updateNewsfeedEntry(NewsfeedEntryDTO newsfeedEntry)
-      throws NotFoundException, IllegalAccessException {
-    NewsfeedEntry currentNewsfeedEntry = newsfeedEntryRepository.findById(newsfeedEntry.id())
+  public NewsfeedEntry updateNewsfeedEntry(NewsfeedEntry newsfeedEntry)
+      throws NotFoundException, IllegalAccessException
+  {
+    NewsfeedEntry currentNewsfeedEntry = newsfeedEntryRepository.findById(newsfeedEntry.getId())
         .orElseThrow(NotFoundException::new);
 
-    if(currentNewsfeedEntry.getCreator() != userService.getCurrentUser().get().getUuid()){
+    if (currentNewsfeedEntry.getCreator() != userService.getCurrentUser().get().getUuid())
+    {
       throw new IllegalAccessException();
     }
 
     User currentUser = userService.getNonNullCurrentUser();
     currentNewsfeedEntry.setCreator(currentUser.getUuid());
-    currentNewsfeedEntry.setType(newsfeedEntry.type());
-    currentNewsfeedEntry.setTextField(newsfeedEntry.textField());
-    currentNewsfeedEntry.setCreationDate(newsfeedEntry.creationDate());
+    currentNewsfeedEntry.setType(newsfeedEntry.getType());
+    currentNewsfeedEntry.setTextField(newsfeedEntry.getTextField());
+    currentNewsfeedEntry.setCreationDate(newsfeedEntry.getCreationDate());
     currentNewsfeedEntry = newsfeedEntryRepository.save(currentNewsfeedEntry);
 
-    return newsfeedEntryMapper.toDTO(currentNewsfeedEntry);
+    return currentNewsfeedEntry;
   }
 
   @Override
-  public void deleteNewsfeedEntry(Long id) {
+  public void deleteNewsfeedEntry(Long id)
+  {
     newsfeedEntryRepository.deleteById(id);
   }
 }

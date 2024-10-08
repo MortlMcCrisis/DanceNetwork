@@ -1,14 +1,14 @@
 package com.mortl.dancenetwork.service;
 
-import com.mortl.dancenetwork.dto.UserDTO;
 import com.mortl.dancenetwork.model.User;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface IUserService {
+public interface IUserService
+{
 
-  UserDTO updateUser(UserDTO userDTO);
+  User updateUser(User user);
 
   List<User> getAllUsers();
 
@@ -16,5 +16,5 @@ public interface IUserService {
 
   User getNonNullCurrentUser();
 
-  List<UserDTO> getUsers(List<UUID> userUUIDs);
+  List<User> getUsers(List<UUID> userUUIDs);
 }

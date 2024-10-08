@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
+import javax.money.Monetary;
+import org.javamoney.moneta.Money;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -93,21 +95,21 @@ public class ShowDataCreator
         null,
         "FULLPASS",
         "All workshops, all parties on all dance floors, and the Kizomba social room.",
-        121.00f,
+        Money.of(121.00f, Monetary.getCurrency("EUR")),
         100L,
         bachaturo));
     createTicketType(bachaturo, new TicketType(
         null,
         "GROUP FULLPASS (with promocode)",
         "All workshops, all parties on all dance floors, and the Kizomba social room.",
-        114.00f,
+        Money.of(114.00f, Monetary.getCurrency("EUR")),
         100L,
         bachaturo));
     createTicketType(bachaturo, new TicketType(
         null,
         "Partypass",
         "All Parties and Kizomba Social Room",
-        85.00f,
+        Money.of(85.00f, Monetary.getCurrency("EUR")),
         100L,
         bachaturo));
 
@@ -131,28 +133,28 @@ public class ShowDataCreator
         null,
         "FULLPASS",
         "Includes all Workshops & all Parties",
-        109.00f,
+        Money.of(109, Monetary.getCurrency("EUR")),
         100L,
         bachatation));
     createTicketType(bachatation, new TicketType(
         null,
         "MASTER CLASS",
         "Master Class with Kike & Nahir",
-        109.00f,
+        Money.of(109, Monetary.getCurrency("EUR")),
         100L,
         bachatation));
     createTicketType(bachatation, new TicketType(
         null,
         "VIP Party-Pass",
         "All 4 Parties wit Pre-Party-Workshop",
-        45.00f,
+        Money.of(45, Monetary.getCurrency("EUR")),
         100L,
         bachatation));
     createTicketType(bachatation, new TicketType(
         null,
         "PARTY-PASS",
         "All 4 Parties",
-        29.00f,
+        Money.of(29, Monetary.getCurrency("EUR")),
         100L,
         bachatation));
 
@@ -176,77 +178,77 @@ public class ShowDataCreator
         null,
         "Fullpass - BachataZoukRoyals- Leader",
         "Access to all Workshops (as a leader,and social rooms, including shows",
-        135.00f,
+        Money.of(135, Monetary.getCurrency("EUR")),
         100L,
         bachataRoyal));
     createTicketType(bachataRoyal, new TicketType(
         null,
         "Fullpass - BachataZoukRoyals - Follower",
         "Full access to all Workshops (as a follower,, party and shows",
-        135.00f,
+        Money.of(135, Monetary.getCurrency("EUR")),
         100L,
         bachataRoyal));
     createTicketType(bachataRoyal, new TicketType(
         null,
         "Party Pass",
         "This pass will give you access to the Friday, Saturday night socials and sunday day & night social.<br/><br/>only limited amount available! Last year, we were sold out, and we expect the same to happen this year.",
-        65.00f,
+        Money.of(65, Monetary.getCurrency("EUR")),
         100L,
         bachataRoyal));
     createTicketType(bachataRoyal, new TicketType(
         null,
         "Friday Day Pass",
         "This Day Pass includes all workshops, shows and social on Friday the 25th of October 2024.<br/>On Friday the workshops will start at 6 p.m.<br/>After the pre party workshops at 9 p.m. the social will start at 10 p.m.<br/>The shows will be around midnight ",
-        35.00f,
+        Money.of(35, Monetary.getCurrency("EUR")),
         100L,
         bachataRoyal));
     createTicketType(bachataRoyal, new TicketType(
         null,
         "Saturday Day Pass- Leader",
         "This Day Pass, for Leader, includes all workshops, shows and social on Saturday the 26th of October 2024.<br/>On Saturday the workshops will start at 2 p.m.<br/>The day social will start at 6 p.m. and the night social will start at 10 p.m.<br/>The shows will be around midnight.",
-        65.00f,
+        Money.of(65, Monetary.getCurrency("EUR")),
         100L,
         bachataRoyal));
     createTicketType(bachataRoyal, new TicketType(
         null,
         "Saturday Day Pass - Follower",
         "This Day Pass, for Follower, includes all workshops, shows and social on Saturday the 26th of October 2024.<br/>On Saturday the workshops will start at 2 p.m.<br/>The day social will start at 6 p.m. and the night social will start at 10 p.m.<br/>The shows will be around midnight.",
-        65.00f,
+        Money.of(65, Monetary.getCurrency("EUR")),
         100L,
         bachataRoyal));
     createTicketType(bachataRoyal, new TicketType(
         null,
         "Sunday Day Pass - Leader",
         "This Day Pass, for Leader, includes all workshops and social on Sunday the 27th of October 2024.<br/>On Sunday the workshops will start at 1 p.m.<br/>The day social will start at 4 p.m. until midnight",
-        45.00f,
+        Money.of(45, Monetary.getCurrency("EUR")),
         100L,
         bachataRoyal));
     createTicketType(bachataRoyal, new TicketType(
         null,
         "Sunday Day Pass - Follower",
         "This Day Pass, for Follower, includes all workshops and social on Sunday the 27th of October 2024.<br/>On Sunday the workshops will start at 1 p.m.<br/>The day social will start at 4 p.m. until midnight",
-        45.00f,
+        Money.of(45, Monetary.getCurrency("EUR")),
         100L,
         bachataRoyal));
     createTicketType(bachataRoyal, new TicketType(
         null,
         "Friday night social",
         "The Friday night ticket for the 25th of October includes the social starting at 10 p.m. and the shows around midnight",
-        25.0f,
+        Money.of(25, Monetary.getCurrency("EUR")),
         100L,
         bachataRoyal));
     createTicketType(bachataRoyal, new TicketType(
         null,
         "Saturday night social",
         "The Saturday night ticket for the 26th of October includes the social starting at 10 p.m. and the shows around midnight",
-        30.0f,
+        Money.of(30, Monetary.getCurrency("EUR")),
         100L,
         bachataRoyal));
     createTicketType(bachataRoyal, new TicketType(
         null,
         "Sunday social ticket",
         "The Sunday social ticket for the 27th of October includes the day social starting at 4 p.m. till midnight",
-        15.0f,
+        Money.of(15, Monetary.getCurrency("EUR")),
         100L,
         bachataRoyal));
 
@@ -285,9 +287,9 @@ public class ShowDataCreator
           null,
           getRandomLoremIpsum(5, 20),
           loremIpsum.getWords(new Random().nextInt(1, 10)),
-          (BigDecimal.valueOf(new Random().nextFloat(15, 250))
+          Money.of((BigDecimal.valueOf(new Random().nextFloat(15, 250))
               .setScale(2, BigDecimal.ROUND_HALF_DOWN)
-              .floatValue()),
+              .floatValue()), Monetary.getCurrency("EUR")),
           100L,
           event));
     }

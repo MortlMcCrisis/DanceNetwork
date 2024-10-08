@@ -6,10 +6,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
-public interface UserMapper {
+public interface UserMapper
+{
 
   UserDTO toDTO(User user);
 
   @Mapping(target = "email", ignore = true)
-  User toEntity(UserDTO userDTO);
+  User toModel(UserDTO userDTO);
 }

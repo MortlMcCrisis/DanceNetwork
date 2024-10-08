@@ -1,6 +1,8 @@
 package com.mortl.dancenetwork.controller.open;
 
 import com.mortl.dancenetwork.dto.EventDTO;
+import com.mortl.dancenetwork.entity.Event;
+import com.mortl.dancenetwork.mapper.EventMapper;
 import com.mortl.dancenetwork.service.IEventService;
 import java.time.LocalDate;
 import java.util.List;
@@ -14,24 +16,32 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/open/v1/events")
-public class EventOpenController {
+public class EventOpenController
+{
 
   private final IEventService eventService;
 
-  public EventOpenController(IEventService eventService) {
+  private final EventMapper eventMapper;
+
+  public EventOpenController(IEventService eventService, EventMapper eventMapper)
+  {
     this.eventService = eventService;
+    this.eventMapper = eventMapper;
   }
 
   @GetMapping
   public ResponseEntity<List<EventDTO>> getEvents(
       @RequestParam Optional<Integer> maxEntries,
-      @RequestParam Optional<LocalDate> from) {
-      return ResponseEntity.ok(eventService.getPublishedEvents(maxEntries, from));
+      @RequestParam Optional<LocalDate> from)
+  {
+    List<Event> publishedEvents = eventService.getPublishedEvents(maxEntries, from);
+    return ResponseEntity.ok(publishedEvents.stream().map(eventMapper::toDTO).toList());
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<EventDTO> getEvent(@PathVariable Long id) {
-    EventDTO event = eventService.getEvent(id);
-    return ResponseEntity.ok(event);
+  public ResponseEntity<EventDTO> getEvent(@PathVariable Long id)
+  {
+    Event event = eventService.getEvent(id);
+    return ResponseEntity.ok(eventMapper.toDTO(event));
   }
 }

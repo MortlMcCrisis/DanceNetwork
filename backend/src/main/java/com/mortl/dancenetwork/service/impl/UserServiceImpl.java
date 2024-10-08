@@ -1,7 +1,6 @@
 package com.mortl.dancenetwork.service.impl;
 
 import com.mortl.dancenetwork.client.IUserClient;
-import com.mortl.dancenetwork.dto.UserDTO;
 import com.mortl.dancenetwork.enums.Gender;
 import com.mortl.dancenetwork.mapper.UserMapper;
 import com.mortl.dancenetwork.model.User;
@@ -17,37 +16,40 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Component
-public class UserServiceImpl implements IUserService {
+public class UserServiceImpl implements IUserService
+{
 
   private final JwtDecoder decoder;
 
   private final IUserClient userClient;
 
-  private final UserMapper userMapper;
-
-  public UserServiceImpl(JwtDecoder decoder, IUserClient userClient, UserMapper userMapper) {
+  public UserServiceImpl(JwtDecoder decoder, IUserClient userClient, UserMapper userMapper)
+  {
     this.decoder = decoder;
     this.userClient = userClient;
-    this.userMapper = userMapper;
   }
 
 
   @Override
-  public UserDTO updateUser(UserDTO userDTO) {
+  public User updateUser(User user)
+  {
     //TODO find better solution to set uuid
-    userClient.updateUser(userMapper.toEntity(userDTO), getCurrentUser().get().getUuid());
-    return userDTO;
+    userClient.updateUser(user, getCurrentUser().get().getUuid());
+    return user;
   }
 
   @Override
-  public List<User> getAllUsers(){
+  public List<User> getAllUsers()
+  {
     return userClient.fetchUsers();
   }
 
   @Override
-  public Optional<User> getCurrentUser() {
+  public Optional<User> getCurrentUser()
+  {
     Optional<Jwt> jwtOptional = getJwt();
-    if(jwtOptional.isEmpty()){
+    if (jwtOptional.isEmpty())
+    {
       return Optional.empty();
     }
     Jwt jwt = jwtOptional.get();
@@ -63,28 +65,32 @@ public class UserServiceImpl implements IUserService {
   }
 
   @Override
-  public User getNonNullCurrentUser() {
+  public User getNonNullCurrentUser()
+  {
     Optional<User> currentUser = getCurrentUser();
-    if(currentUser.isEmpty()){
+    if (currentUser.isEmpty())
+    {
       throw new IllegalStateException("Current user must not be null.");
     }
     return currentUser.get();
   }
 
   @Override
-  public List<UserDTO> getUsers(List<UUID> userUUIDs) {
-    return userClient.fetchUsers(userUUIDs).stream()
-        .map(user -> userMapper.toDTO(user))
-        .toList();
+  public List<User> getUsers(List<UUID> userUUIDs)
+  {
+    return userClient.fetchUsers(userUUIDs);
   }
 
-  private Optional<Jwt> getJwt() {
+  private Optional<Jwt> getJwt()
+  {
     HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-    try {
+    try
+    {
       String authorizationHeader = request.getHeader("Authorization");
       return Optional.of(decoder.decode(authorizationHeader.split(" ")[1]));
     }
-    catch(NullPointerException e){
+    catch (NullPointerException e)
+    {
       return Optional.empty();
     }
   }

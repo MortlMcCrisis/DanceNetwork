@@ -23,13 +23,6 @@ public class PaymentOpenController
     this.paymentService = paymentService;
   }
 
-  @PostMapping
-  public ResponseEntity<Void> newPayment(@RequestBody PaymentRequestDTO tickets)
-  {
-    paymentService.doPayment(tickets);
-    return ResponseEntity.ok().build();
-  }
-
   @PostMapping("/create-checkout-session")
   public ResponseEntity<Map<String, String>> createSession(@RequestBody PaymentRequestDTO tickets)
   {
