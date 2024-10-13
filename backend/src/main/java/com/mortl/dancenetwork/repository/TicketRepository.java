@@ -17,11 +17,12 @@ public interface TicketRepository extends JpaRepository<Ticket, Long>
       ORDER BY ticket.ticketType.event.startDate ASC""")
   List<Ticket> findByOwnerOrderByEventStartDateAsc(UUID owner);
 
-  @Query("SELECT FUNCTION('DATE_TRUNC', 'MONTH', t.buyDate) AS month, COUNT(t) AS count " +
-      "FROM Ticket t WHERE t.ticketType.event.id = :eventId " +
-      "AND t.buyDate >= :startDate AND t.buyDate < :endDate " +
-      "GROUP BY FUNCTION('DATE_TRUNC', 'MONTH', t.buyDate) " +
-      "ORDER BY FUNCTION('DATE_TRUNC', 'MONTH', t.buyDate) ASC")
+  @Query(
+      "SELECT FUNCTION('DATE_TRUNC', 'MONTH', t.ticketOrder.buyDate) AS month, COUNT(t) AS count " +
+          "FROM Ticket t WHERE t.ticketType.event.id = :eventId " +
+          "AND t.ticketOrder.buyDate >= :startDate AND t.ticketOrder.buyDate < :endDate " +
+          "GROUP BY FUNCTION('DATE_TRUNC', 'MONTH', t.ticketOrder.buyDate) " +
+          "ORDER BY FUNCTION('DATE_TRUNC', 'MONTH', t.ticketOrder.buyDate) ASC")
   List<Object[]> countTicketsByEventIdAndMonth(long eventId, LocalDateTime startDate,
       LocalDateTime endDate);
 
@@ -41,4 +42,11 @@ public interface TicketRepository extends JpaRepository<Ticket, Long>
       FROM Ticket ticket 
       WHERE ticket.ticketType.event.id = :eventId""")
   List<Ticket> findByEventId(long eventId);
+
+  //TODO write test
+  @Query("""
+      SELECT ticket  
+      FROM Ticket ticket 
+      WHERE ticket.ticketOrder.id = :orderId""")
+  List<Ticket> findByOrderId(long orderId);
 }

@@ -9,7 +9,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -24,8 +23,7 @@ public class Ticket
 
   public Ticket(Long id, UUID owner, TicketType ticketType, String firstName, String lastName,
       String address, String country, String email, String phone, DancingRole dancingRole,
-      Gender gender,
-      LocalDateTime buyDate)
+      Gender gender, TicketOrder ticketOrder)
   {
     this.id = id;
     this.owner = owner;
@@ -38,7 +36,7 @@ public class Ticket
     this.phone = phone;
     this.dancingRole = dancingRole;
     this.gender = gender;
-    this.buyDate = buyDate;
+    this.ticketOrder = ticketOrder;
   }
 
   @Id
@@ -75,8 +73,9 @@ public class Ticket
   @Column(nullable = false)
   private Gender gender;
 
-  @Column(nullable = false)
-  private LocalDateTime buyDate;
+  @ManyToOne
+  @JoinColumn(name = "ticket_order_id", nullable = false)
+  private TicketOrder ticketOrder;
 
   public Long getId()
   {
@@ -188,14 +187,14 @@ public class Ticket
     this.gender = gender;
   }
 
-  public LocalDateTime getBuyDate()
+  public TicketOrder getOrder()
   {
-    return buyDate;
+    return ticketOrder;
   }
 
-  public void setBuyDate(LocalDateTime buyDate)
+  public void setOrder(TicketOrder ticketOrder)
   {
-    this.buyDate = buyDate;
+    this.ticketOrder = ticketOrder;
   }
 
   @Override
@@ -216,14 +215,14 @@ public class Ticket
         && Objects.equals(address, ticket.address) && Objects.equals(country,
         ticket.country) && Objects.equals(email, ticket.email) && Objects.equals(
         phone, ticket.phone) && dancingRole == ticket.dancingRole && gender == ticket.gender
-        && Objects.equals(buyDate, ticket.buyDate);
+        && Objects.equals(ticketOrder, ticket.ticketOrder);
   }
 
   @Override
   public int hashCode()
   {
     return Objects.hash(id, owner, ticketType, firstName, lastName, address, country, email, phone,
-        dancingRole, gender, buyDate);
+        dancingRole, gender, ticketOrder);
   }
 
   @Override
@@ -241,7 +240,7 @@ public class Ticket
         ", phone='" + phone + '\'' +
         ", dancingRole=" + dancingRole +
         ", gender=" + gender +
-        ", buyDate=" + buyDate +
+        ", order=" + ticketOrder +
         '}';
   }
 }

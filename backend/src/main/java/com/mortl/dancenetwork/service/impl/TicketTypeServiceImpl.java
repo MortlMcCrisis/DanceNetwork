@@ -5,6 +5,7 @@ import com.mortl.dancenetwork.repository.TicketTypeRepository;
 import com.mortl.dancenetwork.service.IStripeService;
 import com.mortl.dancenetwork.service.ITicketTypeService;
 import com.stripe.exception.StripeException;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import org.springframework.stereotype.Component;
 
@@ -31,6 +32,7 @@ public class TicketTypeServiceImpl implements ITicketTypeService
   }
 
   @Override
+  @Transactional
   public List<TicketType> updateTicketTypes(List<TicketType> ticketTypesToAddOrUpdate)
   {
     //TODO test with application context test when works with jwt (see EventControllerClosedSpec)

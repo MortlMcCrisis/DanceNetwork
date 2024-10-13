@@ -3,6 +3,7 @@ package com.mortl.dancenetwork.bot;
 import com.mortl.dancenetwork.entity.Event;
 import com.mortl.dancenetwork.entity.NewsfeedEntry;
 import com.mortl.dancenetwork.entity.Ticket;
+import com.mortl.dancenetwork.entity.TicketOrder;
 import com.mortl.dancenetwork.entity.TicketType;
 import com.mortl.dancenetwork.enums.DancingRole;
 import com.mortl.dancenetwork.enums.Gender;
@@ -10,6 +11,7 @@ import com.mortl.dancenetwork.enums.NewsfeedEntryType;
 import com.mortl.dancenetwork.model.User;
 import com.mortl.dancenetwork.repository.EventRepository;
 import com.mortl.dancenetwork.repository.NewsfeedEntryRepository;
+import com.mortl.dancenetwork.repository.TicketOrderRepository;
 import com.mortl.dancenetwork.repository.TicketRepository;
 import com.mortl.dancenetwork.repository.TicketTypeRepository;
 import com.mortl.dancenetwork.service.IUserService;
@@ -45,6 +47,8 @@ public class ShowDataCreator
 
   private TicketRepository ticketRepository;
 
+  private TicketOrderRepository ticketOrderRepository;
+
   private LoremIpsum loremIpsum;
 
   private List<User> users;
@@ -54,6 +58,7 @@ public class ShowDataCreator
       EventRepository eventRepository,
       NewsfeedEntryRepository newsfeedEntryRepository,
       TicketTypeRepository ticketTypeRepository,
+      TicketOrderRepository ticketOrderRepository,
       TicketRepository ticketRepository,
       NewsfeedFactory newsfeedFactory)
   {
@@ -62,6 +67,7 @@ public class ShowDataCreator
     this.newsfeedFactory = newsfeedFactory;
     this.ticketTypeRepository = ticketTypeRepository;
     this.ticketRepository = ticketRepository;
+    this.ticketOrderRepository = ticketOrderRepository;
     loremIpsum = new LoremIpsum();
     users = userService.getAllUsers();
   }
@@ -315,7 +321,9 @@ public class ShowDataCreator
   private void createRandomTickets(Event event, TicketType ticketType)
   {
     Set<Ticket> tickets = new HashSet<>();
-    for (int i = 0; i < new Random().nextInt(0, 100); i++)
+    TicketOrder ticketOrder = new TicketOrder(null, getRandomDate(event.getCreatedAt()));
+    ticketOrder = ticketOrderRepository.saveAndFlush(ticketOrder);
+    for (int i = 0; i < new Random().nextInt(0, 1); i++)
     {
       tickets.add(new Ticket(
           null,
@@ -329,7 +337,7 @@ public class ShowDataCreator
           getRandomLoremIpsum(5, 20),
           getRandomDancingRole(),
           getRandomGender(),
-          getRandomDate(event.getCreatedAt())));
+          ticketOrder));
     }
     ticketRepository.saveAllAndFlush(tickets);
   }

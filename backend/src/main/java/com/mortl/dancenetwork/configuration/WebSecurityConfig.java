@@ -14,16 +14,19 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-public class WebSecurityConfig {
+public class WebSecurityConfig
+{
 
   private final KeycloakJwtTokenConverter keycloakJwtTokenConverter;
 
-  public WebSecurityConfig(KeycloakJwtTokenConverter keycloakJwtTokenConverter) {
+  public WebSecurityConfig(KeycloakJwtTokenConverter keycloakJwtTokenConverter)
+  {
     this.keycloakJwtTokenConverter = keycloakJwtTokenConverter;
   }
 
   @Bean
-  Keycloak keycloak() {
+  Keycloak keycloak()
+  {
     return KeycloakBuilder.builder()
         .serverUrl("http://localhost:443")
         .realm("dance-network")
@@ -35,16 +38,16 @@ public class WebSecurityConfig {
   }
 
   @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
+  {
     http
         .authorizeHttpRequests(
             requestMatcherRegistry -> requestMatcherRegistry
                 //.requestMatchers("/actuator/**").permitAll()
                 .requestMatchers("/api/open/v1/**").permitAll()
                 .requestMatchers("/api/closed/v1/**").authenticated()
-                .anyRequest()
-                .denyAll())
-                .csrf(csrf -> csrf.disable());
+                .anyRequest().denyAll())
+        .csrf(csrf -> csrf.disable());
 
     http
         .oauth2ResourceServer(resourceServerConfigurer -> resourceServerConfigurer

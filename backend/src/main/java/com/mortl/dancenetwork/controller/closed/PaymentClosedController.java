@@ -1,4 +1,4 @@
-package com.mortl.dancenetwork.controller.open;
+package com.mortl.dancenetwork.controller.closed;
 
 import com.mortl.dancenetwork.dto.PaymentRequestDTO;
 import com.mortl.dancenetwork.entity.Ticket;
@@ -15,15 +15,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/open/v1/payments")
-public class PaymentOpenController
+@RequestMapping("/api/closed/v1/payments")
+public class PaymentClosedController
 {
 
   private final IPaymentService paymentService;
 
   private final TicketMapper ticketMapper;
 
-  public PaymentOpenController(IPaymentService paymentService, TicketMapper ticketMapper)
+  public PaymentClosedController(IPaymentService paymentService, TicketMapper ticketMapper)
   {
     this.paymentService = paymentService;
     this.ticketMapper = ticketMapper;

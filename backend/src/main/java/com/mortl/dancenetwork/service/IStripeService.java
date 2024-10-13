@@ -9,7 +9,8 @@ import java.util.Map;
 public interface IStripeService
 {
 
-  Map<String, String> createSession(List<Ticket> tickets) throws StripeException;
+  Map<String, String> createSession(List<Ticket> tickets, long ticketOrderId)
+      throws StripeException;
 
   Map<String, String> sessionStatus(String sessionId) throws StripeException;
 

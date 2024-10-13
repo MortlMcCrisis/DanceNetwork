@@ -236,7 +236,8 @@ public class StripeServiceImpl implements IStripeService
   }
 
   @Override
-  public Map<String, String> createSession(List<Ticket> tickets) throws StripeException
+  public Map<String, String> createSession(List<Ticket> tickets, long ticketOrderId)
+      throws StripeException
   {
     SessionCreateParams.Builder builder =
         SessionCreateParams.builder()
@@ -244,7 +245,8 @@ public class StripeServiceImpl implements IStripeService
             .setMode(SessionCreateParams.Mode.PAYMENT)
             // TODO create frontend url where I can redirect to
             .setReturnUrl(DOMAIN
-                + "/dashboards/app/dance-event-detail/3/dance-buy-ticket-invoice?session_id={CHECKOUT_SESSION_ID}");
+                + "/dashboards/app/dance-event-detail/3/dance-buy-ticket-invoice?session_id={CHECKOUT_SESSION_ID}&ticket_order_id="
+                + ticketOrderId);
     for (Ticket ticket : tickets)
     {
       Product product = Product.retrieve(String.valueOf(ticket.getTicketType().getId()));

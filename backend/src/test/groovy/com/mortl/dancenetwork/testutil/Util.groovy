@@ -3,6 +3,7 @@ package com.mortl.dancenetwork.testutil
 
 import com.mortl.dancenetwork.entity.Event
 import com.mortl.dancenetwork.entity.Ticket
+import com.mortl.dancenetwork.entity.TicketOrder
 import com.mortl.dancenetwork.entity.TicketType
 import com.mortl.dancenetwork.enums.DancingRole
 import com.mortl.dancenetwork.enums.Gender
@@ -53,19 +54,15 @@ class Util {
         new TicketType(id, name, "Cranc ticket", Money.of(100, Monetary.getCurrency("EUR")), contingent, event)
     }
 
-    static def createTestTicket(UUID ownerUuid, TicketType ticketType, Gender gender = Gender.MALE) {
-        createTestTicket(ownerUuid, ticketType, gender, DancingRole.BOTH, LocalDateTime.now())
+    static def createTestTicket(UUID ownerUuid, TicketType ticketType, Gender gender, TicketOrder order) {
+        createTestTicket(ownerUuid, ticketType, gender, DancingRole.BOTH, order)
     }
 
-    static def createTestTicket(UUID ownerUuid, TicketType ticketType, DancingRole role) {
-        createTestTicket(ownerUuid, ticketType, Gender.MALE, role, LocalDateTime.now())
+    static def createTestTicket(UUID ownerUuid, TicketType ticketType, DancingRole role, TicketOrder order) {
+        createTestTicket(ownerUuid, ticketType, Gender.MALE, role, order)
     }
 
-    static def createTestTicket(UUID ownerUuid, TicketType ticketType, LocalDateTime buyDate) {
-        createTestTicket(ownerUuid, ticketType, Gender.MALE, DancingRole.BOTH, buyDate)
-    }
-
-    static def createTestTicket(UUID ownerUuid, TicketType ticketType, Gender gender, DancingRole role, LocalDateTime buyDate) {
+    static def createTestTicket(UUID ownerUuid, TicketType ticketType, Gender gender, DancingRole role, TicketOrder order) {
         new Ticket(
                 null,
                 ownerUuid,
@@ -78,6 +75,6 @@ class Util {
                 "0160 7574886",
                 role,
                 gender,
-                buyDate)
+                order)
     }
 }

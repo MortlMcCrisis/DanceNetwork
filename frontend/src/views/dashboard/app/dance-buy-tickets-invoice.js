@@ -30,8 +30,9 @@ const DanceBuyTicketsInvoice = () => {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const sessionId = urlParams.get('session_id');
+        const ticketOrderId = urlParams.get('ticket_order_id');
 
-        fetch(`${PAYMENTS_OPEN_ENDPOINT}/session-status?session_id=${sessionId}`)
+        fetch(`${PAYMENTS_OPEN_ENDPOINT}/session-status?session_id=${sessionId}&ticket_order_id=${ticketOrderId}`)
         .then((res) => res.json())
         .then((data) => {
             setStatus(data.status);

@@ -6,7 +6,7 @@ import java.util.List;
 public interface ITicketService
 {
 
-  List<Ticket> addTickets(List<Ticket> tickets);
+  List<Ticket> activateTickets(List<Ticket> tickets);
 
   List<Ticket> getTicketsForUser();
 

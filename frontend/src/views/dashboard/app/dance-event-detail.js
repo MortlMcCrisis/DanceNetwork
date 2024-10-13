@@ -12,10 +12,6 @@ import Card from '../../../components/Card'
 import CustomToggle from '../../../components/dropdowns'
 import ReactFsLightbox from 'fslightbox-react';
 
-import imgp11 from '../../../assets/images/user/15.jpg'
-import imgp12 from '../../../assets/images/user/05.jpg'
-import imgp13 from '../../../assets/images/user/06.jpg'
-import imgp14 from '../../../assets/images/user/07.jpg'
 import imgp25 from '../../../assets/images/user/1.jpg'
 import imgp26 from '../../../assets/images/user/02.jpg'
 import imgp27 from '../../../assets/images/user/05.jpg'
