@@ -39,8 +39,13 @@ const DanceTicketManager = () => {
   const handleSubmit = async (event) => {
     event.preventDefault()
 
+    const updateRequest = {
+      eventId: id,
+      ticketTypeDTOs: ticketTypes
+    }
+
     try {
-      await putData(TICKET_TYPES_CLOSED_ENDPOINT, JSON.stringify(ticketTypes),
+      await putData(TICKET_TYPES_CLOSED_ENDPOINT, JSON.stringify(updateRequest),
           keycloak.token, setTicketTypes)
 
       toast.success("Event successfully updated")

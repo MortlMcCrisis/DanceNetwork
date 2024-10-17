@@ -1,6 +1,7 @@
 package com.mortl.dancenetwork.controller.closed;
 
 import com.mortl.dancenetwork.dto.TicketTypeDTO;
+import com.mortl.dancenetwork.dto.UpdateTicketTypeRequestDTO;
 import com.mortl.dancenetwork.entity.TicketType;
 import com.mortl.dancenetwork.mapper.TicketTypeMapper;
 import com.mortl.dancenetwork.service.ITicketTypeService;
@@ -34,9 +35,9 @@ public class TicketTypeClosedController
 
   @PutMapping
   public ResponseEntity<List<TicketTypeDTO>> updateTicketTypes(
-      @RequestBody List<TicketTypeDTO> ticketTypeDTOs)
+      @RequestBody UpdateTicketTypeRequestDTO updateTicketTypeRequestDTO)
   {
-    String ids = ticketTypeDTOs.stream()
+    String ids = updateTicketTypeRequestDTO.ticketTypeDTOs().stream()
         .map(TicketTypeDTO::id)
         .map(String::valueOf)
         .collect(Collectors.joining(", "));
@@ -44,7 +45,8 @@ public class TicketTypeClosedController
     log.info("Updating ticket types " + ids);
 
     List<TicketType> ticketTypes = ticketTypeService.updateTicketTypes(
-        ticketTypeDTOs.stream()
+        updateTicketTypeRequestDTO.eventId(),
+        updateTicketTypeRequestDTO.ticketTypeDTOs().stream()
             .map(ticketTypeMapper::toEntity)
             .toList());
     return ResponseEntity.ok(ticketTypes.stream().map(ticketTypeMapper::toDTO).toList());

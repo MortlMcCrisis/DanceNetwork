@@ -8,5 +8,5 @@ public interface ITicketTypeService
 
   List<TicketType> getTicketTypesForEvent(Long eventId);
 
-  List<TicketType> updateTicketTypes(List<TicketType> ticketType);
+  List<TicketType> updateTicketTypes(long eventId, List<TicketType> ticketType);
 }

@@ -33,15 +33,14 @@ public class TicketTypeServiceImpl implements ITicketTypeService
 
   @Override
   @Transactional
-  public List<TicketType> updateTicketTypes(List<TicketType> ticketTypesToAddOrUpdate)
+  public List<TicketType> updateTicketTypes(long eventId, List<TicketType> ticketTypesToAddOrUpdate)
   {
     //TODO test with application context test when works with jwt (see EventControllerClosedSpec)
     List<Long> ticketTypeIds = ticketTypesToAddOrUpdate.stream()
         .map(TicketType::getId)
         .toList();
 
-    List<Long> ticketTypeIdsToDelete = ticketTypeRepository.findByEventId(
-            ticketTypesToAddOrUpdate.get(0).getEvent().getId()).stream()
+    List<Long> ticketTypeIdsToDelete = ticketTypeRepository.findByEventId(eventId).stream()
         .filter(oldTicketType -> !ticketTypeIds.contains(oldTicketType.getId()))
         .map(TicketType::getId)
         .toList();

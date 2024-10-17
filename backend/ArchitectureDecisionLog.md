@@ -35,7 +35,9 @@ General development rules
 
 Payment
 -------
-As a payment provider we plan to use [Stripe](https://stripe.com/de).
+
+- As a payment provider we plan to use [Stripe](https://stripe.com/de).
+- The internal representation of money is always done with moneta.
 
 Used technologies
 -----------------
