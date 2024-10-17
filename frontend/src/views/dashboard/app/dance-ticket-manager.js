@@ -45,6 +45,7 @@ const DanceTicketManager = () => {
 
       toast.success("Event successfully updated")
     } catch (error) {
+      console.log(error)
       toast.error("Error updating event")
     }
   };
@@ -61,11 +62,20 @@ const DanceTicketManager = () => {
     ));
   };
 
+  const updatePrice = (index, event) => {
+    setTicketTypes((prevData) => prevData.map((item, i) =>
+        i === index ? { ...item, price: { ...item.price, number: event.target.value } } : item
+    ));
+  };
+
   const addNewTicketType = () => {
     const newTicketType = {
       name: "New Ticket Type",
       description: "<p>New Description</p>",
-      price: 100.00,
+      price: {
+        currency: 'EUR',
+        number: 100.00
+      },
       contingent: 100,
       eventId: id
     };
@@ -104,8 +114,8 @@ const DanceTicketManager = () => {
                                   setName={(event) => updateValue(index, event)}
                                   description={item.description}
                                   setDescription={(newDescription) => updateDescription(index, newDescription)}
-                                  price={item.price}
-                                  setPrice={(event) => updateValue(index, event)}
+                                  price={item.price.number}
+                                  setPrice={(newPrice) => updatePrice(index, newPrice)}
                                   contingent={item.contingent}
                                   setContingent={(event) => updateValue(index, event)}
                                   removeCallback={() => removeTicketType(index)}

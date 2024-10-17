@@ -38,7 +38,7 @@ const DanceBuyTicketsTicketType = ({ticketType, setTicketType}) => {
                         </div>
                       </Col>
                       <Col sm="3" md="3" className="col-3">
-                        <span className="product-price">${ticketType.price}</span>
+                        <span className="product-price">${ticketType.price.number}</span>
                       </Col>
                       <Col sm="3" md="3" className="col-3">
                         <OverlayTrigger placement="top" overlay={

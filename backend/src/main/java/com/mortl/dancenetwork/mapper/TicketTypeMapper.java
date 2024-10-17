@@ -6,8 +6,6 @@ import com.mortl.dancenetwork.entity.TicketType;
 import com.mortl.dancenetwork.repository.EventRepository;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import javax.money.MonetaryAmount;
-import org.javamoney.moneta.Money;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -21,11 +19,9 @@ public abstract class TicketTypeMapper
   protected EventRepository eventRepository;
 
   @Mapping(target = "event", source = "eventId", qualifiedByName = "eventIdToEvent")
-  @Mapping(target = "price", source = "price", qualifiedByName = "floatToMonetaryAmount")
   public abstract TicketType toEntity(TicketTypeDTO dto);
 
   @Mapping(target = "eventId", source = "event", qualifiedByName = "eventToEventId")
-  @Mapping(target = "price", source = "price", qualifiedByName = "monetaryAmountToFloat")
   public abstract TicketTypeDTO toDTO(TicketType ticketType);
 
   @Named("eventIdToEvent")
@@ -48,27 +44,5 @@ public abstract class TicketTypeMapper
       return null;
     }
     return event.getId();
-  }
-
-  @Named("floatToMonetaryAmount")
-  protected MonetaryAmount floatToMonetaryAmount(Float price)
-  {
-    if (price == null)
-    {
-      return null;
-    }
-    // Verwende eine Standardwährung, z.B. EUR
-    return Money.of(price, "EUR");
-  }
-
-  // Helper-Methode zur Konvertierung von MonetaryAmount zu Float
-  @Named("monetaryAmountToFloat")
-  protected Float monetaryAmountToFloat(MonetaryAmount monetaryAmount)
-  {
-    if (monetaryAmount == null)
-    {
-      return null;
-    }
-    return monetaryAmount.getNumber().floatValue();
   }
 }

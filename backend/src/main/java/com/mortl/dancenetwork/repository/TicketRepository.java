@@ -42,8 +42,7 @@ public interface TicketRepository extends JpaRepository<Ticket, Long>
       FROM Ticket ticket 
       WHERE ticket.ticketType.event.id = :eventId""")
   List<Ticket> findByEventId(long eventId);
-
-  //TODO write test
+  
   @Query("""
       SELECT ticket  
       FROM Ticket ticket 

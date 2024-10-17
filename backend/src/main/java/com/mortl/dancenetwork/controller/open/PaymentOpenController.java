@@ -40,9 +40,9 @@ public class PaymentOpenController
 
   @GetMapping("/session-status")
   public ResponseEntity<Map<String, String>> sessionStatus(
-      @RequestParam String session_id,
-      @RequestParam Long ticket_order_id)
+      @RequestParam(name = "session_id") String sessionId,
+      @RequestParam(name = "ticket_order_id") Long ticketOrderId)
   {
-    return ResponseEntity.ok(paymentService.sessionStatus(session_id, ticket_order_id));
+    return ResponseEntity.ok(paymentService.sessionStatus(sessionId, ticketOrderId));
   }
 }

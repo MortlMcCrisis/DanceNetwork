@@ -44,7 +44,6 @@ public class TicketType
 
   @Column(nullable = false)
   @Convert(converter = MonetaryAmountConverter.class)
-  //TODO Handle currency properly
   private MonetaryAmount price;
 
   @Column(nullable = false)

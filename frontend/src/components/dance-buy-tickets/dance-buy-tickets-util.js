@@ -10,7 +10,7 @@ export const getPriceForId = (ticketTypes, id) => {
   const ticketType =  ticketTypes.find((ticketType) => ticketType.id == id);
 
   if (ticketType && ticketType.price !== undefined) {
-    return ticketType.price;
+    return ticketType.price.number;
   }
 };
 

@@ -11,6 +11,7 @@ REST endpoints
     - The "closed" endpoints which can be called with keycloak authentification in the path "
       /api/closed"
 - Always return a ResponseEntity and not a dto itself
+- The Controllers map the DTOs to entities or models and pass it down to the service layer
 
 Data Loading
 ------------
@@ -92,8 +93,6 @@ Corporate design
 - Background Color:
 - Main Color:
 - Admin Color:
-
-Besprechen mit Daniel:
 
 - Testing:
     - Soviel ich weiß, soll man immer Komponenten möglichst isoliert von allem anderen Testen. Das

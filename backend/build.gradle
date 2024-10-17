@@ -39,8 +39,6 @@ dependencies {
     implementation 'de.sven-jacobs:loremipsum:1.0' // TODO make test implementation? test profile?
 
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
-    annotationProcessor 'org.projectlombok:lombok:1.18.22'
-    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
 
     runtimeOnly 'com.h2database:h2'
 

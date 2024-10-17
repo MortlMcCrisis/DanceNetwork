@@ -24,8 +24,6 @@ const DanceUserAccountSetting =() =>{
 
     const { keycloak, initialized } = useKeycloak();
 
-    const [percentage, setPercentage] = useState(0);
-
     const [form, setForm] = React.useState({
         photoPath: keycloak.idTokenParsed.photo_path,
         username: keycloak.idTokenParsed.custom_username,
@@ -63,23 +61,6 @@ const DanceUserAccountSetting =() =>{
         });
     };
 
-    const calculatePercentage = () => {
-        const idTokenParsed = keycloak.idTokenParsed;
-        const properties = ['photo_path', 'custom_username', 'given_name', 'family_name', 'gender', 'email', 'phone'];
-
-        // Filtere die gesetzten Properties
-        const setProperties = properties.filter(property => idTokenParsed[property] !== undefined && idTokenParsed[property] !== '');
-
-        // Berechne den Prozentwert
-        const percentage = Math.round((setProperties.length / properties.length) * 100);
-
-        return percentage;
-    };
-
-    useEffect(() => {
-        setPercentage(calculatePercentage());
-    }, []);
-
     const setImage=(path)=>{
         setForm({
             ...form,
@@ -107,8 +88,7 @@ const DanceUserAccountSetting =() =>{
             }
             /*const body = await response.json();
 
-            setShowA1(true);
-            setPercentage(calculatePercentage());*/
+            setShowA1(true);*/
 
             window.location.reload();
         } catch (error) {
@@ -134,9 +114,6 @@ const DanceUserAccountSetting =() =>{
                 </Card.Header>
                 <Card.Body>
                     <div className="acc-edit">
-                        <div className="progress mb-3">
-                            <ProgressBar style={{width: `${percentage}%`}} label={`${percentage}%`} now={percentage}/>
-                        </div>
                         <Form className="form-horizontal" onSubmit={handleSubmit}>
                             <ListGroup className=" list-group-flush">
                                 <ListGroupItem>

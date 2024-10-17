@@ -192,7 +192,8 @@ const DanceBuyTickets = () => {
                             <Row className="align-item-center">
                                 <Col lg="8">
                                     <DanceBuyTicketsPayment
-                                        formData={formData}/>
+                                        formData={formData}
+                                    keycloak={keycloak}/>
                                 </Col>
                                 <Col lg="4">
                                     <DanceBuyTicketsOrderDetails

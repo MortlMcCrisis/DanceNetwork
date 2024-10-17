@@ -11,7 +11,6 @@ public interface EventMapper
 
   EventDTO toDTO(Event event);
 
-  //TODO rename all to toEntity
   @Mapping(target = "createdAt", ignore = true)
   Event toEntity(EventDTO eventDTO);
 }

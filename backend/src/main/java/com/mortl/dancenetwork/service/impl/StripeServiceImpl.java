@@ -38,8 +38,6 @@ public class StripeServiceImpl implements IStripeService
   //TODO make configurable to be dependent to environment
   private static final String DOMAIN = "http://localhost:3000";
 
-  private static final String PRICE_ID = "price_1Q4LKpK0od2j0zBCtJVHWfIA";
-
   @Value("${stripe.api-key}")
   private String apiKey;
 
