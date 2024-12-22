@@ -4,6 +4,7 @@ import com.mortl.dancenetwork.entity.NewsfeedEntry;
 import com.mortl.dancenetwork.model.User;
 import com.mortl.dancenetwork.repository.NewsfeedEntryRepository;
 import com.mortl.dancenetwork.service.INewsfeedEntryService;
+import com.mortl.dancenetwork.service.IUserService;
 import java.util.List;
 import javax.ws.rs.NotFoundException;
 import org.springframework.stereotype.Component;
@@ -14,10 +15,10 @@ public class NewsfeedEntryServiceImpl implements INewsfeedEntryService
 
   private final NewsfeedEntryRepository newsfeedEntryRepository;
 
-  private final UserServiceImpl userService;
+  private final IUserService userService;
 
   public NewsfeedEntryServiceImpl(NewsfeedEntryRepository newsfeedEntryRepository,
-      UserServiceImpl userService)
+      IUserService userService)
   {
     this.newsfeedEntryRepository = newsfeedEntryRepository;
     this.userService = userService;

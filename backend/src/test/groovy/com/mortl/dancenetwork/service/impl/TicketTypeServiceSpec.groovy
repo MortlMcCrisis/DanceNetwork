@@ -56,7 +56,7 @@ class TicketTypeServiceSpec extends Specification {
         ticketTypeRepository.saveAllAndFlush(ticketTypes) >> ticketTypes
 
         when:
-        ticketTypeService.updateTicketTypes(ticketTypes)
+        ticketTypeService.updateTicketTypes(eventId, ticketTypes)
 
         then:
         1 * ticketTypeRepository.deleteAllById([]);
@@ -72,7 +72,7 @@ class TicketTypeServiceSpec extends Specification {
         ticketTypeRepository.saveAllAndFlush([ticketType1]) >> [ticketType1]
 
         when:
-        ticketTypeService.updateTicketTypes([ticketType1])
+        ticketTypeService.updateTicketTypes(eventId, [ticketType1])
 
         then:
         1 * ticketTypeRepository.deleteAllById([2])

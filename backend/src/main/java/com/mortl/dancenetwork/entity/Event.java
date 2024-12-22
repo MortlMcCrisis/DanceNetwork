@@ -13,7 +13,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Table
+@Table//TODO remove table annotations
 public class Event
 {
 

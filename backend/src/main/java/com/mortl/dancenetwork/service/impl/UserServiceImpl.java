@@ -2,7 +2,6 @@ package com.mortl.dancenetwork.service.impl;
 
 import com.mortl.dancenetwork.client.IUserClient;
 import com.mortl.dancenetwork.enums.Gender;
-import com.mortl.dancenetwork.mapper.UserMapper;
 import com.mortl.dancenetwork.model.User;
 import com.mortl.dancenetwork.service.IUserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +22,7 @@ public class UserServiceImpl implements IUserService
 
   private final IUserClient userClient;
 
-  public UserServiceImpl(JwtDecoder decoder, IUserClient userClient, UserMapper userMapper)
+  public UserServiceImpl(JwtDecoder decoder, IUserClient userClient)
   {
     this.decoder = decoder;
     this.userClient = userClient;

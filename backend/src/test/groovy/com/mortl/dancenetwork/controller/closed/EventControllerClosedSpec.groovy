@@ -67,5 +67,5 @@
 //    }
 //
 //    //TODO test mapped response codes from controller advice
-//    //TODO also do it for newsfeedentrycontroll
+//    //TODO also do it for newsfeedentrycontroller
 //}

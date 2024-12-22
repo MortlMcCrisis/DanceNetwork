@@ -10,6 +10,15 @@ version = '0.0.1-SNAPSHOT'
 
 java {
     sourceCompatibility = '17'
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+tasks.withType(JavaCompile) {
+    sourceCompatibility = '17'
+    targetCompatibility = '17'
+    options.release = 17
 }
 
 repositories {
@@ -21,7 +30,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web-services:3.2.1'
     //implementation 'org.springframework.boot:spring-boot-starter-actuator:3.2.1'
     //implementation 'org.springframework.boot:spring-boot-starter-web:3.2.1'
-    //implementation 'org.springframework.security:spring-security-test' //TODO security test with security (jtw)
+    implementation 'org.springframework.security:spring-security-test'
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'  // for JSON serialization/deserialization
+//TODO security test with security (jtw)
 
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server:3.2.1'
     implementation 'org.springframework.boot:spring-boot-starter-mail:3.2.1'

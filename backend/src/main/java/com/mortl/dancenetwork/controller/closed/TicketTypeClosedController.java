@@ -44,6 +44,15 @@ public class TicketTypeClosedController
 
     log.info("Updating ticket types " + ids);
 
+    updateTicketTypeRequestDTO.ticketTypeDTOs().stream()
+        .forEach(ticketType ->
+        {
+          if (ticketType.price().getCurrency().equals("EUR)"))
+          {
+            throw new IllegalArgumentException("Invalid TicketTypeDTO: " + ticketType);
+          }
+        });
+
     List<TicketType> ticketTypes = ticketTypeService.updateTicketTypes(
         updateTicketTypeRequestDTO.eventId(),
         updateTicketTypeRequestDTO.ticketTypeDTOs().stream()
