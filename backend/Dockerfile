@@ -8,7 +8,6 @@ COPY src src
 
 # Copy Maven wrapper
 COPY gradlew .
-COPY .gradle .gradle
 COPY gradle gradle
 
 # Set execution permission for the Maven wrapper
