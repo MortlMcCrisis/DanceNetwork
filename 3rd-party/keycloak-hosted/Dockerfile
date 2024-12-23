@@ -13,5 +13,5 @@ ENV KC_HOSTNAME_STRICT=false \
     KC_HTTP_ENABLED=true \
     KC_HTTP_PORT=0.0.0.0:${PORT}
 
-ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
+#ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
 CMD ["start", "--optimized", "--http-port=${PORT}"]
