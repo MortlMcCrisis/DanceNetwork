@@ -8,10 +8,4 @@ RUN /opt/keycloak/bin/kc.sh build
 FROM quay.io/keycloak/keycloak:latest
 COPY --from=builder /opt/keycloak/ /opt/keycloak/
 
-ENV KC_HOSTNAME_STRICT=false \
-    KC_HOSTNAME_STRICT_HTTPS=false \
-    KC_HTTP_ENABLED=true \
-    KC_HTTP_PORT=0.0.0.0:${PORT}
-
-#ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
-CMD ["start", "--optimized", "--http-port=${PORT}"]
+ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
