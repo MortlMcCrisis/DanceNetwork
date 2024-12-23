@@ -10,6 +10,7 @@ COPY --from=builder /opt/keycloak/ /opt/keycloak/
 
 ENV KC_HOSTNAME_STRICT=false \
     KC_HTTP_ENABLED=true \
+    KC_HTTP_PORT=0.0.0.0:8080 \
     KC_HOSTNAME=https://keycloak-8kp3.onrender.com
 
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start", "--http-port=8080"]
