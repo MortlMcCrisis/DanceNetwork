@@ -86,5 +86,6 @@
     "fslightbox-react": "^1.6.2-2",
     "sortablejs": "^1.14.0"
   },
-  "proxy": "http://localhost:8080"
+  //"proxy": "http://localhost:8080"
+  "proxy": "https://dancenetwork-backend.onrender.com"
 }

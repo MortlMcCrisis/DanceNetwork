@@ -12,7 +12,7 @@ COPY gradle gradle
 
 # Set execution permission for the Maven wrapper
 RUN chmod +x ./gradlew && \
-    ./gradlew bootJar
+    ./gradlew test bootJar
 
 # Stage 2: Create the final Docker image using OpenJDK 19
 FROM openjdk:17-alpine
