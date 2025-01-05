@@ -1,6 +1,12 @@
 package com.mortl.dancenetwork.bot;
 
+import com.mortl.dancenetwork.entity.Event;
 import com.mortl.dancenetwork.entity.NewsfeedEntry;
+import com.mortl.dancenetwork.entity.Ticket;
+import com.mortl.dancenetwork.entity.TicketOrder;
+import com.mortl.dancenetwork.entity.TicketType;
+import com.mortl.dancenetwork.enums.DancingRole;
+import com.mortl.dancenetwork.enums.Gender;
 import com.mortl.dancenetwork.enums.NewsfeedEntryType;
 import com.mortl.dancenetwork.model.User;
 import com.mortl.dancenetwork.repository.EventRepository;
@@ -11,8 +17,17 @@ import com.mortl.dancenetwork.repository.TicketTypeRepository;
 import com.mortl.dancenetwork.service.IUserService;
 import com.mortl.dancenetwork.util.NewsfeedFactory;
 import de.svenjacobs.loremipsum.LoremIpsum;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
+import javax.money.Monetary;
+import org.javamoney.moneta.Money;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -21,6 +36,10 @@ import org.springframework.stereotype.Component;
 @Profile("!test")
 public class ShowDataCreator
 {
+
+  //private static final String IMAGE_BASE_URL = "http://10.0.2.2:8080";
+  //private static final String IMAGE_BASE_URL = "http://localhost:8080";
+  private static final String IMAGE_BASE_URL = "";
 
   private NewsfeedEntryRepository newsfeedEntryRepository;
 
@@ -64,7 +83,7 @@ public class ShowDataCreator
     users.stream().forEach(user -> createRandomNewsfeed(user));
   }
 
-  /*@Scheduled(fixedDelay = Long.MAX_VALUE)
+  @Scheduled(fixedDelay = Long.MAX_VALUE)
   public void createEvents()
   {
     User bachaturoUser = users.get(new Random().nextInt(0, users.size()));
@@ -73,12 +92,13 @@ public class ShowDataCreator
         "Bachaturo",
         bachaturoUser.getUuid(),
         "bachaturo@info.pl",
-        LocalDate.of(2024, 8, 16),
+        LocalDate.of(2025, 8, 16),
         LocalTime.NOON,
-        LocalDate.of(2024, 8, 18),
+        LocalDate.of(2025, 8, 18),
         "plac Sławika i Antalla 1, 40-163 Katowice, Poland",
         "https://bachaturo.com/",
-        "/upload/2c22e8eef931ef9a428195d8f1e55573/Bachaturo.png",
+        IMAGE_BASE_URL + "/images/Bachaturo.png",
+        //"/upload/2c22e8eef931ef9a428195d8f1e55573/Bachaturo.png",
         null,
         true,
         LocalDateTime.now().minusMonths(8));
@@ -111,12 +131,13 @@ public class ShowDataCreator
         "Bachatation",
         bachatationUser.getUuid(),
         "events@sonlatino.de",
-        LocalDate.of(2024, 2, 22),
+        LocalDate.of(2025, 2, 22),
         LocalTime.NOON,
-        LocalDate.of(2024, 2, 25),
+        LocalDate.of(2025, 2, 25),
         "Son Latino Studios, Gablonzer Str. 9, 76185 Karlsruhe",
         "http://www.bachatation.de/",
-        "/upload/2c22e8eef931ef9a428195d8f1e55573/Bachatation.png",
+        IMAGE_BASE_URL + "/images/Bachatation.png",
+        //"/upload/2c22e8eef931ef9a428195d8f1e55573/Bachatation.png",
         null,
         true,
         LocalDateTime.now().minusMonths(8));
@@ -156,12 +177,13 @@ public class ShowDataCreator
         "Bachata Zouk Royals",
         backataRoyalUser.getUuid(),
         "florence.vouriot@gmx.de",
-        LocalDate.of(2024, 10, 25),
+        LocalDate.of(2025, 10, 25),
         LocalTime.NOON,
-        LocalDate.of(2024, 10, 27),
+        LocalDate.of(2025, 10, 27),
         "Freiburg, Kaiser Joseph Straße 268 79098 - Freiburg Baden-Württemberg",
-        "https://www.goandance.com/en/events/6476-bachata-zouk-royals-2024",
-        "/upload/2c22e8eef931ef9a428195d8f1e55573/BachataZouk.png",
+        "https://www.goandance.com/en/events/6476-bachata-zouk-royals-2025",
+        IMAGE_BASE_URL + "/images/BachataZouk.png",
+        //"/upload/2c22e8eef931ef9a428195d8f1e55573/BachataZouk.png",
         null,
         true,
         LocalDateTime.now().minusMonths(8));
@@ -190,35 +212,35 @@ public class ShowDataCreator
     createTicketType(bachataRoyal, new TicketType(
         null,
         "Friday Day Pass",
-        "This Day Pass includes all workshops, shows and social on Friday the 25th of October 2024.<br/>On Friday the workshops will start at 6 p.m.<br/>After the pre party workshops at 9 p.m. the social will start at 10 p.m.<br/>The shows will be around midnight ",
+        "This Day Pass includes all workshops, shows and social on Friday the 25th of October 2025.<br/>On Friday the workshops will start at 6 p.m.<br/>After the pre party workshops at 9 p.m. the social will start at 10 p.m.<br/>The shows will be around midnight ",
         Money.of(35, Monetary.getCurrency("EUR")),
         100L,
         bachataRoyal));
     createTicketType(bachataRoyal, new TicketType(
         null,
         "Saturday Day Pass- Leader",
-        "This Day Pass, for Leader, includes all workshops, shows and social on Saturday the 26th of October 2024.<br/>On Saturday the workshops will start at 2 p.m.<br/>The day social will start at 6 p.m. and the night social will start at 10 p.m.<br/>The shows will be around midnight.",
+        "This Day Pass, for Leader, includes all workshops, shows and social on Saturday the 26th of October 2025.<br/>On Saturday the workshops will start at 2 p.m.<br/>The day social will start at 6 p.m. and the night social will start at 10 p.m.<br/>The shows will be around midnight.",
         Money.of(65, Monetary.getCurrency("EUR")),
         100L,
         bachataRoyal));
     createTicketType(bachataRoyal, new TicketType(
         null,
         "Saturday Day Pass - Follower",
-        "This Day Pass, for Follower, includes all workshops, shows and social on Saturday the 26th of October 2024.<br/>On Saturday the workshops will start at 2 p.m.<br/>The day social will start at 6 p.m. and the night social will start at 10 p.m.<br/>The shows will be around midnight.",
+        "This Day Pass, for Follower, includes all workshops, shows and social on Saturday the 26th of October 2025.<br/>On Saturday the workshops will start at 2 p.m.<br/>The day social will start at 6 p.m. and the night social will start at 10 p.m.<br/>The shows will be around midnight.",
         Money.of(65, Monetary.getCurrency("EUR")),
         100L,
         bachataRoyal));
     createTicketType(bachataRoyal, new TicketType(
         null,
         "Sunday Day Pass - Leader",
-        "This Day Pass, for Leader, includes all workshops and social on Sunday the 27th of October 2024.<br/>On Sunday the workshops will start at 1 p.m.<br/>The day social will start at 4 p.m. until midnight",
+        "This Day Pass, for Leader, includes all workshops and social on Sunday the 27th of October 2025.<br/>On Sunday the workshops will start at 1 p.m.<br/>The day social will start at 4 p.m. until midnight",
         Money.of(45, Monetary.getCurrency("EUR")),
         100L,
         bachataRoyal));
     createTicketType(bachataRoyal, new TicketType(
         null,
         "Sunday Day Pass - Follower",
-        "This Day Pass, for Follower, includes all workshops and social on Sunday the 27th of October 2024.<br/>On Sunday the workshops will start at 1 p.m.<br/>The day social will start at 4 p.m. until midnight",
+        "This Day Pass, for Follower, includes all workshops and social on Sunday the 27th of October 2025.<br/>On Sunday the workshops will start at 1 p.m.<br/>The day social will start at 4 p.m. until midnight",
         Money.of(45, Monetary.getCurrency("EUR")),
         100L,
         bachataRoyal));
@@ -250,12 +272,13 @@ public class ShowDataCreator
         "Bachatology",
         backataRoyalUser.getUuid(),
         null,
-        LocalDate.of(2024, 9, 27),
+        LocalDate.of(2025, 9, 27),
         LocalTime.NOON,
-        LocalDate.of(2024, 9, 28),
+        LocalDate.of(2025, 9, 28),
         "Karlsruhe, Hans-Sachs-Straße 8, 76133",
         "https://www.tickettailor.com/events/socialdancevip/1218659?fbclid=IwZXh0bgNhZW0CMTEAAR3BWpgiEoj5x8tOD7WnCdVqaebNOKNLqwGtW5ghvZBw3cSvt5XwBYsJY6A_aem_Xdvk1biN-Ez2WXS4MEUxzg&sfnsn=scwspwa",
-        "/upload/2c22e8eef931ef9a428195d8f1e55573/Bachatology.png",
+        IMAGE_BASE_URL + "/images/Bachatology.png",
+        //"/upload/2c22e8eef931ef9a428195d8f1e55573/Bachatology.png",
         null,
         true,
         LocalDateTime.now().minusMonths(8));
@@ -285,7 +308,7 @@ public class ShowDataCreator
           100L,
           event));
     }
-  }*/
+  }
 
   private void createRandomNewsfeed(User user)
   {
@@ -300,11 +323,10 @@ public class ShowDataCreator
 
   private String getRandomLoremIpsum(int min, int max)
   {
-    //return loremIpsum.getWords(new Random().nextInt(max - min + 1) + min);
-    return loremIpsum.getWords(100);
+    return loremIpsum.getWords(new Random().nextInt(max - min + 1) + min);
   }
 
-  /*private void createRandomTickets(Event event, TicketType ticketType)
+  private void createRandomTickets(Event event, TicketType ticketType)
   {
     Set<Ticket> tickets = new HashSet<>();
     TicketOrder ticketOrder = new TicketOrder(null, getRandomDate(event.getCreatedAt()));
@@ -356,5 +378,5 @@ public class ShowDataCreator
     long randomEpochSecond = ThreadLocalRandom.current().nextLong(startEpochSecond, endEpochSecond);
 
     return LocalDateTime.ofEpochSecond(randomEpochSecond, 0, java.time.ZoneOffset.UTC);
-  }*/
+  }
 }

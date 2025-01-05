@@ -9,22 +9,14 @@ import imgp2 from "../../../assets/images/user/05.jpg";
 import imgp3 from "../../../assets/images/user/06.jpg";
 import imgp4 from "../../../assets/images/user/07.jpg";
 import imgp5 from "../../../assets/images/user/08.jpg";
-import DanceEventDetailHeaderEditButton
-  from "./dance-event-detail-header-edit-button";
 import {useKeycloak} from "@react-keycloak/web";
 import {
   EVENTS_CLOSED_ENDPOINT,
   putData
 } from "../../../components/util/network";
-import LocationIcon from "../../../components/text_icons/location";
-import WebsiteIcon from "../../../components/text_icons/website";
-import EmailIcon from "../../../components/text_icons/email";
-import DateIcon from "../../../components/text_icons/date";
 import DanceImageGallerySelectableImage
   from "../../../components/image-gallery/image-gallery-selectable-image";
 import {toast} from "react-toastify";
-import OwnerIcon from "../../../components/text_icons/owner";
-import TimeIcon from "../../../components/text_icons/time";
 import imgpp38 from "../../../assets/images/icon/08.png";
 import imgpp39 from "../../../assets/images/icon/09.png";
 import imgpp40 from "../../../assets/images/icon/10.png";
