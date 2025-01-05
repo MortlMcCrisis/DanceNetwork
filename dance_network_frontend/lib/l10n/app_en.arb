@@ -1,0 +1,10 @@
+{
+  "type": "Type",
+  "price": "Price",
+  "search": "Search",
+  "incomplete": "incomplete",
+  "buy_ticket": "Buy ticket",
+  "map": "Map",
+  "profile": "Profile",
+  "logout": "Logout"
+}

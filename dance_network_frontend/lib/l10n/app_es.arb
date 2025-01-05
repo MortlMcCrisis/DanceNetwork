@@ -1,0 +1,10 @@
+{
+  "type": "Tipo",
+  "price": "Precio",
+  "search": "Buscar",
+  "incomplete": "incompleto",
+  "buy_ticket": "Comprar boleto",
+  "map": "Mapa",
+  "profile": "Perfil",
+  "logout": "Cerrar sesión"
+}
