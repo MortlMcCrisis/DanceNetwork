@@ -1,6 +1,7 @@
 import 'package:dance_network_frontend/common/max_sized_container.dart';
 import 'package:dance_network_frontend/event/event_list_item.dart';
-import 'package:dance_network_frontend/util/network.dart';
+import 'package:dance_network_frontend/util/auth_util.dart';
+import 'package:dance_network_frontend/util/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -92,10 +93,14 @@ class CardListPage extends StatelessWidget {
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 20.0),
         child: FloatingActionButton.extended(
-          onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Karte Button gedrückt!')),
-            );
+          onPressed: () async {
+            AuthService authService = AuthService();
+            final String? token = await authService.authenticateWithCredentials(
+            "janmorti@gmx.de", "test");
+
+            //ScaffoldMessenger.of(context).showSnackBar(
+            //  const SnackBar(content: Text('Karte Button gedrückt!')),
+            //);
           },
           label: Text(AppLocalizations.of(context)!.map),
           icon: const Icon(Icons.map),

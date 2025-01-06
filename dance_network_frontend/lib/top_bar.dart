@@ -22,13 +22,13 @@ class AppBarWithSearch extends StatelessWidget implements PreferredSizeWidget {
           child: Center(
             child: ConstrainedBox(
               constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.65,
+                maxWidth: MediaQuery.of(context).size.width * 0.45,
               ),
               child: Container(
                 height: 50.0,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(16.0),
+                  borderRadius: BorderRadius.circular(8.0),
                   boxShadow: const [
                     BoxShadow(
                       color: Colors.black26,

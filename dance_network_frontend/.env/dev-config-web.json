@@ -1,4 +1,6 @@
 {
   "api_base_url": "http://localhost:8080",
-  "image_base_url": "http://localhost:8080"
+  "image_base_url": "http://localhost:8080",
+  "keycloak_url": "http://localhost:443",
+  "keycloak_client": "dance-network-admin"
 }

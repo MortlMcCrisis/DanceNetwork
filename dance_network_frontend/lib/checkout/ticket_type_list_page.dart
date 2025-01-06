@@ -2,7 +2,7 @@ import 'package:dance_network_frontend/checkout/ticket_type_list.dart';
 import 'package:dance_network_frontend/checkout/web/ticket_details_table.dart';
 import 'package:dance_network_frontend/common/max_sized_container.dart';
 import 'package:flutter/material.dart';
-import 'package:dance_network_frontend/util/network.dart';
+import 'package:dance_network_frontend/util/api_service.dart';
 
 class TicketTypeListPage extends StatefulWidget {
   final int eventId;
