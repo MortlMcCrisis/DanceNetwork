@@ -1,6 +1,8 @@
-import 'package:dance_network_frontend/side_menu.dart';
+import 'package:dance_network_frontend/navigation/botton_bar.dart';
+import 'package:dance_network_frontend/navigation/side_menu.dart';
 import 'package:dance_network_frontend/time_table.dart';
-import 'package:dance_network_frontend/top_bar.dart';
+import 'package:dance_network_frontend/navigation/top_bar.dart';
+import 'package:dance_network_frontend/util/screen_utils.dart';
 import 'package:dance_network_frontend/util/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -42,6 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
     const TimetableScreen(),
     const CardListPage(),
     const Center(child: Text('Page 3: Yet Another Content')),
+    const Center(child: Text('Page 4: Yet Another Content')),
   ];
 
   void _onMenuItemTapped(int index) {
@@ -59,22 +62,9 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  Widget _buildBottomNavigationBar() {
-    return BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(icon: Icon(Icons.dynamic_feed), label: 'Newsfeed'),
-        BottomNavigationBarItem(icon: Icon(Icons.festival), label: 'Events'),
-        BottomNavigationBarItem(icon: Icon(Icons.confirmation_num), label: 'Tickets'),
-      ],
-      currentIndex: _selectedIndex,
-      selectedItemColor: Colors.deepPurple,
-      onTap: _onMenuItemTapped,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    final isWideScreen = MediaQuery.of(context).size.width > 600;
+    final isWideScreen = ScreenUtils.isWideScreen(context);
 
     return Scaffold(
       appBar: AppBarWithSearch(
@@ -95,7 +85,12 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      bottomNavigationBar: isWideScreen ? null : _buildBottomNavigationBar(),
+      bottomNavigationBar: isWideScreen
+          ? null
+          : CustomBottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onItemTapped: _onMenuItemTapped,
+      ),
     );
   }
 }

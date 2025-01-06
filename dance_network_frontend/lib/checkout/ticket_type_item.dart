@@ -33,10 +33,10 @@ class TicketTypeWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8.0),
+        color: AppThemes.white,
+        borderRadius: BorderRadius.circular(AppThemes.borderRadius),
         border: Border.all(
-          color: Colors.black26,
+          color: AppThemes.generateGradient(AppThemes.black)[7],
           width: 1.0,
         ),
       ),
@@ -66,8 +66,8 @@ class TicketTypeWidget extends StatelessWidget {
                         height: 30.0,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(4.0),
+                          border: Border.all(color: AppThemes.generateGradient(AppThemes.black)[7]),
+                          borderRadius: BorderRadius.circular(AppThemes.borderRadiusSmall),
                         ),
                         child: Text(
                           '${ticketList.length}',
@@ -125,17 +125,17 @@ class TicketTypeWidget extends StatelessWidget {
                             );
                           },
                           icon: const Icon(Icons.edit),
-                          color: Colors.deepPurple,
+                          color: AppThemes.primary,
                         ),
                         Expanded(
                           child: Container(
                             margin: const EdgeInsets.symmetric(vertical: 4.0),
                             padding: const EdgeInsets.all(8.0),
                             decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              borderRadius: BorderRadius.circular(8.0),
+                              color: AppThemes.generateGradient(AppThemes.primary)[8],
+                              borderRadius: BorderRadius.circular(AppThemes.borderRadius),
                               border: Border.all(
-                                color: Colors.black26,
+                                color: AppThemes.generateGradient(AppThemes.primary)[6],
                                 width: 1.0,
                               ),
                             ),
@@ -170,7 +170,7 @@ class TicketTypeWidget extends StatelessWidget {
                             onRemoveTicket(index);
                           },
                           icon: const Icon(Icons.remove),
-                          color: Colors.redAccent,
+                          color: AppThemes.red,
                         ),
                       ],
                     ),

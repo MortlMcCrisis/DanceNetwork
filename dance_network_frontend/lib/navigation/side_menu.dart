@@ -1,3 +1,4 @@
+import 'package:dance_network_frontend/util/theme.dart';
 import 'package:flutter/material.dart';
 
 class NavigationRailComponent extends StatelessWidget {
@@ -44,13 +45,14 @@ class NavigationRailComponent extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
         child: Row(
           children: [
-            Icon(icon, size: 24),
+            Icon(icon, size: 24, color: selectedIndex == index ? AppThemes.black : AppThemes.generateGradient(AppThemes.black)[4]),
             const SizedBox(width: 16),
             Text(
               label,
               style: TextStyle(
-                fontWeight: selectedIndex == index ? FontWeight.bold : FontWeight.normal, // Weniger fett für ausgewählten Punkt
-                fontSize: 16,               // Optional: Schriftgröße einstellen
+                fontWeight: selectedIndex == index ? FontWeight.bold : FontWeight.normal,
+                fontSize: 16,
+                color: selectedIndex == index ? AppThemes.black : AppThemes.generateGradient(AppThemes.black)[4],
               ),
             ),
           ],

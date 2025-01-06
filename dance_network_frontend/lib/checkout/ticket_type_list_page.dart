@@ -3,6 +3,7 @@ import 'package:dance_network_frontend/checkout/web/ticket_details_table.dart';
 import 'package:dance_network_frontend/common/max_sized_container.dart';
 import 'package:flutter/material.dart';
 import 'package:dance_network_frontend/util/api_service.dart';
+import 'package:dance_network_frontend/util/theme.dart';
 
 class TicketTypeListPage extends StatefulWidget {
   final int eventId;
@@ -125,21 +126,7 @@ class TicketTypeListPageState extends State<TicketTypeListPage> {
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
                         margin: const EdgeInsets.symmetric(vertical: 16.0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8.0),
-                          border: Border.all(
-                            color: Colors.black26,
-                            width: 1.0,
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.6),
-                              blurRadius: 11.0,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
-                        ),
+                        decoration: AppThemes.elevatedBoxDecoration,
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -198,21 +185,7 @@ class TicketTypeListPageState extends State<TicketTypeListPage> {
                     builder: (context, constraints) {
                       return Container(
                         padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8.0),
-                          border: Border.all(
-                            color: Colors.black26,
-                            width: 1.0,
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 8.0,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
-                        ),
+                        decoration: AppThemes.elevatedBoxDecoration,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

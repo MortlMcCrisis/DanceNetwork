@@ -118,7 +118,7 @@ class DetailPage extends StatelessWidget {
           },
           label: Text(AppLocalizations.of(context)!.buy_ticket),
           icon: const Icon(Icons.confirmation_num),
-          backgroundColor: AppThemes.green2,
+          backgroundColor: AppThemes.green,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -136,7 +136,7 @@ class DetailPage extends StatelessWidget {
         Icon(
           icon,
           size: 24,
-          color: Colors.grey[700],
+          color: AppThemes.generateGradient(AppThemes.black)[2],
         ),
         const SizedBox(width: 16),
         Expanded(

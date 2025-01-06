@@ -5,8 +5,18 @@ class AppThemes {
   static const Color black = Color(0xFF1e102a);
   static const Color primary = Color(0xFF6b1bbb);
   static const Color green = Color(0xFF6bbb1b);
-  static const Color green2 = Color(0xFF1bbb6b);
   static const Color red = Color(0xFFbb1b1b);
+  static const Color white = Color(0xFFFEFDFB);
+
+  static List<Color> generateGradient(Color color, {int steps = 10}) {
+    return List<Color>.generate(
+      steps,
+          (index) {
+        final double fraction = index / (steps - 1);
+        return Color.lerp(color, AppThemes.white, fraction)!;
+      },
+    );
+  }
 
   static final ThemeData defaultTheme = ThemeData(
     colorScheme: ColorScheme.fromSeed(
@@ -29,8 +39,36 @@ class AppThemes {
       titleTextStyle: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.bold,
-        color: Colors.white,
+        color: AppThemes.white,
       ),
     ),
+  );
+
+  static const double borderRadiusSmall = 4.0;
+  static const double borderRadius = 8.0;
+
+  static Border border = Border.all(
+    color: AppThemes.generateGradient(AppThemes.black)[7],
+    width: 1.0,
+  );
+
+  static BoxDecoration elevatedBoxDecoration = BoxDecoration(
+    color: AppThemes.white,
+    borderRadius: BorderRadius.circular(AppThemes.borderRadius),
+    border: AppThemes.elevatedBoxBorder,
+    boxShadow: [
+      AppThemes.elevatedBoxShadow,
+    ],
+  );
+
+  static BoxShadow elevatedBoxShadow = BoxShadow(
+    color: black.withOpacity(0.6),
+    blurRadius: 11.0,
+    offset: const Offset(0, 4),
+  );
+
+  static Border elevatedBoxBorder = Border.all(
+    color: generateGradient(AppThemes.black)[7],
+    width: 1.0,
   );
 }

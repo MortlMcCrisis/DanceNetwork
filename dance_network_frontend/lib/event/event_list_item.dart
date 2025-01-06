@@ -1,6 +1,7 @@
 import 'package:dance_network_frontend/util/image_resolver.dart';
 import 'package:flutter/material.dart';
 import 'package:dance_network_frontend/event/event_details.dart';
+import 'package:dance_network_frontend/util/theme.dart';
 
 Widget buildCard(
     BuildContext context, {
@@ -56,8 +57,8 @@ Widget buildCard(
         children: [
           ClipRRect(
             borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(8.0),
-              topRight: Radius.circular(8.0),
+              topLeft: Radius.circular(AppThemes.borderRadius),
+              topRight: Radius.circular(AppThemes.borderRadius),
             ),
             child: AspectRatio(
               aspectRatio: 16 / 9,

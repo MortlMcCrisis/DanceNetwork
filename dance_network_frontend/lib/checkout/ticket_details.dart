@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:dance_network_frontend/util/theme.dart';
 
 class TicketDetailsWidget extends StatefulWidget {
   final int ticketIndex;
@@ -50,14 +51,14 @@ class TicketDetailsWidgetState extends State<TicketDetailsWidget> {
     return FractionallySizedBox(
       child: Container(
         padding: const EdgeInsets.all(16.0),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(12.0),
+        decoration: BoxDecoration(
+          color: AppThemes.white,
+          borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(AppThemes.borderRadius),
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black26,
+              color: AppThemes.generateGradient(AppThemes.black)[2],
               blurRadius: 10.0,
             ),
           ],
@@ -118,6 +119,7 @@ class TicketDetailsWidgetState extends State<TicketDetailsWidget> {
                     value: 'male',
                     groupValue: selectedGender,
                     title: const Text('Male'),
+                    activeColor: Colors.green, // Farbe des ausgewählten Radio-Buttons
                     onChanged: (value) {
                       setState(() {
                         selectedGender = value;
