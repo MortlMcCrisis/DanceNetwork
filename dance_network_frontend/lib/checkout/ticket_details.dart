@@ -90,9 +90,11 @@ class TicketDetailsWidgetState extends State<TicketDetailsWidget> {
               const SizedBox(height: 16.0),
               TextFormField(
                 controller: addressController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Address',
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(AppThemes.borderRadiusSmall),
+                  ),
                 ),
               ),
               const SizedBox(height: 16.0),

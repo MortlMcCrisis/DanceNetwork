@@ -18,7 +18,6 @@ class CustomBottomNavigationBar extends StatelessWidget {
         BottomNavigationBarItem(icon: Icon(Icons.dynamic_feed), label: 'Newsfeed'),
         BottomNavigationBarItem(icon: Icon(Icons.festival), label: 'Events'),
         BottomNavigationBarItem(icon: Icon(Icons.confirmation_num), label: 'Tickets'),
-        BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'Profile'),
       ],
       currentIndex: currentIndex,
       selectedItemColor: AppThemes.primary,

@@ -1,7 +1,7 @@
 import 'package:dance_network_frontend/navigation/botton_bar.dart';
 import 'package:dance_network_frontend/navigation/side_menu.dart';
-import 'package:dance_network_frontend/time_table.dart';
 import 'package:dance_network_frontend/navigation/top_bar.dart';
+import 'package:dance_network_frontend/time_table.dart';
 import 'package:dance_network_frontend/util/screen_utils.dart';
 import 'package:dance_network_frontend/util/theme.dart';
 import 'package:flutter/material.dart';
@@ -37,14 +37,44 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  //late final AppLinks _appLinks;
+
   int _selectedIndex = 1;
   String _searchQuery = '';
+
+  /*@override
+  void initState() {
+    super.initState();
+    _appLinks = AppLinks();
+    _handleIncomingLinks();
+  }*/
+
+  /*void _handleIncomingLinks() async {
+    print("handle link");
+    try {
+      _appLinks.uriLinkStream.listen((Uri? uri) {
+        if (uri != null && uri.queryParameters.containsKey('code')) {
+          final code = uri.queryParameters['code']!;
+          // Tausche den Authorization Code gegen ein Access Token
+          AuthService().exchangeCodeForToken(code).then((token) {
+            if (token != null) {
+              print('Access Token: $token');
+              // Token speichern oder Nutzer weiterleiten
+            } else {
+              print('Fehler beim Abrufen des Tokens');
+            }
+          });
+        }
+      });
+    } catch (err) {
+      print('Allgemeiner Fehler beim Verarbeiten der Links: $err');
+    }
+  }*/
 
   final List<Widget> _pages = [
     const TimetableScreen(),
     const CardListPage(),
     const Center(child: Text('Page 3: Yet Another Content')),
-    const Center(child: Text('Page 4: Yet Another Content')),
   ];
 
   void _onMenuItemTapped(int index) {

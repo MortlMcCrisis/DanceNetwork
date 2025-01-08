@@ -35,11 +35,11 @@ class AppThemes {
       displaySmall: TextStyle(fontSize: 12.0, color: Colors.black54),
     ),
     appBarTheme: const AppBarTheme(
-      color:  Color(0xFF6b1bbb),
+      color:  primary,
       titleTextStyle: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.bold,
-        color: AppThemes.white,
+        color: white,
       ),
     ),
   );

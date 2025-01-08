@@ -6,5 +6,15 @@
   "buy_ticket": "Buy ticket",
   "map": "Map",
   "profile": "Profile",
-  "logout": "Logout"
+  "logout": "Logout",
+
+  "login": "Login",
+  "loginWithEmail": "Login with E-mail",
+  "email": "E-mail",
+  "enterValidEmail": "Enter valid E-mail",
+  "invalidEmail": "Invalid e-mail",
+  "password": "Password",
+  "enterValidPassword": "Enter valid password",
+  "passwordTooShort": "Password too short",
+  "forgotPassword": "Forgot Password"
 }

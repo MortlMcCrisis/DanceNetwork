@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: hbr-keycloak
+  name: hbr-keycloak2
 ---
 apiVersion: v1
 kind: Secret
 metadata:
   name: postgres-credentials
-  namespace: hbr-keycloak
+  namespace: hbr-keycloak2
 type: Opaque
 stringData:
   POSTGRES_USER: "postgres"
@@ -18,7 +18,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: tls-secret
-  namespace: hbr-keycloak
+  namespace: hbr-keycloak2
 type: kubernetes.io/tls
 data:
   tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURMVENDQWhXZ0F3SUJBZ0lVUVRQREtLUGtRYjZBYWNXN2htTFdtSThOOVg4d0RRWUpLb1pJaHZjTkFRRUwKQlFBd0pqRVJNQThHQTFVRUF3d0libWRwYm5oemRtTXhFVEFQQmdOVkJBb01DRzVuYVc1NGMzWmpNQjRYRFRJegpNRFF3T1RBM01qSTFOVm9YRFRJME1EUXdPREEzTWpJMU5Wb3dKakVSTUE4R0ExVUVBd3dJYm1kcGJuaHpkbU14CkVUQVBCZ05WQkFvTUNHNW5hVzU0YzNaak1JSUJJakFOQmdrcWhraUc5dzBCQVFFRkFBT0NBUThBTUlJQkNnS0MKQVFFQWwrai9XcFVwQmtNdFBkemV4SGM0WlZHeENpdDlxUmRlV1FDay9JUXNVS1JkNGJSQTlFMXRGTzNheENnRQpKcGdYL1RHSHhid2VvMFVrU3BRU2czYzBoZ09KaWJKWGxlTmpsM0VTOXNmQWVCZEdVVFNMYzFtZ0x0Sm5sYklaClE2U3NnZ3RuZ3VGSFRZcFBoblBCZ1MzTkFjYk1WK01ZTlNEamVXQnJWTVI3RWM5YmJrT3d3VHNod1lXNEorTzUKdUdRTlhYUWNLWFdDdTRRZXpoUmNnOVhseEhWUTkxTURnNEJLbk5jUm9QdVRBaHdlWUJGSGZTenNJbTBQTzE5Qgp1c093cmJCTXNhV2UyZzRqbEIrZmtCMExLbS84RklRZnVXUS95eTVZYnpoK0kzT0xoUTdvYmNQUzlBNHl1R0Y1CnhVNExZbFRpNFN2UnBGSHN0QUxQT0JzVzd3SURBUUFCbzFNd1VUQWRCZ05WSFE0RUZnUVV5SkFxV21ISEtiTzEKWk0vMDhzc2NHRkFYQ1h3d0h3WURWUjBqQkJnd0ZvQVV5SkFxV21ISEtiTzFaTS8wOHNzY0dGQVhDWHd3RHdZRApWUjBUQVFIL0JBVXdBd0VCL3pBTkJna3Foa2lHOXcwQkFRc0ZBQU9DQVFFQWE0Sk8xSGZ6Z0FPTTJUb3JmRFFEClhVNWM3bENjYmRDa1ZGeHBBQUlyeVo3WWljMm1mcllTNHMwMTU1dHVqUTNqLy9hVlYwTWFpOU96bGVTdmFockQKeU9veE9INzUrZWtUd1BkSHhvaHoxbFI5dW1yRUNBcXlIYnR2SXBCcFliTXFnZmp6KzJZNFBib290ZmhjMHVWZwptRFRsN1d3ak1XMURiQmlsM3ptSlRZZU5vSThUTXlCTWhwcGt0UndDVkM4VGRsRHNBUHZFWlZXUDBpL3VGOHBDCmZlZXFiaEtQSHZjZUV5V3Q4U0N0aDhmaDAycnViQlBjT3RycmtuUUlxakpxeVFPUFFXNjM1TGpxQTM0aWpBcEEKNDJxTlIzWGJvdTFOSkM3Wk8vdzJQYmtLZnlCNkNrdmRHQ3dOZWxjSnpRZXN1RWd6NDNrS240RUVIK09vUkFVTQprdz09Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
@@ -28,7 +28,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: keycloak-secrets
-  namespace: hbr-keycloak
+  namespace: hbr-keycloak2
 type: Opaque
 stringData:
   KEYCLOAK_ADMIN: "admin"
@@ -37,8 +37,8 @@ stringData:
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: postgres-pv
-  namespace: hbr-keycloak
+  name: postgres-pv2
+  namespace: hbr-keycloak2
   labels:
     type: local
     app: postgres
@@ -51,13 +51,13 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   hostPath:
     # path: "/mnt/data"
-    path: "/run/desktop/mnt/host/c/Users/JanMortensen/Desktop/Dance Network/.work/keycloak/data"
+    path: "/run/desktop/mnt/host/c/Users/JanMortensen/Desktop/Dance Network/.work/keycloak/data2"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: postgres-pvc
-  namespace: hbr-keycloak
+  namespace: hbr-keycloak2
   labels:
     app: postgres
 spec:
@@ -72,7 +72,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: postgres
-  namespace: hbr-keycloak
+  namespace: hbr-keycloak2
   labels:
     app: postgres
 spec:
@@ -87,7 +87,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: postgres
-  namespace: hbr-keycloak
+  namespace: hbr-keycloak2
 spec:
   selector:
     matchLabels:
@@ -129,13 +129,13 @@ apiVersion: v1
 kind: Service
 metadata:
   name: keycloak
-  namespace: hbr-keycloak
+  namespace: hbr-keycloak2
   labels:
     app: keycloak
 spec:
   ports:
     - name: https
-      port: 443
+      port: 444
       targetPort: 8080
   selector:
     app: keycloak
@@ -145,7 +145,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: keycloak
-  namespace: hbr-keycloak
+  namespace: hbr-keycloak2
   labels:
     app: keycloak
 spec:
@@ -229,7 +229,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: keycloak
-  namespace: hbr-keycloak
+  namespace: hbr-keycloak2
 spec:
   tls:
     - hosts:
@@ -245,4 +245,4 @@ spec:
               service:
                 name: keycloak
                 port:
-                  number: 443
+                  number: 444
