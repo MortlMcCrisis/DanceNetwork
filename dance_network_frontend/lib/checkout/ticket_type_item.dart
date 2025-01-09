@@ -1,5 +1,5 @@
 import 'package:dance_network_frontend/checkout/ticket_details.dart';
-import 'package:dance_network_frontend/config/theme.dart';
+import 'package:dance_network_frontend/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

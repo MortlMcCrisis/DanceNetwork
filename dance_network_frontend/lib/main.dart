@@ -1,7 +1,8 @@
-import 'package:dance_network_frontend/config/theme.dart';
 import 'package:dance_network_frontend/navigation/botton_bar.dart';
 import 'package:dance_network_frontend/navigation/side_menu.dart';
 import 'package:dance_network_frontend/navigation/top_bar.dart';
+import 'package:dance_network_frontend/router.dart';
+import 'package:dance_network_frontend/theme.dart';
 import 'package:dance_network_frontend/time_table.dart';
 import 'package:dance_network_frontend/util/screen_utils.dart';
 import 'package:dance_network_frontend/util/token_storage.dart';
@@ -22,20 +23,18 @@ void main() async {
     ),
   );
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  //TODO https://docs.flutter.dev/ui/navigation#using-the-router
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Dance network',
       theme: AppThemes.defaultTheme,
       locale: const Locale('en'),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const MyHomePage(),
+      routerConfig: router,
     );
   }
 }

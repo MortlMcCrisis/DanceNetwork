@@ -1,7 +1,7 @@
 import 'package:dance_network_frontend/checkout/ticket_type_list.dart';
 import 'package:dance_network_frontend/checkout/web/ticket_details_table.dart';
 import 'package:dance_network_frontend/common/max_sized_container.dart';
-import 'package:dance_network_frontend/config/theme.dart';
+import 'package:dance_network_frontend/theme.dart';
 import 'package:dance_network_frontend/util/api_service.dart';
 import 'package:flutter/material.dart';
 
@@ -24,11 +24,13 @@ class TicketTypeListPageState extends State<TicketTypeListPage> {
 
   Future<void> _fetchTicketTypes() async {
     ticketTypes = await ApiService().get(
-      ApiService.ticketTypes,
+      endpoint: ApiService.ticketTypes,
       queryParams: {'eventId': widget.eventId},
+      typeMapper: (json) => json as List<dynamic>
     );
-    for (var ticket in ticketTypes) {
-      final ticketId = ticket['id'];
+    debugPrint('$ticketTypes');
+    for (var ticketType in ticketTypes) {
+      final ticketId = ticketType['id'];
       ticketDetails.putIfAbsent(ticketId, () => ValueNotifier<List<Map<String, dynamic>>>([]));
     }
     setState(() {});

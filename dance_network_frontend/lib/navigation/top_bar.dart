@@ -1,6 +1,6 @@
-import 'package:dance_network_frontend/config/theme.dart';
 import 'package:dance_network_frontend/profile/login.dart';
 import 'package:dance_network_frontend/profile/profile.dart';
+import 'package:dance_network_frontend/theme.dart';
 import 'package:dance_network_frontend/util/screen_utils.dart';
 import 'package:dance_network_frontend/util/token_storage.dart';
 import 'package:flutter/material.dart';

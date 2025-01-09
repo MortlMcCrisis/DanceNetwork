@@ -1,4 +1,4 @@
-import 'package:dance_network_frontend/config/theme.dart';
+import 'package:dance_network_frontend/theme.dart';
 import 'package:flutter/material.dart';
 
 class TicketDetailsWidget extends StatefulWidget {
@@ -121,7 +121,6 @@ class TicketDetailsWidgetState extends State<TicketDetailsWidget> {
                     value: 'male',
                     groupValue: selectedGender,
                     title: const Text('Male'),
-                    activeColor: Colors.green, // Farbe des ausgewählten Radio-Buttons
                     onChanged: (value) {
                       setState(() {
                         selectedGender = value;

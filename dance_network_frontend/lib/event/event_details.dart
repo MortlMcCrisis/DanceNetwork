@@ -1,33 +1,75 @@
 import 'package:dance_network_frontend/checkout/ticket_type_list_page.dart';
-import 'package:dance_network_frontend/config/theme.dart';
+import 'package:dance_network_frontend/common/max_sized_container.dart';
+import 'package:dance_network_frontend/event/event.dart';
+import 'package:dance_network_frontend/theme.dart';
+import 'package:dance_network_frontend/util/api_service.dart';
 import 'package:dance_network_frontend/util/image_resolver.dart';
+import 'package:dance_network_frontend/util/screen_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
-class DetailPage extends StatelessWidget {
+class EventDetailPage extends StatelessWidget {
   final int eventId;
-  final String imageUrl;
-  final String startDate;
-  final String endDate;
-  final String startTime;
-  final String title;
-  final String location;
-  final String website;
-  final String email;
 
-  const DetailPage({
-    super.key,
-    required this.eventId,
-    required this.imageUrl,
-    required this.startDate,
-    required this.endDate,
-    required this.startTime,
-    required this.title,
-    required this.location,
-    required this.website,
-    required this.email,
-  });
+  const EventDetailPage({super.key, required this.eventId});
+
+  Future<Event> fetchEvent(int eventId) async {
+    final response = await ApiService().get(
+        endpoint: '${ApiService.eventEndpoint}/$eventId',
+        typeMapper: (json) => Event.fromMap(json as Map<String, dynamic>),
+    );
+    return response;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Event Details'),
+      ),
+      body: FutureBuilder<Event>(
+        future: fetchEvent(eventId),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.hasData) {
+            final event = snapshot.data!;
+             return EventDetailContent(event: event);
+          } else {
+            return const Center(child: Text('No data available'));
+          }
+        },
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 20.0),
+        child: FloatingActionButton.extended(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => TicketTypeListPage(
+                    eventId: eventId,
+                  )
+              ),
+            );
+          },
+          label: Text(AppLocalizations.of(context)!.buy_ticket),
+          icon: const Icon(Icons.confirmation_num),
+          backgroundColor: AppThemes.green,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+}
+
+class EventDetailContent extends StatelessWidget {
+  final Event event;
+
+  const EventDetailContent({super.key, required this.event});
 
   @override
   Widget build(BuildContext context) {
@@ -40,23 +82,20 @@ class DetailPage extends StatelessWidget {
       return '${dateFormatter.format(startDate)} - ${dateFormatter.format(endDate)}';
     }
 
-    final formattedDateRange = formatDateRange(startDate, endDate);
+    final formattedDateRange = formatDateRange(event.startDate, event.endDate);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
-      body: SingleChildScrollView(
-        child: Center(
+    return MaxSizedContainer(
+      builder: (context, constraints) {
+        return Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 550),
+            constraints: const BoxConstraints(maxWidth: ScreenUtils.wideScreenSize),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AspectRatio(
                   aspectRatio: 16 / 9,
                   child: Image.network(
-                    imageResolver.getFullUrl(imageUrl),
+                    imageResolver.getFullUrl(event.imageUrl),
                     width: double.infinity,
                     fit: BoxFit.cover,
                   ),
@@ -75,25 +114,25 @@ class DetailPage extends StatelessWidget {
                       _buildInfoRow(
                         context: context,
                         icon: Icons.schedule,
-                        text: startTime,
+                        text: event.startTime,
                       ),
                       const SizedBox(height: 12),
                       _buildInfoRow(
                         context: context,
                         icon: Icons.location_on,
-                        text: location,
+                        text: event.location,
                       ),
                       const SizedBox(height: 12),
                       _buildInfoRow(
                         context: context,
                         icon: Icons.language,
-                        text: website,
+                        text: event.website,
                       ),
                       const SizedBox(height: 12),
                       _buildInfoRow(
                         context: context,
                         icon: Icons.email,
-                        text: email,
+                        text: event.email,
                       ),
                     ],
                   ),
@@ -101,27 +140,8 @@ class DetailPage extends StatelessWidget {
               ],
             ),
           ),
-        ),
-      ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 20.0),
-        child: FloatingActionButton.extended(
-          onPressed: () {
-            Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => TicketTypeListPage(
-                  eventId: eventId,
-                )
-            ),
-          );
-          },
-          label: Text(AppLocalizations.of(context)!.buy_ticket),
-          icon: const Icon(Icons.confirmation_num),
-          backgroundColor: AppThemes.green,
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        );
+      }
     );
   }
 
