@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 
 class MaxSizedContainer extends StatelessWidget {
   final Widget Function(BuildContext context, BoxConstraints constraints) builder;
-  final EdgeInsetsGeometry padding;
 
   const MaxSizedContainer({
     super.key,
     required this.builder,
-    this.padding = const EdgeInsets.all(8.0),
   });
 
   @override
@@ -18,7 +16,7 @@ class MaxSizedContainer extends StatelessWidget {
           child: SizedBox(
             width: constraints.maxWidth > 900 ? 900 : constraints.maxWidth,
             child: Padding(
-              padding: padding,
+              padding: const EdgeInsets.all(8.0),
               child: builder(context, constraints),
             ),
           ),

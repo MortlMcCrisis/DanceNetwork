@@ -1,9 +1,9 @@
 import 'package:dance_network_frontend/checkout/ticket_type_list_page.dart';
+import 'package:dance_network_frontend/config/theme.dart';
 import 'package:dance_network_frontend/util/image_resolver.dart';
-import 'package:dance_network_frontend/util/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 
 class DetailPage extends StatelessWidget {
   final int eventId;

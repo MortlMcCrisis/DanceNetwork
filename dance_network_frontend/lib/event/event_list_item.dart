@@ -1,7 +1,7 @@
+import 'package:dance_network_frontend/config/theme.dart';
+import 'package:dance_network_frontend/event/event_details.dart';
 import 'package:dance_network_frontend/util/image_resolver.dart';
 import 'package:flutter/material.dart';
-import 'package:dance_network_frontend/event/event_details.dart';
-import 'package:dance_network_frontend/util/theme.dart';
 
 Widget buildCard(
     BuildContext context, {

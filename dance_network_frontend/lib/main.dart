@@ -1,21 +1,32 @@
+import 'package:dance_network_frontend/config/theme.dart';
 import 'package:dance_network_frontend/navigation/botton_bar.dart';
 import 'package:dance_network_frontend/navigation/side_menu.dart';
 import 'package:dance_network_frontend/navigation/top_bar.dart';
 import 'package:dance_network_frontend/time_table.dart';
 import 'package:dance_network_frontend/util/screen_utils.dart';
-import 'package:dance_network_frontend/util/theme.dart';
+import 'package:dance_network_frontend/util/token_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 import 'event/event_list.dart';
 
+// TODO check and follow dart style guide: https://dart.dev/effective-dart/style
+
+
 void main() async {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => TokenStorage(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  //TODO https://docs.flutter.dev/ui/navigation#using-the-router
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

@@ -1,5 +1,5 @@
+import 'package:dance_network_frontend/config/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:dance_network_frontend/util/theme.dart';
 
 class TicketDetailsWidget extends StatefulWidget {
   final int ticketIndex;

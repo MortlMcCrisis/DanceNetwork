@@ -1,10 +1,11 @@
+import 'package:dance_network_frontend/config/theme.dart';
 import 'package:dance_network_frontend/profile/login.dart';
 import 'package:dance_network_frontend/profile/profile.dart';
 import 'package:dance_network_frontend/util/screen_utils.dart';
-import 'package:dance_network_frontend/util/theme.dart';
 import 'package:dance_network_frontend/util/token_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 class AppBarWithSearch extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -15,27 +16,6 @@ class AppBarWithSearch extends StatelessWidget implements PreferredSizeWidget {
     required this.title,
     required this.onSearch,
   });
-
-  void _profilePressed(BuildContext context) async{
-    //AuthService().redirectToLogin();
-    final token = await TokenStorage().getToken();
-    if(token == null){
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => const LoginPage()
-          )
-      );
-    }
-    else {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => const ProfilePage()
-          )
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,12 +43,10 @@ class AppBarWithSearch extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
           ),
-          Expanded(
+          const Expanded(
             child: Align(
               alignment: Alignment.centerRight,
-              child: ProfileIcon(
-                onPressed: () => _profilePressed(context),
-              ),
+              child: AuthIcon(),
             ),
           ),
         ],
@@ -82,9 +60,7 @@ class AppBarWithSearch extends StatelessWidget implements PreferredSizeWidget {
             ),
           ),
           const SizedBox(width: 8.0),
-          ProfileIcon(
-            onPressed: () => _profilePressed(context),
-          )
+          const AuthIcon(),
         ],
       ),
     );
@@ -120,20 +96,109 @@ class SearchField extends StatelessWidget {
   }
 }
 
-class ProfileIcon extends StatelessWidget {
-  final VoidCallback onPressed;
+class AuthIcon extends StatelessWidget {
+  const AuthIcon({super.key});
 
-  const ProfileIcon({super.key, required this.onPressed});
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<TokenStorage>(
+      builder: (context, tokenStorage, child) {
+        return FutureBuilder<String?>(
+          future: tokenStorage.getToken(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator();
+            }
+            if (snapshot.hasData && snapshot.data != null) {
+              return const AccountIcon();
+            }
+            return const LoginIcon();
+          },
+        );
+      },
+    );
+  }
+}
+
+class AccountIcon extends StatelessWidget {
+  const AccountIcon({super.key});
 
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
       radius: 20.0,
       backgroundColor: AppThemes.white,
-      child: IconButton(
-        icon: const Icon(Icons.account_circle),
-        color: AppThemes.black,
-        onPressed: onPressed,
+      child: PopupMenuButton<int>(
+        icon: const Icon(Icons.account_circle, color: AppThemes.black),
+        onSelected: (value) async {
+          switch (value) {
+            case 3:
+            //AuthService().redirectToLogin();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProfilePage(),
+                ),
+              );
+            case 4:
+              final tokenStorage = Provider.of<TokenStorage>(context, listen: false);
+              await tokenStorage.deleteToken();
+          }
+        },
+        itemBuilder: (context) => [
+          PopupMenuItem(
+            value: 3,
+            child: Text(AppLocalizations.of(context)!.profile),
+          ),
+          PopupMenuItem(
+            value: 4,
+            child: Text(AppLocalizations.of(context)!.logout),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class LoginIcon extends StatelessWidget {
+  const LoginIcon({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return CircleAvatar(
+      radius: 20.0,
+      backgroundColor: AppThemes.white,
+      child: PopupMenuButton<int>(
+        icon: const Icon(Icons.account_circle, color: AppThemes.black),
+        onSelected: (value) {
+          switch (value) {
+            case 1:
+              //AuthService().redirectToLogin();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LoginPage(),
+                ),
+              );
+            case 2:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LoginPage(), //TODO create Account Page
+                ),
+              );
+          }
+        },
+        itemBuilder: (context) => [
+          PopupMenuItem(
+            value: 1,
+            child: Text(AppLocalizations.of(context)!.login),
+          ),
+          PopupMenuItem(
+            value: 2,
+            child: Text(AppLocalizations.of(context)!.createAccount),
+          ),
+        ],
       ),
     );
   }

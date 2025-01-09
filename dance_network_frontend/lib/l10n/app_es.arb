@@ -9,12 +9,13 @@
   "logout": "Cerrar sesión",
 
   "login": "Login",
-  "loginWithEmail": "Login with E-mail",
-  "email": "E-mail",
-  "enterValidEmail": "Enter valid E-mail",
-  "invalidEmail": "Invalid e-mail",
+  "loginWithEmail": "Login with Email",
+  "email": "Email",
+  "enterValidEmail": "Enter valid Email",
+  "invalidEmail": "Invalid Email",
   "password": "Password",
   "enterValidPassword": "Enter valid password",
   "passwordTooShort": "Password too short",
-  "forgotPassword": "Forgot Password"
+  "forgotPassword": "Forgot password",
+  "createAccount": "Create account"
 }

@@ -1,4 +1,4 @@
-import 'package:dance_network_frontend/util/theme.dart';
+import 'package:dance_network_frontend/config/theme.dart';
 import 'package:flutter/material.dart';
 
 class NavigationRailComponent extends StatelessWidget {
