@@ -2,17 +2,21 @@ import 'package:dance_network_frontend/common/max_sized_container.dart';
 import 'package:dance_network_frontend/event/event.dart';
 import 'package:dance_network_frontend/event/event_list_item.dart';
 import 'package:dance_network_frontend/util/api_service.dart';
-import 'package:dance_network_frontend/util/screen_utils.dart';
+import 'package:dance_network_frontend/util/device_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class CardListPage extends StatelessWidget {
-  const CardListPage({super.key});
+class EventListPage extends StatelessWidget {
+  const EventListPage({super.key});
 
-  Future<List<dynamic>> _fetchEvents() async {
+  Future<List<Event>> _fetchEvents() async {
     return await ApiService().get(
-        endpoint: ApiService.eventEndpoint,
-        typeMapper: (json) => json as List<dynamic>
+      endpoint: ApiService.eventEndpoint,
+      typeMapper: (json) {
+        return (json as List<dynamic>)
+          .map((eventJson) => Event.fromMap(eventJson as Map<String, dynamic>))
+          .toList();
+      },
     );
   }
 
@@ -34,7 +38,7 @@ class CardListPage extends StatelessWidget {
 
           return MaxSizedContainer(
             builder: (context, constraints) {
-              if (constraints.maxWidth > ScreenUtils.wideScreenSize) {
+              if (constraints.maxWidth > DeviceUtils.wideScreenSize) {
                 var columnCount = constraints.maxWidth > 700 ? 3 : 2;
                 var aspectRatio = constraints.maxWidth > 700 ? 0.95 : 1.05;
                 return Padding(
@@ -48,8 +52,7 @@ class CardListPage extends StatelessWidget {
                     ),
                     itemCount: events.length,
                     itemBuilder: (context, index) {
-                      final event = Event.fromMap(events[index]);
-                      return EventCard(event: event);
+                      return EventCard(event: events[index]);
                     },
                   ),
                 );
@@ -59,8 +62,7 @@ class CardListPage extends StatelessWidget {
                   child: ListView.builder(
                     itemCount: events.length,
                     itemBuilder: (context, index) {
-                      final event = Event.fromMap(events[index]);
-                      return EventCard(event: event);
+                      return EventCard(event: events[index]);
                     },
                   ),
                 );

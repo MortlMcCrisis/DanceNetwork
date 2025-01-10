@@ -1,7 +1,7 @@
 import 'package:dance_network_frontend/common/max_sized_container.dart';
 import 'package:dance_network_frontend/theme.dart';
 import 'package:dance_network_frontend/util/auth_util.dart';
-import 'package:dance_network_frontend/util/screen_utils.dart';
+import 'package:dance_network_frontend/util/device_utils.dart';
 import 'package:dance_network_frontend/util/token_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -62,7 +62,7 @@ class LoginPageState extends State<LoginPage> {
           builder: (context, constraints) {
             return Center(
               child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: ScreenUtils.wideScreenSize),
+              constraints: const BoxConstraints(maxWidth: DeviceUtils.wideScreenSize),
               child: Form(
                 key: _formKey,
                 child: Column(

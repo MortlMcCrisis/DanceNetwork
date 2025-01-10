@@ -1,7 +1,7 @@
 import 'package:dance_network_frontend/profile/login.dart';
 import 'package:dance_network_frontend/profile/profile.dart';
 import 'package:dance_network_frontend/theme.dart';
-import 'package:dance_network_frontend/util/screen_utils.dart';
+import 'package:dance_network_frontend/util/device_utils.dart';
 import 'package:dance_network_frontend/util/token_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -20,7 +20,7 @@ class AppBarWithSearch extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: ScreenUtils.isWideScreen(context)
+      title: DeviceUtils.isWideScreen(context)
           ? Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [

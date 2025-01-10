@@ -31,7 +31,7 @@ class EventCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        context.go('/event/${event.eventId}');
+        context.go('/events/${event.eventId}');
       },
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 8.0),

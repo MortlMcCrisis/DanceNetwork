@@ -3,8 +3,8 @@ import 'package:dance_network_frontend/common/max_sized_container.dart';
 import 'package:dance_network_frontend/event/event.dart';
 import 'package:dance_network_frontend/theme.dart';
 import 'package:dance_network_frontend/util/api_service.dart';
+import 'package:dance_network_frontend/util/device_utils.dart';
 import 'package:dance_network_frontend/util/image_resolver.dart';
-import 'package:dance_network_frontend/util/screen_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
@@ -17,7 +17,7 @@ class EventDetailPage extends StatelessWidget {
   Future<Event> fetchEvent(int eventId) async {
     final response = await ApiService().get(
         endpoint: '${ApiService.eventEndpoint}/$eventId',
-        typeMapper: (json) => Event.fromMap(json as Map<String, dynamic>),
+        typeMapper: (json) => Event.fromMap(json),
     );
     return response;
   }
@@ -88,7 +88,7 @@ class EventDetailContent extends StatelessWidget {
       builder: (context, constraints) {
         return Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: ScreenUtils.wideScreenSize),
+            constraints: const BoxConstraints(maxWidth: DeviceUtils.wideScreenSize),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

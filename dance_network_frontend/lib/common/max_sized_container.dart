@@ -1,4 +1,4 @@
-import 'package:dance_network_frontend/util/screen_utils.dart';
+import 'package:dance_network_frontend/util/device_utils.dart';
 import 'package:flutter/material.dart';
 
 class MaxSizedContainer extends StatelessWidget {
@@ -15,8 +15,8 @@ class MaxSizedContainer extends StatelessWidget {
       builder: (context, constraints) {
         return Center(
           child: SizedBox(
-            width: constraints.maxWidth > ScreenUtils.centerContainerMaxSize
-                ? ScreenUtils.centerContainerMaxSize
+            width: constraints.maxWidth > DeviceUtils.centerContainerMaxSize
+                ? DeviceUtils.centerContainerMaxSize
                 : constraints.maxWidth,
             child: Padding(
               padding: const EdgeInsets.all(8.0),

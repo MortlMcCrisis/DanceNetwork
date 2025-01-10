@@ -28,7 +28,6 @@ class TicketTypeListPageState extends State<TicketTypeListPage> {
       queryParams: {'eventId': widget.eventId},
       typeMapper: (json) => json as List<dynamic>
     );
-    debugPrint('$ticketTypes');
     for (var ticketType in ticketTypes) {
       final ticketId = ticketType['id'];
       ticketDetails.putIfAbsent(ticketId, () => ValueNotifier<List<Map<String, dynamic>>>([]));

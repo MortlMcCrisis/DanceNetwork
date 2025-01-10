@@ -4,7 +4,7 @@ import 'package:dance_network_frontend/navigation/top_bar.dart';
 import 'package:dance_network_frontend/router.dart';
 import 'package:dance_network_frontend/theme.dart';
 import 'package:dance_network_frontend/time_table.dart';
-import 'package:dance_network_frontend/util/screen_utils.dart';
+import 'package:dance_network_frontend/util/device_utils.dart';
 import 'package:dance_network_frontend/util/token_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -83,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final List<Widget> _pages = [
     const TimetableScreen(),
-    const CardListPage(),
+    const EventListPage(),
     const Center(child: Text('Page 3: Yet Another Content')),
   ];
 
@@ -104,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final isWideScreen = ScreenUtils.isWideScreen(context);
+    final isWideScreen = DeviceUtils.isWideScreen(context);
 
     return Scaffold(
       appBar: AppBarWithSearch(
