@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-
 import 'package:flutter/material.dart';
 
 class DeviceUtils {
@@ -13,7 +12,7 @@ class DeviceUtils {
 
   static bool isMobileDevice() {
     if (kIsWeb) {
-      return false; // Auf dem Web läuft die App
+      return false;
     } else {
       return defaultTargetPlatform == TargetPlatform.iOS || defaultTargetPlatform == TargetPlatform.android;
     }

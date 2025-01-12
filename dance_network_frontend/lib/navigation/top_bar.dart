@@ -1,7 +1,9 @@
+import 'package:dance_network_frontend/common/responsive_switch.dart';
+import 'package:dance_network_frontend/navigation/mobile/top_bar.dart';
+import 'package:dance_network_frontend/navigation/web/top_bar.dart';
 import 'package:dance_network_frontend/profile/login.dart';
 import 'package:dance_network_frontend/profile/profile.dart';
 import 'package:dance_network_frontend/theme.dart';
-import 'package:dance_network_frontend/util/device_utils.dart';
 import 'package:dance_network_frontend/util/token_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -20,49 +22,22 @@ class AppBarWithSearch extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: DeviceUtils.isWideScreen(context)
-          ? Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Text(
-              title,
-              style: const TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.45,
-              height: 35.0,
-              child: SearchField(
-                onSearch: onSearch,
-              ),
-            ),
-          ),
-          const Expanded(
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: AuthIcon(),
-            ),
-          ),
-        ],
+      title: ResponsiveSwitch(
+        webWidgetBuilder: (constraints) {
+          return WebTopBar(
+            title: title,
+            searchField: SearchField(onSearch: onSearch),
+            authIcon: const AuthIcon(),
+          );
+        },
+        mobileWidgetBuilder: (constraints) {
+          return MobileTopBar(
+            title: title,
+            searchField: SearchField(onSearch: onSearch),
+            authIcon: const AuthIcon(),
+          );
+        }
       )
-      : Row(
-        children: [
-          Expanded(
-            child: SizedBox(
-              height: 40.0,
-              child: SearchField(onSearch: onSearch),
-            ),
-          ),
-          const SizedBox(width: 8.0),
-          const AuthIcon(),
-        ],
-      ),
     );
   }
 

@@ -1,8 +1,10 @@
 import 'package:dance_network_frontend/common/max_sized_container.dart';
+import 'package:dance_network_frontend/common/responsive_switch.dart';
 import 'package:dance_network_frontend/event/event.dart';
 import 'package:dance_network_frontend/event/event_list_item.dart';
+import 'package:dance_network_frontend/event/mobile/event_list.dart';
+import 'package:dance_network_frontend/event/web/event_list.dart';
 import 'package:dance_network_frontend/util/api_service.dart';
-import 'package:dance_network_frontend/util/device_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -34,39 +36,28 @@ class EventListPage extends StatelessWidget {
             return const Center(child: Text('No events found.'));
           }
 
-          final events = snapshot.data!;
+          final events = (snapshot.data!)
+              .map((item) => item as Event)
+              .toList();
+
+          eventCardBuilder(event) => EventCard(event: event);
 
           return MaxSizedContainer(
-            builder: (context, constraints) {
-              if (constraints.maxWidth > DeviceUtils.wideScreenSize) {
-                var columnCount = constraints.maxWidth > 700 ? 3 : 2;
-                var aspectRatio = constraints.maxWidth > 700 ? 0.95 : 1.05;
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: columnCount,
-                      crossAxisSpacing: 8.0,
-                      mainAxisSpacing: 8.0,
-                      childAspectRatio: aspectRatio,
-                    ),
-                    itemCount: events.length,
-                    itemBuilder: (context, index) {
-                      return EventCard(event: events[index]);
-                    },
-                  ),
-                );
-              } else {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: ListView.builder(
-                    itemCount: events.length,
-                    itemBuilder: (context, index) {
-                      return EventCard(event: events[index]);
-                    },
-                  ),
-                );
-              }
+            builder: (constraints) {
+              return ResponsiveSwitch(
+                breakpoint: (context, constraints) => MediaQuery.of(context).size.width >= 800,
+                webWidgetBuilder: (constraints) {
+                  return WebEventList(
+                      constraints: constraints,
+                      events: events,
+                      eventCardBuilder: eventCardBuilder);
+                },
+                mobileWidgetBuilder: (constraints) {
+                  return MobileEventList(
+                      events: events,
+                      eventCardBuilder: eventCardBuilder);
+                }
+              );
             },
           );
         },

@@ -12,7 +12,7 @@ class ProfilePage extends StatelessWidget {
         title: Text(AppLocalizations.of(context)!.profile),
       ),
       body: MaxSizedContainer(
-        builder: (context, constraints) {
+        builder: (constraints) {
           return Center(
             child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 600), // Maximale Breite auf 600 setzen

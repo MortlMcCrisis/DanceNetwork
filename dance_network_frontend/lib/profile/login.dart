@@ -59,7 +59,7 @@ class LoginPageState extends State<LoginPage> {
         centerTitle: true,
       ),
       body: MaxSizedContainer(
-          builder: (context, constraints) {
+          builder: (constraints) {
             return Center(
               child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: DeviceUtils.wideScreenSize),

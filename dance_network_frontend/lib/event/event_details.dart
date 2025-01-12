@@ -1,4 +1,5 @@
 import 'package:dance_network_frontend/checkout/ticket_type_list_page.dart';
+import 'package:dance_network_frontend/common/image_loading.dart';
 import 'package:dance_network_frontend/common/max_sized_container.dart';
 import 'package:dance_network_frontend/event/event.dart';
 import 'package:dance_network_frontend/theme.dart';
@@ -73,7 +74,6 @@ class EventDetailContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imageResolver = ImageResolver();
 
     String formatDateRange(String start, String end) {
       final startDate = DateTime.parse(start);
@@ -85,7 +85,7 @@ class EventDetailContent extends StatelessWidget {
     final formattedDateRange = formatDateRange(event.startDate, event.endDate);
 
     return MaxSizedContainer(
-      builder: (context, constraints) {
+      builder: (constraints) {
         return Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: DeviceUtils.wideScreenSize),
@@ -95,9 +95,14 @@ class EventDetailContent extends StatelessWidget {
                 AspectRatio(
                   aspectRatio: 16 / 9,
                   child: Image.network(
-                    imageResolver.getFullUrl(event.imageUrl),
+                    ImageResolver.getFullUrl(event.imageUrl),
                     width: double.infinity,
                     fit: BoxFit.cover,
+                    loadingBuilder: (context, child, loadingProgress) => CustomLoadingBuilder(
+                      loadingProgress: loadingProgress,
+                      child: child,
+                    ),
+                    errorBuilder: (context, error, stackTrace) => const CustomErrorBuilder(),
                   ),
                 ),
                 Padding(

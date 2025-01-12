@@ -108,7 +108,7 @@ class TicketTypeListPageState extends State<TicketTypeListPage> {
         builder: (context, constraints) {
           if (constraints.maxWidth > 700) {
             return MaxSizedContainer(
-              builder: (context, constraints) {
+              builder: (constraints) {
                 return Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -165,7 +165,7 @@ class TicketTypeListPageState extends State<TicketTypeListPage> {
             return Stack(
               children: [
                 MaxSizedContainer(
-                  builder: (context, constraints) {
+                  builder: (constraints) {
                     return Container(
                       margin: const EdgeInsets.only(bottom: 90.0),
                       child: TicketTypeList(
@@ -183,7 +183,7 @@ class TicketTypeListPageState extends State<TicketTypeListPage> {
                   left: 16,
                   right: 16,
                   child: MaxSizedContainer(
-                    builder: (context, constraints) {
+                    builder: (constraints) {
                       return Container(
                         padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
                         decoration: AppThemes.elevatedBoxDecoration,

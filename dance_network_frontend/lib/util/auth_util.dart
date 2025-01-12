@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 class AuthService {
   final String tokenEndpoint = '${const String.fromEnvironment('keycloak_url')}/realms/dance-network/protocol/openid-connect/token';
   final String clientId = const String.fromEnvironment('keycloak_client');
-  final String redirectUri = Uri.encodeComponent('com.mortl.dance_network_frontend://callback');
+  //final String redirectUri = Uri.encodeComponent('com.mortl.dance_network_frontend://callback');
   //final String redirectUri = Uri.encodeComponent('http://localhost:61248/');
 
   Future<String?> authenticateWithCredentials(

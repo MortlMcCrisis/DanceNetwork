@@ -14,7 +14,6 @@ import 'event/event_list.dart';
 
 // TODO check and follow dart style guide: https://dart.dev/effective-dart/style
 
-
 void main() async {
   runApp(
     ChangeNotifierProvider(
