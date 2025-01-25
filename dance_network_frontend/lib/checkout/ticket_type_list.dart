@@ -21,10 +21,9 @@ class TicketTypeList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-      child: ListView.builder(
-        itemCount: ticketTypes.length,
-        itemBuilder: (context, index) {
-          final ticket = ticketTypes[index];
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: ticketTypes.map((ticket) {
           int ticketId = ticket['id'] ?? 0;
           String name = ticket['name'] ?? "";
           String description = ticket['description'] ?? "";
@@ -40,7 +39,7 @@ class TicketTypeList extends StatelessWidget {
             onUpdateTicket: (index, updatedTicket) =>
                 onUpdateTicket(ticketId, index, updatedTicket),
           );
-        },
+        }).toList(),
       ),
     );
   }

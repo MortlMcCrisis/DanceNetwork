@@ -1,4 +1,4 @@
-import 'package:dance_network_frontend/checkout/ticket_type_list_page.dart';
+import 'package:dance_network_frontend/common/back_button.dart';
 import 'package:dance_network_frontend/common/image_loading.dart';
 import 'package:dance_network_frontend/common/max_sized_container.dart';
 import 'package:dance_network_frontend/event/event.dart';
@@ -8,6 +8,7 @@ import 'package:dance_network_frontend/util/device_utils.dart';
 import 'package:dance_network_frontend/util/image_resolver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class EventDetailPage extends StatelessWidget {
@@ -15,7 +16,7 @@ class EventDetailPage extends StatelessWidget {
 
   const EventDetailPage({super.key, required this.eventId});
 
-  Future<Event> fetchEvent(int eventId) async {
+  Future<Event> _fetchEvent(int eventId) async {
     final response = await ApiService().get(
         endpoint: '${ApiService.eventEndpoint}/$eventId',
         typeMapper: (json) => Event.fromMap(json),
@@ -26,11 +27,14 @@ class EventDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Event Details'),
-      ),
+      extendBodyBehindAppBar: true,
+      appBar: DeviceUtils.isMobileDevice() ? AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        leading: const CustomBackButton(route: '/events'),
+      ) : null,
       body: FutureBuilder<Event>(
-        future: fetchEvent(eventId),
+        future: _fetchEvent(eventId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -48,14 +52,7 @@ class EventDetailPage extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 20.0),
         child: FloatingActionButton.extended(
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => TicketTypeListPage(
-                    eventId: eventId,
-                  )
-              ),
-            );
+            context.go('/events/$eventId/checkout');
           },
           label: Text(AppLocalizations.of(context)!.buy_ticket),
           icon: const Icon(Icons.confirmation_num),

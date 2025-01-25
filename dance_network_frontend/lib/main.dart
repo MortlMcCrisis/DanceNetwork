@@ -8,21 +8,38 @@ import 'package:dance_network_frontend/util/device_utils.dart';
 import 'package:dance_network_frontend/util/token_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import 'event/event_list.dart';
 
 // TODO check and follow dart style guide: https://dart.dev/effective-dart/style
 
+class NavigationState with ChangeNotifier {
+  int _selectedIndex = 1;
+
+  int get selectedIndex => _selectedIndex;
+
+  void updateIndex(int index) {
+    _selectedIndex = index;
+    notifyListeners();
+  }
+}
+
 void main() async {
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => TokenStorage(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => TokenStorage()),
+        ChangeNotifierProvider(create: (_) => NavigationState()),
+      ],
       child: const MyApp(),
     ),
   );
 }
+
 class MyApp extends StatelessWidget {
+
   const MyApp({super.key});
 
   @override
@@ -33,9 +50,37 @@ class MyApp extends StatelessWidget {
       locale: const Locale('en'),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      routerConfig: router,
+      routerConfig: AppRouter.router,
     );
   }
+}
+
+GoRoute buildRoute<T>({
+  required String path,
+  required Widget Function(BuildContext context, GoRouterState state) buildChild,
+}) {
+  if(DeviceUtils.isMobileDevice()) {
+    return GoRoute(
+      path: path,
+      builder: (context, state) {
+        return buildChild(context, state);
+      },
+    );
+  }
+
+  return GoRoute(
+      path: path,
+      pageBuilder: (context, state) {
+        return CustomTransitionPage<T>(
+          key: state.pageKey,
+          child: buildChild(context, state),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            // No animation
+            return child;
+          },
+        );
+      }
+  );
 }
 
 class MyHomePage extends StatefulWidget {
@@ -114,7 +159,6 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           if (isWideScreen)
             NavigationRailComponent(
-              selectedIndex: _selectedIndex,
               onDestinationSelected: _onMenuItemTapped,
             ),
           Expanded(
@@ -127,7 +171,6 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: isWideScreen
           ? null
           : CustomBottomNavigationBar(
-        currentIndex: _selectedIndex,
         onItemTapped: _onMenuItemTapped,
       ),
     );
