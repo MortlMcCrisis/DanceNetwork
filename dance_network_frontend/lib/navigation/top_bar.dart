@@ -1,6 +1,3 @@
-import 'package:dance_network_frontend/common/responsive_switch.dart';
-import 'package:dance_network_frontend/navigation/mobile/top_bar.dart';
-import 'package:dance_network_frontend/navigation/web/top_bar.dart';
 import 'package:dance_network_frontend/profile/login.dart';
 import 'package:dance_network_frontend/profile/profile.dart';
 import 'package:dance_network_frontend/theme.dart';
@@ -10,34 +7,36 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 class AppBarWithSearch extends StatelessWidget implements PreferredSizeWidget {
-  final String title;
   final ValueChanged<String> onSearch;
 
   const AppBarWithSearch({
     super.key,
-    required this.title,
     required this.onSearch,
   });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: ResponsiveSwitch(
-        webWidgetBuilder: (constraints) {
-          return WebTopBar(
-            title: title,
-            searchField: SearchField(onSearch: onSearch),
-            authIcon: const AuthIcon(),
-          );
-        },
-        mobileWidgetBuilder: (constraints) {
-          return MobileTopBar(
-            title: title,
-            searchField: SearchField(onSearch: onSearch),
-            authIcon: const AuthIcon(),
-          );
-        }
-      )
+      automaticallyImplyLeading: false,
+      title: Row(
+        children: [
+          Expanded(
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxWidth: 400.0,
+                ),
+                child: SizedBox(
+                  height: 40.0,
+                  child: SearchField(onSearch: onSearch),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 8.0),
+          const AuthIcon(),
+        ],
+      ),
     );
   }
 
@@ -55,17 +54,29 @@ class SearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      onChanged: onSearch,
-      decoration: InputDecoration(
-        hintText: '${AppLocalizations.of(context)!.search}...',
-        prefixIcon: const Icon(Icons.search),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppThemes.borderRadius),
-          borderSide: BorderSide.none,
+    return Container(
+      decoration: BoxDecoration(
+        color: AppThemes.white,
+        borderRadius: BorderRadius.circular(AppThemes.borderRadius),
+        border: Border.all(
+          color: AppThemes.generateGradient(AppThemes.black)[7],
+          width: 1.0,
         ),
-        filled: true,
-        fillColor: AppThemes.white,
+        boxShadow: [
+          BoxShadow(
+            color: AppThemes.black.withOpacity(0.2),
+            blurRadius: 6.0,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: TextField(
+        onChanged: onSearch,
+        decoration: InputDecoration(
+          hintText: '${AppLocalizations.of(context)!.search}...',
+          prefixIcon: const Icon(Icons.search),
+          border: InputBorder.none,
+        ),
       ),
     );
   }
@@ -100,36 +111,45 @@ class AccountIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CircleAvatar(
-      radius: 20.0,
-      backgroundColor: AppThemes.white,
-      child: PopupMenuButton<int>(
-        icon: const Icon(Icons.account_circle, color: AppThemes.black),
-        onSelected: (value) async {
-          switch (value) {
-            case 3:
-            //AuthService().redirectToLogin();
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ProfilePage(),
-                ),
-              );
-            case 4:
-              final tokenStorage = Provider.of<TokenStorage>(context, listen: false);
-              await tokenStorage.deleteToken();
-          }
-        },
-        itemBuilder: (context) => [
-          PopupMenuItem(
-            value: 3,
-            child: Text(AppLocalizations.of(context)!.profile),
-          ),
-          PopupMenuItem(
-            value: 4,
-            child: Text(AppLocalizations.of(context)!.logout),
-          ),
-        ],
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: AppThemes.generateGradient(AppThemes.black)[6],
+          width: 1.0,
+        ),
+      ),
+      child: CircleAvatar(
+        radius: 20.0,
+        backgroundColor: AppThemes.white,
+        child: PopupMenuButton<int>(
+          icon: const Icon(Icons.account_circle, color: AppThemes.black),
+          onSelected: (value) async {
+            switch (value) {
+              case 3:
+              //AuthService().redirectToLogin();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ProfilePage(),
+                  ),
+                );
+              case 4:
+                final tokenStorage = Provider.of<TokenStorage>(context, listen: false);
+                await tokenStorage.deleteToken();
+            }
+          },
+          itemBuilder: (context) => [
+            PopupMenuItem(
+              value: 3,
+              child: Text(AppLocalizations.of(context)!.profile),
+            ),
+            PopupMenuItem(
+              value: 4,
+              child: Text(AppLocalizations.of(context)!.logout),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -140,40 +160,49 @@ class LoginIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CircleAvatar(
-      radius: 20.0,
-      backgroundColor: AppThemes.white,
-      child: PopupMenuButton<int>(
-        icon: const Icon(Icons.account_circle, color: AppThemes.black),
-        onSelected: (value) {
-          switch (value) {
-            case 1:
-              //AuthService().redirectToLogin();
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const LoginPage(),
-                ),
-              );
-            case 2:
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const LoginPage(), //TODO create Account Page
-                ),
-              );
-          }
-        },
-        itemBuilder: (context) => [
-          PopupMenuItem(
-            value: 1,
-            child: Text(AppLocalizations.of(context)!.login),
-          ),
-          PopupMenuItem(
-            value: 2,
-            child: Text(AppLocalizations.of(context)!.createAccount),
-          ),
-        ],
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+          border: Border.all(
+            color: AppThemes.generateGradient(AppThemes.black)[6],
+            width: 1.0,
+        ),
+      ),
+      child: CircleAvatar(
+        radius: 20.0,
+        backgroundColor: AppThemes.white,
+        child: PopupMenuButton<int>(
+          icon: const Icon(Icons.account_circle, color: AppThemes.black),
+          onSelected: (value) {
+            switch (value) {
+              case 1:
+                //AuthService().redirectToLogin();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LoginPage(),
+                  ),
+                );
+              case 2:
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LoginPage(), //TODO create Account Page
+                  ),
+                );
+            }
+          },
+          itemBuilder: (context) => [
+            PopupMenuItem(
+              value: 1,
+              child: Text(AppLocalizations.of(context)!.login),
+            ),
+            PopupMenuItem(
+              value: 2,
+              child: Text(AppLocalizations.of(context)!.createAccount),
+            ),
+          ],
+        ),
       ),
     );
   }

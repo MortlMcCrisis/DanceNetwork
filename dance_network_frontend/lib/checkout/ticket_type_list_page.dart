@@ -1,13 +1,14 @@
 import 'package:dance_network_frontend/checkout/ticket_type_list.dart';
 import 'package:dance_network_frontend/checkout/web/ticket_details_table.dart';
 import 'package:dance_network_frontend/common/back_button.dart';
-import 'package:dance_network_frontend/common/image_loading.dart';
 import 'package:dance_network_frontend/common/max_sized_container.dart';
+import 'package:dance_network_frontend/common/on_mobile.dart';
 import 'package:dance_network_frontend/event/event.dart';
+import 'package:dance_network_frontend/event/event_list_item.dart';
+import 'package:dance_network_frontend/event/mobile/event_list_item.dart';
 import 'package:dance_network_frontend/theme.dart';
 import 'package:dance_network_frontend/util/api_service.dart';
 import 'package:dance_network_frontend/util/device_utils.dart';
-import 'package:dance_network_frontend/util/image_resolver.dart';
 import 'package:flutter/material.dart';
 
 class TicketTypeListPage extends StatefulWidget {
@@ -125,34 +126,31 @@ class TicketTypeListPageState extends State<TicketTypeListPage> {
               CustomScrollView(
                 slivers: [
                   SliverAppBar(
-                    expandedHeight: 200,
-                    //pinned: true, // TODO pin and move title into this bar. it should only appear when the bar is pinned and must also be aligned with the back button
+                    expandedHeight: DeviceUtils.isMobileDevice() ? 220 : 160,
+                    backgroundColor: AppThemes.white,
                     flexibleSpace: FlexibleSpaceBar(
-                      background: event != null
-                          ? Image.network(
-                        ImageResolver.getFullUrl(event!.imageUrl),
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                        loadingBuilder: (context, child, loadingProgress) => CustomLoadingBuilder(
-                          loadingProgress: loadingProgress,
-                          child: child,
+                      background: Padding(
+                        padding: EdgeInsets.only(left: 30, top: DeviceUtils.isMobileDevice() ? 80 : 35),
+                        child: Column(
+                          children: [
+                            const OnMobile(Divider()),
+                            const OnMobile(SizedBox(height: 8.0)),
+                            event != null ? Center(
+                              child: ConstrainedBox(
+                                constraints: const BoxConstraints(
+                                  maxWidth: 600,
+                                ),
+                                child: MobileEventCard(
+                                  event: event!,
+                                  eventDetails: EventListItemContent(event: event!),
+                                ),
+                              ),
+                            ) : Container(),
+                          ],
                         ),
-                        errorBuilder: (context, error, stackTrace) => const CustomErrorBuilder(),
                       )
-                          : const Center(child: CircularProgressIndicator()), // Placeholder while loading
                     ),
                     leading: DeviceUtils.isMobileDevice() ? CustomBackButton(route: '/events/${widget.eventId}') : Container(),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
-                      child: Center(
-                        child: Text(
-                          event != null ? event!.title : "",
-                          style: Theme.of(context).textTheme.headlineLarge,
-                        ),
-                      ),
-                    ),
                   ),
                   SliverToBoxAdapter(
                     child: LayoutBuilder(
@@ -177,9 +175,11 @@ class TicketTypeListPageState extends State<TicketTypeListPage> {
                                     flex: 1,
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
-                                          vertical: 16.0, horizontal: 12.0),
+                                          vertical: 16.0, horizontal: 12.0
+                                      ),
                                       margin: const EdgeInsets.symmetric(
-                                          vertical: 16.0),
+                                          vertical: 16.0
+                                      ),
                                       decoration: AppThemes.elevatedBoxDecoration,
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
@@ -260,7 +260,7 @@ class TicketTypeListPageState extends State<TicketTypeListPage> {
             ],
           );
         },
-      )
+      ),
     );
   }
 }

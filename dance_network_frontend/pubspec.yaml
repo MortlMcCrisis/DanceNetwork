@@ -101,6 +101,9 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
 
+  assets:
+    - assets/logo.png
+
   fonts:
     - family: Montserrat
       fonts:

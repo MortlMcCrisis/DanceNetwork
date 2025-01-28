@@ -2,13 +2,11 @@ import 'package:dance_network_frontend/navigation/top_bar.dart';
 import 'package:flutter/material.dart';
 
 class WebTopBar extends StatelessWidget {
-  final String title;
   final SearchField searchField;
   final AuthIcon authIcon;
 
   const WebTopBar({
     super.key,
-    required this.title,
     required this.searchField,
     required this.authIcon,
   });
@@ -18,15 +16,6 @@ class WebTopBar extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Expanded(
-          child: Text(
-            title,
-            style: const TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold
-            ),
-          ),
-        ),
         Align(
           alignment: Alignment.center,
           child: SizedBox(

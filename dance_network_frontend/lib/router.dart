@@ -3,7 +3,6 @@ import 'package:dance_network_frontend/event/event_details.dart';
 import 'package:dance_network_frontend/event/event_list.dart';
 import 'package:dance_network_frontend/navigation/botton_bar.dart';
 import 'package:dance_network_frontend/navigation/side_menu.dart';
-import 'package:dance_network_frontend/navigation/top_bar.dart';
 import 'package:dance_network_frontend/util/device_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -14,13 +13,6 @@ class AppRouter {
       ShellRoute(
         builder: (context, state, child) {
           return Scaffold(
-            appBar: AppBarWithSearch(
-              title: 'Dance Network',
-              onSearch: (query) {
-                // Optional: Handling der Suche
-                print('Search query: $query');
-              },
-            ),
             body: Row(
               children: [
                 if (DeviceUtils.isWideScreen(context))

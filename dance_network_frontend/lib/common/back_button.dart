@@ -9,10 +9,8 @@ class CustomBackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 16.0, top: 12.0),
+      padding: const EdgeInsets.only(left: 8.0, top: 8.0),
       child: Container(
-        width: 56.0,
-        height: 56.0,
         decoration: BoxDecoration(
           color: Colors.black.withOpacity(0.5),
           shape: BoxShape.circle,

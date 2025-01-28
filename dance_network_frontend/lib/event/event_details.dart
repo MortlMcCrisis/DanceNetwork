@@ -1,6 +1,7 @@
 import 'package:dance_network_frontend/common/back_button.dart';
 import 'package:dance_network_frontend/common/image_loading.dart';
 import 'package:dance_network_frontend/common/max_sized_container.dart';
+import 'package:dance_network_frontend/common/on_mobile.dart';
 import 'package:dance_network_frontend/event/event.dart';
 import 'package:dance_network_frontend/theme.dart';
 import 'package:dance_network_frontend/util/api_service.dart';
@@ -27,12 +28,6 @@ class EventDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: DeviceUtils.isMobileDevice() ? AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        leading: const CustomBackButton(route: '/events'),
-      ) : null,
       body: FutureBuilder<Event>(
         future: _fetchEvent(eventId),
         builder: (context, snapshot) {
@@ -42,7 +37,41 @@ class EventDetailPage extends StatelessWidget {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (snapshot.hasData) {
             final event = snapshot.data!;
-             return EventDetailContent(event: event);
+            return CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  expandedHeight: 200,
+                  //pinned: true, // TODO pin and move title into this bar. it should only appear when the bar is pinned and must also be aligned with the back button
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: Image.network(
+                      ImageResolver.getFullUrl(event.imageUrl),
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      loadingBuilder: (context, child, loadingProgress) => CustomLoadingBuilder(
+                        loadingProgress: loadingProgress,
+                        child: child,
+                      ),
+                      errorBuilder: (context, error, stackTrace) => const CustomErrorBuilder(),
+                    ),
+                  ),
+                  leading: const OnMobile(CustomBackButton(route: '/events')),
+                ),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
+                    child: Center(
+                      child: Text(
+                        event.title,
+                        style: Theme.of(context).textTheme.headlineLarge,
+                      ),
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: EventDetailContent(event: event),
+                )
+              ],
+            );
           } else {
             return const Center(child: Text('No data available'));
           }
@@ -54,9 +83,15 @@ class EventDetailPage extends StatelessWidget {
           onPressed: () {
             context.go('/events/$eventId/checkout');
           },
-          label: Text(AppLocalizations.of(context)!.buy_ticket),
-          icon: const Icon(Icons.confirmation_num),
-          backgroundColor: AppThemes.green,
+          label: Text(
+            AppLocalizations.of(context)!.buy_ticket,
+            style: const TextStyle(color: AppThemes.white),
+          ),
+          icon: const Icon(
+            Icons.confirmation_num,
+            color: AppThemes.white,
+          ),
+          backgroundColor: AppThemes.primary,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -89,19 +124,6 @@ class EventDetailContent extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AspectRatio(
-                  aspectRatio: 16 / 9,
-                  child: Image.network(
-                    ImageResolver.getFullUrl(event.imageUrl),
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    loadingBuilder: (context, child, loadingProgress) => CustomLoadingBuilder(
-                      loadingProgress: loadingProgress,
-                      child: child,
-                    ),
-                    errorBuilder: (context, error, stackTrace) => const CustomErrorBuilder(),
-                  ),
-                ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(

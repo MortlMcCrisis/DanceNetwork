@@ -152,7 +152,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       appBar: AppBarWithSearch(
-        title: 'Dance Network',
         onSearch: _onSearch,
       ),
       body: Row(

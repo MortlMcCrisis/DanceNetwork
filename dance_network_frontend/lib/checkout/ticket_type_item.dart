@@ -36,7 +36,7 @@ class TicketTypeWidget extends StatelessWidget {
         color: AppThemes.white,
         borderRadius: BorderRadius.circular(AppThemes.borderRadius),
         border: Border.all(
-          color: AppThemes.generateGradient(AppThemes.black)[7],
+          color: AppThemes.generateGradient(AppThemes.black)[8],
           width: 1.0,
         ),
       ),
@@ -49,7 +49,7 @@ class TicketTypeWidget extends StatelessWidget {
           ),
           const SizedBox(height: 8.0),
           Text(
-            description,
+            description, // TODO interpret rich text
             style: Theme.of(context).textTheme.bodyMedium,
           ),
           const SizedBox(height: 16.0),
@@ -100,6 +100,7 @@ class TicketTypeWidget extends StatelessWidget {
                   return GestureDetector(
                     onTap: () {
                       showModalBottomSheet(
+                        scrollControlDisabledMaxHeightRatio: 0.8,
                         context: context,
                         builder: (_) => TicketDetailsWidget(
                           ticketIndex: index,

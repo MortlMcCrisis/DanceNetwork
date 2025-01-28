@@ -15,28 +15,59 @@ class NavigationRailComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 230,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildMenuItem(
-            context: context,
-            icon: Icons.newspaper,
-            label: 'Newsfeed',
-            index: 0,
+        child: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            right: BorderSide(
+              color: AppThemes.generateGradient(AppThemes.black)[8], // Farbe des Randes
+              width: 1.0, // Breite des Randes
+            ),
           ),
-          _buildMenuItem(
-            context: context,
-            icon: Icons.event,
-            label: 'Events',
-            index: 1,
-          ),
-          _buildMenuItem(
-            context: context,
-            icon: Icons.confirmation_num,
-            label: 'Tickets',
-            index: 2,
-          ),
-        ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 16, top: 16, bottom: 16),
+              child: Row(
+                children: [
+                  Image.asset(
+                    'assets/logo.png',
+                    height: 120,
+                    width: 60,
+                  ),
+                  Expanded(
+                    child: Text(
+                      "Dance Connect",
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.titleLarge,
+                      softWrap: true,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Divider(),
+            _buildMenuItem(
+              context: context,
+              icon: Icons.newspaper,
+              label: 'Newsfeed',
+              index: 0,
+            ),
+            _buildMenuItem(
+              context: context,
+              icon: Icons.event,
+              label: 'Events',
+              index: 1,
+            ),
+            _buildMenuItem(
+              context: context,
+              icon: Icons.confirmation_num,
+              label: 'Tickets',
+              index: 2,
+            ),
+          ],
+        ),
       ),
     );
   }

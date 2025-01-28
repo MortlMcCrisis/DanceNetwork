@@ -1,4 +1,5 @@
 import 'package:dance_network_frontend/checkout/ticket_type_item.dart';
+import 'package:dance_network_frontend/util/device_utils.dart';
 import 'package:flutter/material.dart';
 
 class TicketTypeList extends StatelessWidget {
@@ -20,7 +21,7 @@ class TicketTypeList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      margin: EdgeInsets.only(top: 8.0, left: 16.0, right: 16.0, bottom: DeviceUtils.isMobileDevice() ? 100.0 : 8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: ticketTypes.map((ticket) {

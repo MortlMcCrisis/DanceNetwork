@@ -35,13 +35,14 @@ class AppThemes {
       displaySmall: TextStyle(fontSize: 12.0, color: Colors.black54),
     ),
     appBarTheme: const AppBarTheme(
-      color:  primary,
+      color:  AppThemes.white,
       titleTextStyle: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.bold,
         color: white,
       ),
     ),
+    scaffoldBackgroundColor: AppThemes.white,
   );
 
   static const double borderRadiusSmall = 4.0;
