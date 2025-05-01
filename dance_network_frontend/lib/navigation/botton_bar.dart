@@ -24,11 +24,11 @@ class CustomBottomNavigationBar extends StatelessWidget {
       currentIndex: navigationState.selectedIndex,
       selectedItemColor: AppThemes.primary,
       unselectedItemColor: AppThemes.generateGradient(AppThemes.primary)[5],
-      showSelectedLabels: false,
-      showUnselectedLabels: false,
+      showSelectedLabels: true,
+      showUnselectedLabels: true,
       onTap: (index) {
-        navigationState.updateIndex(index);
         onItemTapped(index);
+        navigationState.updateIndex(index);
       },
     );
   }

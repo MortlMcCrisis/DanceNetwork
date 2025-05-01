@@ -1,6 +1,7 @@
 package com.mortl.dancenetwork.controller.closed;
 
 import com.mortl.dancenetwork.dto.EventDTO;
+import com.mortl.dancenetwork.dto.PatchEventDTO;
 import com.mortl.dancenetwork.entity.Event;
 import com.mortl.dancenetwork.mapper.EventMapper;
 import com.mortl.dancenetwork.service.IEventService;
@@ -11,6 +12,7 @@ import javax.ws.rs.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -50,8 +52,8 @@ public class EventClosedController
       @Valid @RequestBody EventDTO eventDTO)
       throws NotFoundException, IllegalAccessException
   {
-    log.info("saving event with id " + id);
-    if (id != eventDTO.id())
+    log.info("saving event with id {}", id);
+    if (!id.equals(eventDTO.id()))
     {
       throw new IllegalArgumentException(
           "id in path (" + id + ") does not match the id of the object (" + eventDTO.id() + ").");
@@ -61,11 +63,23 @@ public class EventClosedController
     return ResponseEntity.ok(eventMapper.toDTO(updateEvent));
   }
 
+  @PatchMapping("/{id}/{property}")
+  public ResponseEntity<EventDTO> patchEventTitle(
+      @PathVariable Long id,
+      @PathVariable String property,
+      @RequestBody PatchEventDTO value)
+      throws NotFoundException, IllegalAccessException
+  {
+    log.info("Saving property {} of event with id {} with value {}", property, id, value);
+    Event updateEvent = eventService.updateEventProperty(id, property, value.value());
+    return ResponseEntity.ok(eventMapper.toDTO(updateEvent));
+  }
+
   @PutMapping("/{id}/publish")
   public ResponseEntity<Void> publishEvent(@PathVariable Long id)
       throws NotFoundException, IllegalAccessException
   {
-    log.info("Publishing event with id " + id);
+    log.info("Publishing event with id {}", id);
 
     eventService.publishEvent(id);
 

@@ -19,7 +19,6 @@ class AdminServiceSpec extends Specification {
 
     TicketRepository ticketRepository = Mock()
 
-
     TicketTypeRepository ticketTypeRepository = Mock()
 
     AdminServiceImpl adminService

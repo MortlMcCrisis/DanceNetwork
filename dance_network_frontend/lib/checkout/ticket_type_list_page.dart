@@ -3,9 +3,9 @@ import 'package:dance_network_frontend/checkout/web/ticket_details_table.dart';
 import 'package:dance_network_frontend/common/back_button.dart';
 import 'package:dance_network_frontend/common/max_sized_container.dart';
 import 'package:dance_network_frontend/common/on_mobile.dart';
-import 'package:dance_network_frontend/event/event.dart';
 import 'package:dance_network_frontend/event/event_list_item.dart';
 import 'package:dance_network_frontend/event/mobile/event_list_item.dart';
+import 'package:dance_network_frontend/model/event.dart';
 import 'package:dance_network_frontend/theme.dart';
 import 'package:dance_network_frontend/util/api_service.dart';
 import 'package:dance_network_frontend/util/device_utils.dart';
@@ -247,7 +247,11 @@ class TicketTypeListPageState extends State<TicketTypeListPage> {
                             ),
                             ElevatedButton(
                               onPressed: () {
-                                // Aktion für den Checkout oder Weiter zur nächsten Seite
+                                /*showModalBottomSheet(
+                                  scrollControlDisabledMaxHeightRatio: 0.8,
+                                  context: context,
+                                  builder: (_) => CheckoutWidget(),
+                                );*/
                               },
                               child: const Text('Checkout'),
                             ),

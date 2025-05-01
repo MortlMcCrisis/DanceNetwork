@@ -15,25 +15,39 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/closed/v1/files")
-public class FileClosedController {
+public class FileClosedController
+{
 
   private static final Logger log = LoggerFactory.getLogger(FileClosedController.class);
 
   private final IStorageService storageService;
 
-  public FileClosedController(IStorageService storageService) {
+  public FileClosedController(IStorageService storageService)
+  {
     this.storageService = storageService;
   }
 
+  //used in old frotend
+  @Deprecated(forRemoval = true)
   @PostMapping("/photo-upload")
-  public ResponseEntity<Void> uploadPhoto(@RequestParam("file") MultipartFile file) {
-    log.info("Uploaded " + file.getOriginalFilename());
+  public ResponseEntity<Void> uploadPhoto(@RequestParam("file") MultipartFile file)
+  {
     storageService.storeUploadedImage(file);
+    log.info("Uploaded {}", file.getOriginalFilename());
     return ResponseEntity.ok().build();
   }
 
+  @PostMapping("/photo-upload-new")
+  public ResponseEntity<String> uploadPhotoNew(@RequestParam("file") MultipartFile file)
+  {
+    String filePath = storageService.storeUploadedImageNew(file);
+    log.info("Uploaded {}", file.getOriginalFilename());
+    return ResponseEntity.ok(filePath);
+  }
+
   @GetMapping("/list-user-images")
-  public ResponseEntity<List<ImageDTO>> listUserImages(){
+  public ResponseEntity<List<ImageDTO>> listUserImages()
+  {
     return ResponseEntity.ok(storageService.listUserImages());
   }
 }

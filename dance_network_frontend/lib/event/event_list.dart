@@ -1,9 +1,9 @@
 import 'package:dance_network_frontend/common/max_sized_container.dart';
 import 'package:dance_network_frontend/common/responsive_switch.dart';
-import 'package:dance_network_frontend/event/event.dart';
 import 'package:dance_network_frontend/event/event_list_item.dart';
 import 'package:dance_network_frontend/event/mobile/event_list.dart';
 import 'package:dance_network_frontend/event/web/event_list.dart';
+import 'package:dance_network_frontend/model/event.dart';
 import 'package:dance_network_frontend/navigation/top_bar.dart';
 import 'package:dance_network_frontend/theme.dart';
 import 'package:dance_network_frontend/util/api_service.dart';

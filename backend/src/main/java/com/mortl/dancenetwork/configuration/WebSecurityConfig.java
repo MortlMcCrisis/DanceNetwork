@@ -47,6 +47,7 @@ public class WebSecurityConfig
                 //.requestMatchers("/actuator/**").permitAll()
                 .requestMatchers("/api/open/v1/**").permitAll()
                 .requestMatchers("/images/**").permitAll()
+                .requestMatchers("/uploads/**").permitAll()
                 .requestMatchers("/api/closed/v1/**").authenticated()
                 .anyRequest().denyAll())
         .csrf(AbstractHttpConfigurer::disable);

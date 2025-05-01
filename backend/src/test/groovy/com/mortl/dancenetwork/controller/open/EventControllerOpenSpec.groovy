@@ -44,6 +44,8 @@ class EventControllerOpenSpec extends Specification {
         eventRepository.saveAndFlush(Util.createTestEvent(true, null, event1Date, event1Name))
         eventRepository.saveAndFlush(Util.createTestEvent(true, null, event2Date, event2Name))
         eventRepository.saveAndFlush(Util.createTestEvent(true, null, event3Date, event3Name))
+
+        //TODO WebMvcLinkBuilder.linkTo(methodOn(TestClass.class)).methodFromClass.toUri().toString()
     }
 
     def cleanup() {

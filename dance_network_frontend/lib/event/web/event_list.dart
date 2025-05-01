@@ -1,4 +1,4 @@
-import 'package:dance_network_frontend/event/event.dart';
+import 'package:dance_network_frontend/model/event.dart';
 import 'package:flutter/material.dart';
 
 class WebEventList extends StatelessWidget {

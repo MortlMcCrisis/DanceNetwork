@@ -1,7 +1,7 @@
 import 'package:dance_network_frontend/common/responsive_switch.dart';
-import 'package:dance_network_frontend/event/event.dart';
 import 'package:dance_network_frontend/event/mobile/event_list_item.dart';
 import 'package:dance_network_frontend/event/web/event_list_item.dart';
+import 'package:dance_network_frontend/model/event.dart';
 import 'package:dance_network_frontend/util/date_util.dart';
 import 'package:dance_network_frontend/util/device_utils.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +64,7 @@ class EventListItemContent extends StatelessWidget {
         children: [
           Text(
             event.title,
-            style: Theme.of(context).textTheme.titleLarge,
+            style: Theme.of(context).textTheme.titleMedium,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),

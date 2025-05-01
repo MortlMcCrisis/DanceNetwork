@@ -1,3 +1,4 @@
+import 'package:dance_network_frontend/create_event/create_event.dart';
 import 'package:dance_network_frontend/profile/login.dart';
 import 'package:dance_network_frontend/profile/profile.dart';
 import 'package:dance_network_frontend/theme.dart';
@@ -32,6 +33,27 @@ class AppBarWithSearch extends StatelessWidget implements PreferredSizeWidget {
                 ),
               ),
             ),
+          ),
+          Consumer<TokenStorage>(
+            builder: (context, tokenStorage, child) {
+              return FutureBuilder<String?>(
+                future: tokenStorage.getToken(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const SizedBox();
+                  }
+                  if (snapshot.hasData && snapshot.data != null) {
+                    return const Row(
+                      children: [
+                        SizedBox(width: 8.0),
+                        CreateEventIcon(),
+                      ],
+                    );
+                  }
+                  return const SizedBox();
+                },
+              );
+            },
           ),
           const SizedBox(width: 8.0),
           const AuthIcon(),
@@ -202,6 +224,39 @@ class LoginIcon extends StatelessWidget {
               child: Text(AppLocalizations.of(context)!.createAccount),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class CreateEventIcon extends StatelessWidget {
+  const CreateEventIcon({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: AppThemes.generateGradient(AppThemes.black)[6],
+          width: 1.0,
+        ),
+      ),
+      child: CircleAvatar(
+        radius: 20.0,
+        backgroundColor: AppThemes.white,
+        child: IconButton(
+          icon: const Icon(Icons.add_circle, color: AppThemes.black),
+          onPressed: () {
+            showModalBottomSheet(
+              scrollControlDisabledMaxHeightRatio: 0.7,
+              context: context,
+              builder: (_) => const CreateEventPage(),
+            );
+          },
+          splashRadius: 20.0,
+          tooltip: 'Create Event',
         ),
       ),
     );

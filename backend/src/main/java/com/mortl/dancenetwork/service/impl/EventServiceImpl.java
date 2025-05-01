@@ -14,6 +14,7 @@ import com.mortl.dancenetwork.util.NewsfeedFactory;
 import com.stripe.exception.StripeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -115,6 +116,39 @@ public class EventServiceImpl implements IEventService
     currentEvent.setWebsite(event.getWebsite());
     currentEvent.setProfileImage(event.getProfileImage());
     currentEvent.setBannerImage(event.getBannerImage());
+    currentEvent = eventRepository.save(currentEvent);
+
+    return currentEvent;
+  }
+
+  @Override
+  public Event updateEventProperty(Long id, String property, String value)
+      throws NotFoundException, IllegalAccessException
+  {
+    Event currentEvent = eventRepository.findById(id)
+        .orElseThrow(NotFoundException::new);
+
+    UUID uuid = userService.getCurrentUser().get().getUuid();
+    if (!currentEvent.getCreator().equals(uuid))
+    {
+      throw new IllegalAccessException();
+    }
+
+    switch (property)
+    {
+      case "name" -> currentEvent.setName(value);
+      case "profileImage" -> currentEvent.setProfileImage(value);
+      case "bannerImage" -> currentEvent.setBannerImage(value);
+      case "location" -> currentEvent.setLocation(value);
+      case "website" -> currentEvent.setWebsite(value);
+      case "email" -> currentEvent.setEmail(value);
+      case "startDate" -> currentEvent.setStartDate(LocalDate.parse(value));
+      case "startTime" -> currentEvent.setStartTime(LocalTime.parse(value));
+      case "endDate" -> currentEvent.setEndDate(LocalDate.parse(value));
+      case "published" -> currentEvent.setPublished(Boolean.parseBoolean(value));
+      default -> throw new IllegalArgumentException("Invalid property: " + property);
+    }
+
     currentEvent = eventRepository.save(currentEvent);
 
     return currentEvent;

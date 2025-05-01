@@ -1,5 +1,5 @@
 import 'package:dance_network_frontend/common/image_loading.dart';
-import 'package:dance_network_frontend/event/event.dart';
+import 'package:dance_network_frontend/model/event.dart';
 import 'package:dance_network_frontend/theme.dart';
 import 'package:dance_network_frontend/util/image_resolver.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +16,7 @@ class MobileEventCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('Image: ${event.imageUrl}');
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

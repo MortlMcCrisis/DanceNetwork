@@ -62,7 +62,10 @@ public class StripeServiceImpl implements IStripeService
             .setUnitAmount(toPriceInCents(amount))
             .build())
         .build();
-    Product.create(params);
+    log.info("creating product '{}'", name);
+    Product createdProduct = Product.create(params);
+
+    log.info("created product '{}' with id {}", createdProduct.getName(), createdProduct.getId());
   }
 
   private String createPrice(String productId, MonetaryAmount amount) throws StripeException
@@ -93,6 +96,7 @@ public class StripeServiceImpl implements IStripeService
     Set<Long> updatedIds = new HashSet<>();
     for (Product product : Product.list(listParams).autoPagingIterable())
     {
+      log.info("Handling existing product '{}' with id ", product.getName(), product.getId());
       Optional<TicketType> newTicketTypeOptional = newTicketTypes.stream()
           .filter(ticketType -> ticketType.getId() == Long.parseLong(product.getId()))
           .findAny();
@@ -100,13 +104,14 @@ public class StripeServiceImpl implements IStripeService
       if (newTicketTypeOptional.isEmpty())
       {
         deleteProduct(product);
-        log.info("deleted product '" + product.getName() + "' with id " + product.getId());
+        log.info("deleted product '{}' with id {}", product.getName(), product.getId());
       }
       else
       {
         TicketType newTicketType = newTicketTypeOptional.get();
         Optional<String> newPriceId = updatePrice(product, newTicketType);
         updateProduct(product, newTicketType, newPriceId);
+        log.info("updated product '{}' with id {}", product.getName(), product.getId());
 
         updatedIds.add(newTicketType.getId());
       }
@@ -121,13 +126,13 @@ public class StripeServiceImpl implements IStripeService
 
     ProductUpdateParams.Builder updateParamsBuilder = ProductUpdateParams.builder();
 
-    if (product.getName() != newTicketType.getName())
+    if (!product.getName().equals(newTicketType.getName()))
     {
       updateParamsBuilder.setName(newTicketType.getName());
       isDirty = true;
     }
 
-    if (product.getDescription() != newTicketType.getDescription())
+    if (!product.getDescription().equals(newTicketType.getDescription()))
     {
       updateParamsBuilder.setDescription(newTicketType.getDescription());
       isDirty = true;
@@ -186,8 +191,10 @@ public class StripeServiceImpl implements IStripeService
       Set<Long> updatedIds)
       throws StripeException
   {
+    log.info("Updated ids: {}", updatedIds);
     for (TicketType ticketType : newTicketTypes)
     {
+      log.info("Current id: {} ", ticketType.getId());
       if (!updatedIds.contains(ticketType.getId()))
       {
         createProduct(
@@ -196,8 +203,6 @@ public class StripeServiceImpl implements IStripeService
             ticketType.getDescription(),
             ticketType.getEventUrl(),
             ticketType.getPrice());
-
-        log.info("created product '" + ticketType.getName() + "' with id " + ticketType.getId());
       }
     }
   }
@@ -225,7 +230,7 @@ public class StripeServiceImpl implements IStripeService
         .build();
 
     product.update(updateParams);
-    System.out.println("Product archived: " + product.getId());
+    log.info("Product archived: {}", product.getId());
   }
 
   private long toPriceInCents(MonetaryAmount amount)

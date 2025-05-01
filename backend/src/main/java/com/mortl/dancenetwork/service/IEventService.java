@@ -17,5 +17,8 @@ public interface IEventService
 
   Event updateEvent(Event event) throws NotFoundException, IllegalAccessException;
 
+  Event updateEventProperty(Long id, String property, String value)
+      throws NotFoundException, IllegalAccessException;
+
   void publishEvent(long id) throws NotFoundException, IllegalAccessException;
 }

@@ -14,6 +14,7 @@ import com.mortl.dancenetwork.repository.NewsfeedEntryRepository;
 import com.mortl.dancenetwork.repository.TicketOrderRepository;
 import com.mortl.dancenetwork.repository.TicketRepository;
 import com.mortl.dancenetwork.repository.TicketTypeRepository;
+import com.mortl.dancenetwork.service.IStripeService;
 import com.mortl.dancenetwork.service.IUserService;
 import com.mortl.dancenetwork.util.NewsfeedFactory;
 import de.svenjacobs.loremipsum.LoremIpsum;
@@ -21,6 +22,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -53,6 +55,8 @@ public class ShowDataCreator
 
   private TicketOrderRepository ticketOrderRepository;
 
+  private IStripeService stripeService;
+
   private LoremIpsum loremIpsum;
 
   private List<User> users;
@@ -64,6 +68,7 @@ public class ShowDataCreator
       TicketTypeRepository ticketTypeRepository,
       TicketOrderRepository ticketOrderRepository,
       TicketRepository ticketRepository,
+      IStripeService stripeService,
       NewsfeedFactory newsfeedFactory)
   {
     this.newsfeedEntryRepository = newsfeedEntryRepository;
@@ -72,6 +77,7 @@ public class ShowDataCreator
     this.ticketTypeRepository = ticketTypeRepository;
     this.ticketRepository = ticketRepository;
     this.ticketOrderRepository = ticketOrderRepository;
+    this.stripeService = stripeService;
 
     this.loremIpsum = new LoremIpsum();
     this.users = userService.getAllUsers();
@@ -86,6 +92,8 @@ public class ShowDataCreator
   @Scheduled(fixedDelay = Long.MAX_VALUE)
   public void createEvents()
   {
+    List<TicketType> newTicketTypes = new ArrayList<>();
+
     User bachaturoUser = users.get(new Random().nextInt(0, users.size()));
     Event bachaturo = new Event(
         null,
@@ -103,27 +111,27 @@ public class ShowDataCreator
         true,
         LocalDateTime.now().minusMonths(8));
     createEvent(bachaturo, bachaturoUser);
-    createTicketType(bachaturo, new TicketType(
+    newTicketTypes.add(createTicketType(bachaturo, new TicketType(
         null,
         "FULLPASS",
         "All workshops, all parties on all dance floors, and the Kizomba social room.",
         Money.of(121.00f, Monetary.getCurrency("EUR")),
         100L,
-        bachaturo));
-    createTicketType(bachaturo, new TicketType(
+        bachaturo)));
+    newTicketTypes.add(createTicketType(bachaturo, new TicketType(
         null,
         "GROUP FULLPASS (with promocode)",
         "All workshops, all parties on all dance floors, and the Kizomba social room.",
         Money.of(114.00f, Monetary.getCurrency("EUR")),
         100L,
-        bachaturo));
-    createTicketType(bachaturo, new TicketType(
+        bachaturo)));
+    newTicketTypes.add(createTicketType(bachaturo, new TicketType(
         null,
         "Partypass",
         "All Parties and Kizomba Social Room",
         Money.of(85.00f, Monetary.getCurrency("EUR")),
         100L,
-        bachaturo));
+        bachaturo)));
 
     User bachatationUser = users.get(new Random().nextInt(0, users.size()));
     Event bachatation = new Event(
@@ -142,34 +150,34 @@ public class ShowDataCreator
         true,
         LocalDateTime.now().minusMonths(8));
     createEvent(bachatation, bachatationUser);
-    createTicketType(bachatation, new TicketType(
+    newTicketTypes.add(createTicketType(bachatation, new TicketType(
         null,
         "FULLPASS",
         "Includes all Workshops & all Parties",
         Money.of(109, Monetary.getCurrency("EUR")),
         100L,
-        bachatation));
-    createTicketType(bachatation, new TicketType(
+        bachatation)));
+    newTicketTypes.add(createTicketType(bachatation, new TicketType(
         null,
         "MASTER CLASS",
         "Master Class with Kike & Nahir",
         Money.of(109, Monetary.getCurrency("EUR")),
         100L,
-        bachatation));
-    createTicketType(bachatation, new TicketType(
+        bachatation)));
+    newTicketTypes.add(createTicketType(bachatation, new TicketType(
         null,
         "VIP Party-Pass",
         "All 4 Parties wit Pre-Party-Workshop",
         Money.of(45, Monetary.getCurrency("EUR")),
         100L,
-        bachatation));
-    createTicketType(bachatation, new TicketType(
+        bachatation)));
+    newTicketTypes.add(createTicketType(bachatation, new TicketType(
         null,
         "PARTY-PASS",
         "All 4 Parties",
         Money.of(29, Monetary.getCurrency("EUR")),
         100L,
-        bachatation));
+        bachatation)));
 
     User backataRoyalUser = users.get(new Random().nextInt(0, users.size()));
     Event bachataRoyal = new Event(
@@ -188,83 +196,83 @@ public class ShowDataCreator
         true,
         LocalDateTime.now().minusMonths(8));
     createEvent(bachataRoyal, backataRoyalUser);
-    createTicketType(bachataRoyal, new TicketType(
+    newTicketTypes.add(createTicketType(bachataRoyal, new TicketType(
         null,
         "Fullpass - BachataZoukRoyals- Leader",
         "Access to all Workshops (as a leader,and social rooms, including shows",
         Money.of(135, Monetary.getCurrency("EUR")),
         100L,
-        bachataRoyal));
-    createTicketType(bachataRoyal, new TicketType(
+        bachataRoyal)));
+    newTicketTypes.add(createTicketType(bachataRoyal, new TicketType(
         null,
         "Fullpass - BachataZoukRoyals - Follower",
         "Full access to all Workshops (as a follower,, party and shows",
         Money.of(135, Monetary.getCurrency("EUR")),
         100L,
-        bachataRoyal));
-    createTicketType(bachataRoyal, new TicketType(
+        bachataRoyal)));
+    newTicketTypes.add(createTicketType(bachataRoyal, new TicketType(
         null,
         "Party Pass",
         "This pass will give you access to the Friday, Saturday night socials and sunday day & night social.<br/><br/>only limited amount available! Last year, we were sold out, and we expect the same to happen this year.",
         Money.of(65, Monetary.getCurrency("EUR")),
         100L,
-        bachataRoyal));
-    createTicketType(bachataRoyal, new TicketType(
+        bachataRoyal)));
+    newTicketTypes.add(createTicketType(bachataRoyal, new TicketType(
         null,
         "Friday Day Pass",
         "This Day Pass includes all workshops, shows and social on Friday the 25th of October 2025.<br/>On Friday the workshops will start at 6 p.m.<br/>After the pre party workshops at 9 p.m. the social will start at 10 p.m.<br/>The shows will be around midnight ",
         Money.of(35, Monetary.getCurrency("EUR")),
         100L,
-        bachataRoyal));
-    createTicketType(bachataRoyal, new TicketType(
+        bachataRoyal)));
+    newTicketTypes.add(createTicketType(bachataRoyal, new TicketType(
         null,
         "Saturday Day Pass- Leader",
         "This Day Pass, for Leader, includes all workshops, shows and social on Saturday the 26th of October 2025.<br/>On Saturday the workshops will start at 2 p.m.<br/>The day social will start at 6 p.m. and the night social will start at 10 p.m.<br/>The shows will be around midnight.",
         Money.of(65, Monetary.getCurrency("EUR")),
         100L,
-        bachataRoyal));
-    createTicketType(bachataRoyal, new TicketType(
+        bachataRoyal)));
+    newTicketTypes.add(createTicketType(bachataRoyal, new TicketType(
         null,
         "Saturday Day Pass - Follower",
         "This Day Pass, for Follower, includes all workshops, shows and social on Saturday the 26th of October 2025.<br/>On Saturday the workshops will start at 2 p.m.<br/>The day social will start at 6 p.m. and the night social will start at 10 p.m.<br/>The shows will be around midnight.",
         Money.of(65, Monetary.getCurrency("EUR")),
         100L,
-        bachataRoyal));
-    createTicketType(bachataRoyal, new TicketType(
+        bachataRoyal)));
+    newTicketTypes.add(createTicketType(bachataRoyal, new TicketType(
         null,
         "Sunday Day Pass - Leader",
         "This Day Pass, for Leader, includes all workshops and social on Sunday the 27th of October 2025.<br/>On Sunday the workshops will start at 1 p.m.<br/>The day social will start at 4 p.m. until midnight",
         Money.of(45, Monetary.getCurrency("EUR")),
         100L,
-        bachataRoyal));
-    createTicketType(bachataRoyal, new TicketType(
+        bachataRoyal)));
+    newTicketTypes.add(createTicketType(bachataRoyal, new TicketType(
         null,
         "Sunday Day Pass - Follower",
         "This Day Pass, for Follower, includes all workshops and social on Sunday the 27th of October 2025.<br/>On Sunday the workshops will start at 1 p.m.<br/>The day social will start at 4 p.m. until midnight",
         Money.of(45, Monetary.getCurrency("EUR")),
         100L,
-        bachataRoyal));
-    createTicketType(bachataRoyal, new TicketType(
+        bachataRoyal)));
+    newTicketTypes.add(createTicketType(bachataRoyal, new TicketType(
         null,
         "Friday night social",
         "The Friday night ticket for the 25th of October includes the social starting at 10 p.m. and the shows around midnight",
         Money.of(25, Monetary.getCurrency("EUR")),
         100L,
-        bachataRoyal));
-    createTicketType(bachataRoyal, new TicketType(
+        bachataRoyal)));
+    newTicketTypes.add(createTicketType(bachataRoyal, new TicketType(
         null,
         "Saturday night social",
         "The Saturday night ticket for the 26th of October includes the social starting at 10 p.m. and the shows around midnight",
         Money.of(30, Monetary.getCurrency("EUR")),
         100L,
-        bachataRoyal));
-    createTicketType(bachataRoyal, new TicketType(
+        bachataRoyal)));
+    newTicketTypes.add(createTicketType(bachataRoyal, new TicketType(
         null,
         "Sunday social ticket",
         "The Sunday social ticket for the 27th of October includes the day social starting at 4 p.m. till midnight",
         Money.of(15, Monetary.getCurrency("EUR")),
         100L,
-        bachataRoyal));
+        bachataRoyal)));
 
     User bachatologyUser = users.get(new Random().nextInt(0, users.size()));
     Event bachatology = new Event(
@@ -284,6 +292,16 @@ public class ShowDataCreator
         LocalDateTime.now().minusMonths(8));
     createEvent(bachatology, bachatologyUser);
     createRandomTicketTypesForEvent(bachatology);
+
+    //TODO make initital test data ticket creation work
+    /*try
+    {
+      stripeService.syncTicketTypes(newTicketTypes);
+    }
+    catch (StripeException e)
+    {
+      throw new RuntimeException(e);
+    }*/
   }
 
   private void createEvent(Event event, User user)
@@ -350,10 +368,12 @@ public class ShowDataCreator
     ticketRepository.saveAllAndFlush(tickets);
   }
 
-  private void createTicketType(Event event, TicketType ticketType)
+  private TicketType createTicketType(Event event, TicketType ticketType)
   {
-    ticketTypeRepository.saveAndFlush(ticketType);
+    TicketType newTicketType = ticketTypeRepository.saveAndFlush(ticketType);
     createRandomTickets(event, ticketType);
+
+    return newTicketType;
   }
 
   private DancingRole getRandomDancingRole()

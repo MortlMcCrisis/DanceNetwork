@@ -50,21 +50,27 @@ class NavigationRailComponent extends StatelessWidget {
             const Divider(),
             _buildMenuItem(
               context: context,
-              icon: Icons.newspaper,
+              icon: Icons.dynamic_feed,
               label: 'Newsfeed',
               index: 0,
             ),
             _buildMenuItem(
               context: context,
-              icon: Icons.event,
+              icon: Icons.festival,
               label: 'Events',
               index: 1,
             ),
+            /*_buildMenuItem(
+              context: context,
+              icon: Icons.add_circle,
+              label: 'Create event',
+              index: 2,
+            ),*/
             _buildMenuItem(
               context: context,
               icon: Icons.confirmation_num,
               label: 'Tickets',
-              index: 2,
+              index: 3,
             ),
           ],
         ),
@@ -90,7 +96,7 @@ class NavigationRailComponent extends StatelessWidget {
               label,
               style: TextStyle(
                 fontWeight: navigationState.selectedIndex == index ? FontWeight.bold : FontWeight.normal,
-                fontSize: 16,
+                fontSize: 14,
                 color: navigationState.selectedIndex == index ? AppThemes.black : AppThemes.generateGradient(AppThemes.black)[4],
               ),
             ),

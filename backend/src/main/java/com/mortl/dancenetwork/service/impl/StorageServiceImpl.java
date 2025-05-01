@@ -23,7 +23,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 @Component
-public class StorageServiceImpl implements IStorageService {
+public class StorageServiceImpl implements IStorageService
+{
 
   private static final Logger log = LoggerFactory.getLogger(StorageServiceImpl.class);
 
@@ -32,65 +33,125 @@ public class StorageServiceImpl implements IStorageService {
 
   private IUserService userService;
 
-  public StorageServiceImpl(IUserService userService) {
+  public StorageServiceImpl(IUserService userService)
+  {
     this.userService = userService;
 
     this.rootLocation = Paths.get(
-        Paths.get("").toAbsolutePath() + File.separator + root)
+            Paths.get("").toAbsolutePath() + File.separator + root)
         .normalize();
   }
 
   @Override
-  public void storeUploadedImage(MultipartFile file) {
-    try {
-      if (file.isEmpty()) {
+  public void storeUploadedImage(MultipartFile file)
+  {
+    try
+    {
+      if (file.isEmpty())
+      {
         //throw new StorageException("Failed to store empty file.");
       }
       User user = userService.getCurrentUser().get();
       Path destinationFile = getUserImagePath().resolve(Paths.get(file.getOriginalFilename()))
           .normalize().toAbsolutePath();
-      try (InputStream inputStream = file.getInputStream()) {
-        log.info("Storing file {} for user {} into directory {} ", file.getOriginalFilename(), user.getUsername(), destinationFile);
+      try (InputStream inputStream = file.getInputStream())
+      {
+        log.info("Storing file {} for user {} into directory {} ", file.getOriginalFilename(),
+            user.getUsername(), destinationFile);
         Files.createDirectories(destinationFile);
         Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
       }
     }
-    catch (IOException e) {
+    catch (IOException e)
+    {
       throw new RuntimeException("Failed to store uploaded file.", e);
     }
   }
 
   @Override
-  public void storeUploadedImage(BufferedImage image, String path, String fileName, String fileType) {
-    try {
+  public String storeUploadedImageNew(MultipartFile file)
+  {
+    try
+    {
+      String uploadDirPath = System.getProperty("user.dir") + File.separator + "uploads";
+      File uploadDir = new File(uploadDirPath);
+      if (!uploadDir.exists())
+      {
+        boolean created = uploadDir.mkdirs();
+        if (!created)
+        {
+          throw new IOException("Could not create upload directory: " + uploadDirPath);
+        }
+      }
+
+      User user = userService.getCurrentUser().get();
+      File userPath = new File(
+          uploadDirPath + File.separator + Util.calculateMD5(user.getUsername()));
+      if (!userPath.exists())
+      {
+        boolean created = userPath.mkdirs();
+        if (!created)
+        {
+          throw new IOException("Could not create user directory: " + userPath.getAbsolutePath());
+        }
+      }
+      String filePath = Util.calculateMD5(user.getUsername()) + File.separator
+          + file.getOriginalFilename();
+      file.transferTo(new File(userPath + File.separator + file.getOriginalFilename()));
+      return ("uploads" + File.separator + filePath).replaceAll("\\\\", "/");
+    }
+    catch (IOException e)
+    {
+      throw new RuntimeException("Failed to store uploaded file.", e);
+    }
+  }
+
+  @Override
+  public void storeUploadedImage(BufferedImage image, String path, String fileName, String fileType)
+  {
+    try
+    {
       ImageIO.write(image, fileType, new File(Paths.get(
               Paths.get("").toAbsolutePath() + "/../frontend/public/" + path + "/" + fileName)
           .normalize().toString()));
-    } catch (IOException e) {
+    }
+    catch (IOException e)
+    {
       throw new RuntimeException(e);
     }
   }
 
   @Override
-  public List<ImageDTO> listUserImages(){
-    try {
+  public List<ImageDTO> listUserImages()
+  {
+    try
+    {
       Path userImagePath = getUserImagePath();
 
-      if (Files.exists(userImagePath) && Files.isDirectory(userImagePath)) {
-        try (Stream<Path> paths = Files.list(userImagePath)) {
+      if (Files.exists(userImagePath) && Files.isDirectory(userImagePath))
+      {
+        try (Stream<Path> paths = Files.list(userImagePath))
+        {
           return paths.map(image -> new ImageDTO(
-                  "/upload/"+Util.calculateMD5(userService.getCurrentUser().get().getUsername()) + File.separator + image.getFileName()))
+                  "/upload/" + Util.calculateMD5(userService.getCurrentUser().get().getUsername())
+                      + File.separator + image.getFileName()))
               .collect(Collectors.toList());
         }
-      } else {
+      }
+      else
+      {
         return List.of();
       }
-    } catch (IOException e) {
+    }
+    catch (IOException e)
+    {
       throw new RuntimeException("Failed to list files for the user.", e);
     }
   }
 
-  private Path getUserImagePath(){
+  @Deprecated
+  private Path getUserImagePath()
+  {
     User user = userService.getCurrentUser().get();
     return rootLocation.resolve(Util.calculateMD5(user.getUsername()));
   }

@@ -1,3 +1,4 @@
+import 'package:dance_network_frontend/create_event/create_event.dart';
 import 'package:dance_network_frontend/navigation/botton_bar.dart';
 import 'package:dance_network_frontend/navigation/side_menu.dart';
 import 'package:dance_network_frontend/navigation/top_bar.dart';
@@ -8,6 +9,7 @@ import 'package:dance_network_frontend/util/device_utils.dart';
 import 'package:dance_network_frontend/util/token_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+//import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -27,6 +29,8 @@ class NavigationState with ChangeNotifier {
 }
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  //Stripe.publishableKey = "sk_test_51Q4KA0K0od2j0zBCF5uf3kNMMON4Pk1UlauYuN4jmvU7o3hSrZPJQMzZoP1RdkXRL0SxmHwbYV6XZ5TcYcabf5Su00T5jycRGh";
   runApp(
     MultiProvider(
       providers: [
@@ -128,6 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Widget> _pages = [
     const TimetableScreen(),
     const EventListPage(),
+    const CreateEventPage(),
     const Center(child: Text('Page 3: Yet Another Content')),
   ];
 

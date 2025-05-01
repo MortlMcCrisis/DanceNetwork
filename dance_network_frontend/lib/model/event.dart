@@ -2,7 +2,7 @@ class Event {
   final int eventId;
   final String imageUrl;
   final String startDate;
-  final String endDate;
+  final String? endDate;
   final String startTime;
   final String title;
   final String location;
@@ -26,7 +26,7 @@ class Event {
       eventId: event['id'] ?? 0,
       imageUrl: event['profileImage'] ?? "",
       startDate: event['startDate'] ?? "Unknown date",
-      endDate: event['endDate'] ?? "Unknown date",
+      endDate: event['endDate'],
       startTime: event['startTime'] ?? "Unknown time",
       title: event['name'] ?? "Untitled",
       location: event['location'] ?? "Unknown location",

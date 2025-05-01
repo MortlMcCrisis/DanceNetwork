@@ -116,6 +116,7 @@ class TicketTypeWidget extends StatelessWidget {
                         IconButton(
                           onPressed: () {
                             showModalBottomSheet(
+                              scrollControlDisabledMaxHeightRatio: 0.8,
                               context: context,
                               builder: (_) => TicketDetailsWidget(
                                 ticketIndex: index,
