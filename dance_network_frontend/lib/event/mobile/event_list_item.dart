@@ -16,14 +16,14 @@ class MobileEventCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('Image: ${event.imageUrl}');
+    print('Image: ${event.profileImageUrl}');
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(AppThemes.borderRadius),
           child: Image.network(
-            ImageResolver.getFullUrl(event.imageUrl),
+            ImageResolver.getFullUrl(event.profileImageUrl),
             width: 120,
             height: 120,
             fit: BoxFit.cover,

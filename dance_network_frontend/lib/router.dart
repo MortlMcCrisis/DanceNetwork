@@ -5,6 +5,7 @@ import 'package:dance_network_frontend/event/event_list.dart';
 import 'package:dance_network_frontend/navigation/botton_bar.dart';
 import 'package:dance_network_frontend/navigation/side_menu.dart';
 import 'package:dance_network_frontend/util/device_utils.dart';
+import 'package:dance_network_frontend/time_table.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -45,6 +46,10 @@ class AppRouter {
                 path: '/events',
                 buildChild: (context, state) => const EventListPage(),
               ),
+              _buildRoute(
+                path: '/timetable',
+                buildChild: (context, state) => const TimetableScreen(),
+              ),
               /*_buildRoute(
                 path: '/create-event',
                 buildChild: (context, state) => const CreateEventPage(),
@@ -73,6 +78,7 @@ class AppRouter {
   static void _navigate(BuildContext context, GoRouterState state, int index) {
     if (index == 0) context.go('/newsfeed');
     if (index == 1) context.go('/events');
+    if (index == 3) context.go('/timetable');
     //if (index == 2) context.go('/create-event');
     /*if (index == 4) {
       final eventId = int.parse(state.pathParameters['eventId']!);

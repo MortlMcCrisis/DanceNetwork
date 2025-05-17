@@ -4,21 +4,23 @@ import 'package:dance_network_frontend/util/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class EditableBackgroundImage extends StatefulWidget {
+class EditableImage extends StatefulWidget {
   final String initialImageUrl;
   final Future<String> Function(UploadableFile) onImageChanged;
+  final bool active;
 
-  const EditableBackgroundImage({
+  const EditableImage({
     super.key,
     required this.initialImageUrl,
     required this.onImageChanged,
+    required this.active,
   });
 
   @override
-  State<EditableBackgroundImage> createState() => _EditableBackgroundImageState();
+  State<EditableImage> createState() => _EditableImageState();
 }
 
-class _EditableBackgroundImageState extends State<EditableBackgroundImage> {
+class _EditableImageState extends State<EditableImage> {
   late String imageUrl;
   bool _isHovering = false;
 
@@ -42,6 +44,22 @@ class _EditableBackgroundImageState extends State<EditableBackgroundImage> {
 
   @override
   Widget build(BuildContext context) {
+
+    Widget imageField = Image.network(
+      imageUrl,
+      width: double.infinity,
+      fit: BoxFit.cover,
+      loadingBuilder: (context, child, loadingProgress) => CustomLoadingBuilder(
+        loadingProgress: loadingProgress,
+        child: child,
+      ),
+      errorBuilder: (context, error, stackTrace) => const CustomErrorBuilder(),
+    );
+
+    if(!widget.active){
+      return imageField;
+    }
+
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovering = true),
       onExit: (_) => setState(() => _isHovering = false),
@@ -49,16 +67,7 @@ class _EditableBackgroundImageState extends State<EditableBackgroundImage> {
         onTap: _changeBackgroundImage,
         child: Stack(
           children: [
-            Image.network(
-              imageUrl,
-              width: double.infinity,
-              fit: BoxFit.cover,
-              loadingBuilder: (context, child, loadingProgress) => CustomLoadingBuilder(
-                loadingProgress: loadingProgress,
-                child: child,
-              ),
-              errorBuilder: (context, error, stackTrace) => const CustomErrorBuilder(),
-            ),
+            imageField,
             if (_isHovering)
               Container(
               width: double.infinity,

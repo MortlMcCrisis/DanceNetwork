@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'dart:convert';
 
 //TODO here the state handling could be done better with set state that the event is clean loaded.
 
@@ -28,7 +29,38 @@ class EventDetailPage extends StatefulWidget {
 }
 
 class EventDetailPageState extends State<EventDetailPage> {
+  String? token;
   Event? event;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadToken();
+  }
+
+  //TODO move to util class
+  String? extractSubFromToken(String? token) {
+    if (token == null) return null;
+    try {
+      final parts = token.split('.');
+      if (parts.length != 3) return null;
+
+      final payload = base64Url.normalize(parts[1]);
+      final decoded = utf8.decode(base64Url.decode(payload));
+      final payloadMap = json.decode(decoded);
+
+      return payloadMap['sub'];
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<void> _loadToken() async {
+    final t = await TokenStorage().getToken();
+    setState(() {
+      token = t;
+    });
+  }
 
   Future<Event> _fetchEvent(int eventId) async {
     final response = await ApiService().get(
@@ -56,23 +88,60 @@ class EventDetailPageState extends State<EventDetailPage> {
                   expandedHeight: 200,
                   //pinned: true, // TODO pin and move title into this bar. it should only appear when the bar is pinned and must also be aligned with the back button
                   flexibleSpace: FlexibleSpaceBar(
-                    background: EditableBackgroundImage(
-                      initialImageUrl: ImageResolver.getFullUrl(event!.imageUrl),
-                      onImageChanged: (newImagePath) async {
-                        final token = await TokenStorage().getToken();
-                        final newImageUrl = await ApiService().postImage(
-                          endpoint: ApiService.fileUploadClosedEndpoint,
-                          file: newImagePath,
-                          token: token,
-                        );
-                        event = await ApiService().patch(
-                            endpoint: '${ApiService.eventClosedEndpoint}/${event!.eventId}/profileImage',
-                            content: {'value': newImageUrl},
-                            typeMapper: (json) => Event.fromMap(json),
-                            token: token
-                        );
-                        return ImageResolver.getFullUrl(newImageUrl);
-                      },
+                    background: Stack(
+                      alignment: Alignment.bottomLeft,
+                      children: [
+                        EditableImage(
+                          initialImageUrl: ImageResolver.getFullUrl(event!.bannerImageUrl),
+                          active: extractSubFromToken(token) != null && extractSubFromToken(token) == event!.creator,
+                          onImageChanged: (newImagePath) async {
+                            final token = await TokenStorage().getToken();
+                            final newImageUrl = await ApiService().postImage(
+                              endpoint: ApiService.fileUploadClosedEndpoint,
+                              file: newImagePath,
+                              token: token,
+                            );
+                            event = await ApiService().patch(
+                                endpoint: '${ApiService.eventClosedEndpoint}/${event!.eventId}/bannerImage',
+                                content: {'value': newImageUrl},
+                                typeMapper: (json) => Event.fromMap(json),
+                                token: token
+                            );
+                            return ImageResolver.getFullUrl(newImageUrl);
+                          },
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 32.0, left: 16.0, right: 16.0),
+                          child: Center(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(AppThemes.borderRadius),
+                              child: SizedBox(
+                                width: 120,
+                                height: 120,
+                                child: EditableImage(
+                                  initialImageUrl: ImageResolver.getFullUrl(event!.profileImageUrl),
+                                  active: extractSubFromToken(token) != null && extractSubFromToken(token) == event!.creator,
+                                  onImageChanged: (newImagePath) async {
+                                    final token = await TokenStorage().getToken();
+                                    final newImageUrl = await ApiService().postImage(
+                                      endpoint: ApiService.fileUploadClosedEndpoint,
+                                      file: newImagePath,
+                                      token: token,
+                                    );
+                                    event = await ApiService().patch(
+                                        endpoint: '${ApiService.eventClosedEndpoint}/${event!.eventId}/profileImage',
+                                        content: {'value': newImageUrl},
+                                        typeMapper: (json) => Event.fromMap(json),
+                                        token: token
+                                    );
+                                    return ImageResolver.getFullUrl(newImageUrl);
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ]
                     ),
                   ),
                   leading: const OnMobile(CustomBackButton(route: '/events')),
@@ -81,10 +150,11 @@ class EventDetailPageState extends State<EventDetailPage> {
                   child: Padding(
                     padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
                     child: Center(
-                      child:
-                      EditableLabel(
+                      child: EditableLabel(
                         initialText: event!.title,
+                        fallbackText: "enter title",
                         style: Theme.of(context).textTheme.headlineLarge,
+                        active: extractSubFromToken(token) != null && extractSubFromToken(token) == event!.creator,
                         onSubmitted: (newText) async {
                           final token = await TokenStorage().getToken();
                           event = await ApiService().patch(
@@ -103,7 +173,9 @@ class EventDetailPageState extends State<EventDetailPage> {
                     event: event!,
                     onEventUpdated: (updatedEvent) {
                       event = updatedEvent;
-                  },),
+                    },
+                    token: token
+                  ),
                 )
               ],
             );
@@ -137,12 +209,31 @@ class EventDetailPageState extends State<EventDetailPage> {
 class EventDetailContent extends StatelessWidget {
   final Event event;
   final Function(Event) onEventUpdated;
+  final String? token;
 
   const EventDetailContent({
     super.key,
     required this.event,
-    required this.onEventUpdated
+    required this.onEventUpdated,
+    required this.token
   });
+
+  //TODO move to util class
+  String? extractSubFromToken(String? token) {
+    if (token == null) return null;
+    try {
+      final parts = token.split('.');
+      if (parts.length != 3) return null;
+
+      final payload = base64Url.normalize(parts[1]);
+      final decoded = utf8.decode(base64Url.decode(payload));
+      final payloadMap = json.decode(decoded);
+
+      return payloadMap['sub'];
+    } catch (e) {
+      return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -178,7 +269,9 @@ class EventDetailContent extends StatelessWidget {
                         icon: Icons.calendar_today,
                         text: formattedDateRange,
                         id: event.eventId,
-                        property: 'startDate'
+                        property: 'startDate',
+                        creator: event.creator,
+                        currentUser: extractSubFromToken(token)
                       ),
                       const SizedBox(height: 12),
                       _buildTimeInfoRow(
@@ -186,31 +279,42 @@ class EventDetailContent extends StatelessWidget {
                         icon: Icons.schedule,
                         text: event.startTime,
                         id: event.eventId,
-                        property: 'startTime'
+                        property: 'startTime',
+                        creator: event.creator,
+                        currentUser: extractSubFromToken(token)
                       ),
                       const SizedBox(height: 12),
                       _buildInfoRow(
                         context: context,
                         icon: Icons.location_on,
                         text: event.location,
+                        fallbackText: "enter location",
                         id: event.eventId,
-                        property: 'location'
+                        property: 'location',
+                        creator: event.creator,
+                        currentUser: extractSubFromToken(token)
                       ),
                       const SizedBox(height: 12),
                       _buildInfoRow(
                         context: context,
                         icon: Icons.language,
                         text: event.website,
+                        fallbackText: "enter website",
                         id: event.eventId,
-                        property: 'website'
+                        property: 'website',
+                        creator: event.creator,
+                        currentUser: extractSubFromToken(token)
                       ),
                       const SizedBox(height: 12),
                       _buildInfoRow(
                         context: context,
                         icon: Icons.email,
                         text: event.email,
+                        fallbackText: "enter email",
                         id: event.eventId,
-                        property: 'email'
+                        property: 'email',
+                        creator: event.creator,
+                        currentUser: extractSubFromToken(token)
                       ),
                     ],
                   ),
@@ -227,8 +331,11 @@ class EventDetailContent extends StatelessWidget {
     required BuildContext context,
     required IconData icon,
     required String text,
+    required String fallbackText,
     required int id,
-    required String property
+    required String property,
+    required String creator,
+    required String? currentUser
   }) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -242,6 +349,8 @@ class EventDetailContent extends StatelessWidget {
         Expanded(
           child: EditableLabel(
             initialText: text,
+            fallbackText: fallbackText,
+            active: currentUser != null && currentUser == creator,
             onSubmitted: (newText) async {
               final token = await TokenStorage().getToken();
               var updatedEvent = await ApiService().patch(
@@ -263,7 +372,9 @@ class EventDetailContent extends StatelessWidget {
     required IconData icon,
     required String text,
     required int id,
-    required String property
+    required String property,
+    required String creator,
+    required String? currentUser
   }) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -277,6 +388,7 @@ class EventDetailContent extends StatelessWidget {
         Expanded(
             child: TimePickerLabel(
               initialTime: TimeOfDay.fromDateTime(DateFormat.Hm().parse(text)),
+              active: currentUser != null && currentUser == creator,
               onSubmitted: (newText) async {
                 final token = await TokenStorage().getToken();
                 var updatedEvent = await ApiService().patch(
@@ -303,7 +415,9 @@ class EventDetailContent extends StatelessWidget {
     required IconData icon,
     required String text,
     required int id,
-    required String property
+    required String property,
+    required String creator,
+    required String? currentUser
   }) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -317,6 +431,7 @@ class EventDetailContent extends StatelessWidget {
         Expanded(
             child: DatePickerLabel(
               initialDate: DateFormat('MMMM d, yyyy').parse(text),
+              active: currentUser != null && currentUser == creator,
               onSubmitted: (newText) async {
                 final token = await TokenStorage().getToken();
                 var updatedEvent = await ApiService().patch(

@@ -5,11 +5,13 @@ class TimePickerLabel extends StatefulWidget {
   final TimeOfDay? initialTime;
   final ValueChanged<TimeOfDay> onSubmitted;
   final TextStyle? style;
+  final bool active;
 
   const TimePickerLabel({
     super.key,
     required this.initialTime,
     required this.onSubmitted,
+    required this.active,
     this.style,
   });
 
@@ -50,6 +52,15 @@ class _TimePickerLabelState extends State<TimePickerLabel> {
   Widget build(BuildContext context) {
     final timeText = selectedTime.format(context);
 
+    Widget textField = Text(
+      timeText,
+      style: widget.style ?? Theme.of(context).textTheme.bodyMedium,
+    );
+
+    if(!widget.active){
+      return textField;
+    }
+
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovering = true),
       onExit: (_) => setState(() => _isHovering = false),
@@ -64,10 +75,7 @@ class _TimePickerLabelState extends State<TimePickerLabel> {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                timeText,
-                style: widget.style ?? Theme.of(context).textTheme.bodyMedium,
-              ),
+              textField,
               const SizedBox(width: 6),
               Icon(Icons.edit, size: 18, color: AppThemes.generateGradient(AppThemes.black)[7]),
             ],

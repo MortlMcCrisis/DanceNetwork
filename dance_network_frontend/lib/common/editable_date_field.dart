@@ -6,11 +6,13 @@ class DatePickerLabel extends StatefulWidget {
   final DateTime? initialDate;
   final ValueChanged<DateTime> onSubmitted;
   final TextStyle? style;
+  final bool active;
 
   const DatePickerLabel({
     super.key,
     required this.initialDate,
     required this.onSubmitted,
+    required this.active,
     this.style,
   });
 
@@ -46,6 +48,15 @@ class _DatePickerLabelState extends State<DatePickerLabel> {
   Widget build(BuildContext context) {
     final dateText = DateFormat.yMMMMd().format(selectedDate);
 
+    Widget textField = Text(
+      dateText,
+      style: widget.style ?? Theme.of(context).textTheme.bodyMedium,
+    );
+
+    if(!widget.active){
+      return textField;
+    }
+
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovering = true),
       onExit: (_) => setState(() => _isHovering = false),
@@ -62,10 +73,7 @@ class _DatePickerLabelState extends State<DatePickerLabel> {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                dateText,
-                style: widget.style ?? Theme.of(context).textTheme.bodyMedium,
-              ),
+              textField,
               const SizedBox(width: 6),
               Icon(Icons.edit, size: 18, color: AppThemes.generateGradient(AppThemes.black)[7]),
             ],

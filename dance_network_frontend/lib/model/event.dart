@@ -1,6 +1,8 @@
 class Event {
   final int eventId;
-  final String imageUrl;
+  final String creator;
+  final String profileImageUrl;
+  final String bannerImageUrl;
   final String startDate;
   final String? endDate;
   final String startTime;
@@ -11,7 +13,9 @@ class Event {
 
   Event({
     required this.eventId,
-    required this.imageUrl,
+    required this.creator,
+    required this.profileImageUrl,
+    required this.bannerImageUrl,
     required this.startDate,
     required this.endDate,
     required this.startTime,
@@ -24,14 +28,16 @@ class Event {
   factory Event.fromMap(Map<String, dynamic> event) {
     return Event(
       eventId: event['id'] ?? 0,
-      imageUrl: event['profileImage'] ?? "",
+      creator: event['creator'] ?? "",
+      profileImageUrl: event['profileImage'] ?? "",
+      bannerImageUrl:  event['bannerImage'] ?? "",
       startDate: event['startDate'] ?? "Unknown date",
       endDate: event['endDate'],
       startTime: event['startTime'] ?? "Unknown time",
-      title: event['name'] ?? "Untitled",
-      location: event['location'] ?? "Unknown location",
-      website: event['website'] ?? "Unknown website",
-      email: event['email'] ?? "Unknown email",
+      title: event['name'] ?? "",
+      location: event['location'] ?? "",
+      website: event['website'] ?? "",
+      email: event['email'] ?? "",
     );
   }
 }

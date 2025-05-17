@@ -3,13 +3,17 @@ import 'package:flutter/material.dart';
 
 class EditableLabel extends StatefulWidget {
   final String initialText;
+  final String fallbackText;
   final ValueChanged<String> onSubmitted;
   final TextStyle? style;
+  final bool active;
 
   const EditableLabel({
     super.key,
     required this.initialText,
+    required this.fallbackText,
     required this.onSubmitted,
+    required this.active,
     this.style,
   });
 
@@ -72,12 +76,30 @@ class _EditableLabelState extends State<EditableLabel> {
       );
     }
 
+    Widget textField = Text(
+      currentText != "" ? currentText : widget.fallbackText,
+      style: widget.style?.copyWith(
+          color: currentText != ""
+              ? widget.style?.color
+              : widget.style?.color?.withOpacity(0.25)) ??
+          Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: currentText != ""
+                ? Theme.of(context).textTheme.bodyMedium?.color
+                : Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.25),
+          ),
+      softWrap: true,
+    );
+
+    if (!widget.active) {
+      return textField;
+    }
+
     return MouseRegion(
-      onEnter: (_) => setState(() => _isHovering = true),
+      onEnter: (_) => setState(() => { if(widget.active) _isHovering = true}),
       onExit: (_) => setState(() => _isHovering = false),
       child: GestureDetector(
         onTap: () {
-          setState(() => _isEditing = true);
+          setState(() => { if(widget.active) _isEditing = true});
           Future.delayed(Duration.zero, () {
             focusNode.requestFocus();
           });
@@ -91,9 +113,8 @@ class _EditableLabelState extends State<EditableLabel> {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                currentText,
-                style: widget.style ?? Theme.of(context).textTheme.bodyMedium,
+              Flexible(child:
+                textField,
               ),
               const SizedBox(width: 6),
               Icon(Icons.edit, size: 18, color: AppThemes.generateGradient(AppThemes.black)[7]),

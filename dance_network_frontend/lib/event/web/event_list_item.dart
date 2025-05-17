@@ -27,7 +27,7 @@ class WebEventCard extends StatelessWidget {
           child: AspectRatio(
             aspectRatio: 16 / 9,
             child: Image.network(
-              ImageResolver.getFullUrl(event.imageUrl),
+              ImageResolver.getFullUrl(event.profileImageUrl),
               width: double.infinity,
               fit: BoxFit.cover,
               loadingBuilder: (context, child, loadingProgress) => CustomLoadingBuilder(
